@@ -16,9 +16,13 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
 import { z } from "zod";
+import { useSession } from "@/lib/hooks/session";
+import { redirect } from "next/navigation";
 
 export default function Page() {
   const [error, setError] = useState<z.ZodIssue>();
+  const { session } = useSession();
+  if(session) redirect("/");
 
   return (
     <main>
