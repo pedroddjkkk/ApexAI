@@ -11,17 +11,19 @@ export const POST = async (request: NextRequest) => {
   const username = formData.get("username");
   const password = formData.get("password");
   const email = formData.get("email");
+  const confirmPassword = formData.get("confirmPassword");
 
   const validatedUserInput = createUserSchema.safeParse({
     username,
     password,
     email,
+    confirmPassword,
   });
 
   if (!validatedUserInput.success) {
     return NextResponse.json(
       {
-        error: validatedUserInput.error.issues[0].message,
+        error: validatedUserInput.error.issues[0],
       },
       {
         status: 400,

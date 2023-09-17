@@ -1,30 +1,94 @@
+"use client";
+
 import Form from "@/components/form";
 import Link from "next/link";
-import { auth } from "@/auth/lucia";
-import * as context from "next/headers";
-import { redirect } from "next/navigation";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Text } from "@/components/ui/text";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { useEffect, useState } from "react";
+import { z } from "zod";
 
-export default async function Page() {
-  const authRequest = auth.handleRequest("GET", context);
-  const session = await authRequest.validate();
-  if (session) redirect("/");
+export default function Page() {
+  const [error, setError] = useState<z.ZodIssue>();
 
   return (
-    <>
-      <h1>Sign up</h1>
-      <Form action="/api/signup">
-        <label htmlFor="username">Username</label>
-        <input name="username" id="username" />
-        <br />
-        <label htmlFor="email">Email</label>
-        <input type="email" name="email" id="email" />
-        <br />
-        <label htmlFor="password">Password</label>
-        <input type="password" name="password" id="password" />
-        <br />
-        <input type="submit" />
-      </Form>
-      <Link href="/login">Sign in</Link>
-    </>
+    <main>
+      <div className="flex justify-center items-center h-screen bg-blue-400">
+        <Form action="/api/signup" onError={(error) => setError(error)}>
+          <Card className="w-96">
+            <CardHeader>
+              <CardTitle>Registrar</CardTitle>
+              <CardDescription>
+                Realize o registro para acessar o sistema
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-2">
+                  <Label htmlFor="username">Nome de usuário</Label>
+                  <Input
+                    id="username"
+                    name="username"
+                    error={error?.path[0] === "username"}
+                  />
+                </div>
+                <div className="flex flex-col gap-2">
+                  <Label htmlFor="email">Email</Label>
+                  <Input
+                    id="email"
+                    name="email"
+                    error={error?.path[0] === "email"}
+                  />
+                </div>
+                <div className="flex flex-col gap-2">
+                  <Label htmlFor="password">Senha</Label>
+                  <Input
+                    id="password"
+                    name="password"
+                    type="password"
+                    error={error?.path[0] === "password"}
+                  />
+                  {error?.path[0] === "password" && (
+                    <Text>{error.message}</Text>
+                  )}
+                </div>
+                <div className="flex flex-col gap-2">
+                  <Label htmlFor="confirmPassword">Confirmar Senha</Label>
+                  <Input
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    type="password"
+                    error={error?.path[0] === "confirmPassword"}
+                  />
+                  {error?.path[0] === "confirmPassword" && (
+                    <Text>As senhas não coincidem!</Text>
+                  )}
+                </div>
+              </div>
+            </CardContent>
+            <CardFooter className="flex flex-col items-start gap-2">
+              <Text>
+                Já tem uma conta?{" "}
+                <Link href="/login" className="text-blue-600">
+                  Realize o Login!
+                </Link>
+              </Text>
+              <Button variant="outline" className="self-end" type="submit">
+                Registrar
+              </Button>
+            </CardFooter>
+          </Card>
+        </Form>
+      </div>
+    </main>
   );
 }
