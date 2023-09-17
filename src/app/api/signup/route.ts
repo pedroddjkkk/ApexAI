@@ -1,4 +1,5 @@
 import { auth } from "@/auth/lucia";
+import { createUserSchema } from "@/lib/validations/user";
 import { Prisma } from "@prisma/client";
 import * as context from "next/headers";
 import { NextResponse } from "next/server";
@@ -9,44 +10,35 @@ export const POST = async (request: NextRequest) => {
   const formData = await request.formData();
   const username = formData.get("username");
   const password = formData.get("password");
+  const email = formData.get("email");
 
-  if (
-    typeof username !== "string" ||
-    username.length < 4 ||
-    username.length > 31
-  ) {
+  const validatedUserInput = createUserSchema.safeParse({
+    username,
+    password,
+    email,
+  });
+
+  if (!validatedUserInput.success) {
     return NextResponse.json(
       {
-        error: "Invalid username",
+        error: validatedUserInput.error.issues[0].message,
       },
       {
         status: 400,
       }
     );
   }
-  if (
-    typeof password !== "string" ||
-    password.length < 6 ||
-    password.length > 255
-  ) {
-    return NextResponse.json(
-      {
-        error: "Invalid password",
-      },
-      {
-        status: 400,
-      }
-    );
-  }
+
   try {
     const user = await auth.createUser({
       key: {
         providerId: "username",
-        providerUserId: username.toLowerCase(),
-        password,
+        providerUserId: validatedUserInput.data.username.toLowerCase(),
+        password: validatedUserInput.data.password,
       },
       attributes: {
-        username,
+        username: validatedUserInput.data.username,
+        email: validatedUserInput.data.email,
       },
     });
     const session = await auth.createSession({
