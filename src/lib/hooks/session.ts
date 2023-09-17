@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { Session } from "../types/auth";
 
 export function useSession() {
-  const [session, setSession] = useState(null);
+  const [session, setSession] = useState<Session>();
   const [loading, setLoading] = useState(true);
   const [unlogged, setUnlogged] = useState(false);
 

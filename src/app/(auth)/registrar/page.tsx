@@ -14,7 +14,7 @@ import { Text } from "@/components/ui/text";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { z } from "zod";
 import { useSession } from "@/lib/hooks/session";
 import { redirect } from "next/navigation";
