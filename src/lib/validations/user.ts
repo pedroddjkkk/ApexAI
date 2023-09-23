@@ -9,11 +9,9 @@ export const createUserSchema = z
       })
       .min(3)
       .max(255),
-    email: z
-      .string()
-      .email({
-        message: "Email inválido",
-      }),
+    email: z.string().email({
+      message: "Email inválido",
+    }),
     password: z.string().refine(
       (value: string) => {
         const minLength = 8;
@@ -55,3 +53,22 @@ export const createUserSchema = z
     message: "As senhas não coincidem",
     path: ["confirm"],
   });
+
+export const loginSchema = z.object({
+  username: z.string().min(3).max(255),
+  password: z.string().refine((value: string) => {
+    const minLength = 8;
+    const hasUpperCase = /[A-Z]/.test(value);
+    const hasLowerCase = /[a-z]/.test(value);
+    const hasNumber = /[0-9]/.test(value);
+    const hasSpecialChar = /[@$!%*#?&]/.test(value);
+
+    return (
+      value.length >= minLength &&
+      hasUpperCase &&
+      hasLowerCase &&
+      hasNumber &&
+      hasSpecialChar
+    );
+  }),
+});

@@ -1,3 +1,6 @@
+"use client";
+
+import Form from "@/components/form";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -16,34 +19,39 @@ export default function Login() {
   return (
     <main>
       <div className="flex justify-center items-center h-screen bg-blue-400">
-        <Card>
-          <CardHeader>
-            <CardTitle>Login</CardTitle>
-            <CardDescription>
-              Insiria seu email e sua senha para continuar
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form>
+        <Form action="/api/auth/login">
+          <Card>
+            <CardHeader>
+              <CardTitle>Login</CardTitle>
+              <CardDescription>
+                Insiria seu email e sua senha para continuar
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
               <div className="flex flex-col gap-4">
                 <div className="flex flex-col gap-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input id="email" />
+                  <Label htmlFor="username">Nome de usuário</Label>
+                  <Input id="username" name="username" />
                 </div>
                 <div className="flex flex-col gap-2">
                   <Label htmlFor="password">Senha</Label>
-                  <Input id="password" />
+                  <Input id="password" name="password" type="password" />
                 </div>
               </div>
-            </form>
-          </CardContent>
-          <CardFooter className="flex flex-col items-start gap-2">
-            <Text>
-              Não tem um conta? <Link href="/registrar" className="text-blue-600">Registre-se!</Link>
-            </Text>
-            <Button variant="outline" className="self-end">Entrar</Button>
-          </CardFooter>
-        </Card>
+            </CardContent>
+            <CardFooter className="flex flex-col items-start gap-2">
+              <Text>
+                Não tem um conta?{" "}
+                <Link href="/registrar" className="text-blue-600">
+                  Registre-se!
+                </Link>
+              </Text>
+              <Button variant="outline" className="self-end" type="submit">
+                Entrar
+              </Button>
+            </CardFooter>
+          </Card>
+        </Form>
       </div>
     </main>
   );

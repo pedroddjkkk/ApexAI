@@ -22,12 +22,12 @@ import { redirect } from "next/navigation";
 export default function Page() {
   const [error, setError] = useState<z.ZodIssue>();
   const { session } = useSession();
-  if(session) redirect("/");
+  if (session) redirect("/");
 
   return (
     <main>
       <div className="flex justify-center items-center h-screen bg-blue-400">
-        <Form action="/api/signup" onError={(error) => setError(error)}>
+        <Form action="/api/auth/signup" onError={(error) => setError(error)}>
           <Card className="w-96">
             <CardHeader>
               <CardTitle>Registrar</CardTitle>

@@ -9,7 +9,11 @@ export function useSession() {
 
   useEffect(() => {
     async function loadSession() {
-      const { data } = await axios.get("/api/auth/session");
+      const { data } = await axios({
+        method: "GET",
+        url: "/api/auth/session",
+        validateStatus: () => true,
+      });
 
       if (data.session) {
         setSession(data.session);
