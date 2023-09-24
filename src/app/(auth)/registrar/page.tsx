@@ -14,15 +14,19 @@ import { Text } from "@/components/ui/text";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { z } from "zod";
 import { useSession } from "@/lib/hooks/session";
 import { redirect } from "next/navigation";
 
 export default function Page() {
-  const [error, setError] = useState<z.ZodIssue>();
+  const [error, setError] = useState<{ field: string; message: string }>();
   const { session } = useSession();
   if (session) redirect("/");
+
+  useEffect(() => {
+    console.log(error);
+  }, [error]);
 
   return (
     <main>
@@ -42,16 +46,19 @@ export default function Page() {
                   <Input
                     id="username"
                     name="username"
-                    error={error?.path[0] === "username"}
+                    autoComplete="username"
+                    error={error?.field === "username"}
                   />
+                  {error?.field === "username" && <Text>{error.message}</Text>}
                 </div>
                 <div className="flex flex-col gap-2">
                   <Label htmlFor="email">Email</Label>
                   <Input
                     id="email"
                     name="email"
-                    error={error?.path[0] === "email"}
+                    error={error?.field === "email"}
                   />
+                  {error?.field === "email" && <Text>{error.message}</Text>}
                 </div>
                 <div className="flex flex-col gap-2">
                   <Label htmlFor="password">Senha</Label>
@@ -59,11 +66,10 @@ export default function Page() {
                     id="password"
                     name="password"
                     type="password"
-                    error={error?.path[0] === "password"}
+                    autoComplete="new-password"
+                    error={error?.field === "password"}
                   />
-                  {error?.path[0] === "password" && (
-                    <Text>{error.message}</Text>
-                  )}
+                  {error?.field === "password" && <Text>{error.message}</Text>}
                 </div>
                 <div className="flex flex-col gap-2">
                   <Label htmlFor="confirmPassword">Confirmar Senha</Label>
@@ -71,9 +77,10 @@ export default function Page() {
                     id="confirmPassword"
                     name="confirmPassword"
                     type="password"
-                    error={error?.path[0] === "confirmPassword"}
+                    autoComplete="new-password"
+                    error={error?.field === "confirm"}
                   />
-                  {error?.path[0] === "confirmPassword" && (
+                  {error?.field === "confirm" && (
                     <Text>As senhas não coincidem!</Text>
                   )}
                 </div>

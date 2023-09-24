@@ -23,7 +23,8 @@ export const POST = async (request: NextRequest) => {
   if (!validatedUserInput.success) {
     return NextResponse.json(
       {
-        error: validatedUserInput.error.issues[0],
+        field: validatedUserInput.error.issues[0].path[0],
+        message: validatedUserInput.error.issues[0].message,
       },
       {
         status: 400,
@@ -60,14 +61,27 @@ export const POST = async (request: NextRequest) => {
       e instanceof Prisma.PrismaClientKnownRequestError &&
       e.code === "P2002"
     ) {
-      return NextResponse.json(
-        {
-          error: "Username already taken",
-        },
-        {
-          status: 400,
-        }
-      );
+      if (e.meta?.target === "PRIMARY") {
+        return NextResponse.json(
+          {
+            message: "Nome de usuário já está em uso",
+            field: "username",
+          },
+          {
+            status: 400,
+          }
+        );
+      } else if (e.meta?.target === "User_email_key") {
+        return NextResponse.json(
+          {
+            message: "Email já está em uso",
+            field: "email",
+          },
+          {
+            status: 400,
+          }
+        );
+      }
     }
 
     return NextResponse.json(

@@ -7,7 +7,7 @@ export const createUserSchema = z
         invalid_type_error: "Usuário inválido",
         required_error: "Usuário é obrigatório",
       })
-      .min(3)
+      .min(3, "Usuário deve ter pelo menos 3 caracteres")
       .max(255),
     email: z.string().email({
       message: "Email inválido",

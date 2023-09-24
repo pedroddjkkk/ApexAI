@@ -1,7 +1,7 @@
 "use client";
 
+import axios from "axios";
 import { useRouter } from "next/navigation";
-import { z } from "zod";
 
 const Form = ({
   children,
@@ -21,16 +21,17 @@ const Form = ({
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
 
-        const response = await fetch(action, {
+        const response = await axios({
+          url: action,
           method: "POST",
-          body: formData,
-          redirect: "manual",
+          data: formData,
+          validateStatus: () => true,
         });
 
         if (response.status === 400) {
-          const res = await response.json();
+          const res = await response.data;
           if (onError) {
-            onError(res.error);
+            onError(res);
           }
         }
 
