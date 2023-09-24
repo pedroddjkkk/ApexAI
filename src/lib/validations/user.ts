@@ -8,7 +8,7 @@ export const createUserSchema = z
         required_error: "Usuário é obrigatório",
       })
       .min(3, "Usuário deve ter pelo menos 3 caracteres")
-      .max(255),
+      .max(255, "Usuário deve ter no máximo 255 caracteres"),
     email: z.string().email({
       message: "Email inválido",
     }),
@@ -55,20 +55,31 @@ export const createUserSchema = z
   });
 
 export const loginSchema = z.object({
-  username: z.string().min(3).max(255),
-  password: z.string().refine((value: string) => {
-    const minLength = 8;
-    const hasUpperCase = /[A-Z]/.test(value);
-    const hasLowerCase = /[a-z]/.test(value);
-    const hasNumber = /[0-9]/.test(value);
-    const hasSpecialChar = /[@$!%*#?&]/.test(value);
+  username: z
+    .string({
+      required_error: "Usuário é obrigatório",
+    })
+    .min(3, "Usuário deve ter pelo menos 3 caracteres")
+    .max(255, "Usuário deve ter no máximo 255 caracteres"),
+  password: z.string().refine(
+    (value: string) => {
+      const minLength = 8;
+      const hasUpperCase = /[A-Z]/.test(value);
+      const hasLowerCase = /[a-z]/.test(value);
+      const hasNumber = /[0-9]/.test(value);
+      const hasSpecialChar = /[@$!%*#?&]/.test(value);
 
-    return (
-      value.length >= minLength &&
-      hasUpperCase &&
-      hasLowerCase &&
-      hasNumber &&
-      hasSpecialChar
-    );
-  }),
+      return (
+        value.length >= minLength &&
+        hasUpperCase &&
+        hasLowerCase &&
+        hasNumber &&
+        hasSpecialChar
+      );
+    },
+    {
+      message:
+        "A senha deve ter pelo menos 8 caracteres, incluindo pelo menos uma letra maiúscula, uma letra minúscula, um número e um caractere especial.",
+    }
+  ),
 });

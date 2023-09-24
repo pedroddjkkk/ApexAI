@@ -10,12 +10,15 @@ import { redirect } from "next/navigation";
 export const POST = async (request: NextRequest) => {
   const formData = await request.formData();
 
-  const validatedLoginInput = loginSchema.safeParse(formData);
+  const body = Object.fromEntries(formData.entries());
+
+  const validatedLoginInput = loginSchema.safeParse(body);
 
   if (!validatedLoginInput.success) {
     return NextResponse.json(
       {
-        error: validatedLoginInput.error.issues[0],
+        field: validatedLoginInput.error.issues[0].path[0],
+        message: validatedLoginInput.error.issues[0].message,
       },
       {
         status: 400,
@@ -47,7 +50,8 @@ export const POST = async (request: NextRequest) => {
     ) {
       return NextResponse.json(
         {
-          error: "Incorrect username or password",
+          field: "login",
+          message: "Usuário ou senha inválidos",
         },
         {
           status: 400,

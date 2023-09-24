@@ -14,8 +14,7 @@ import { Text } from "@/components/ui/text";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { useEffect, useState } from "react";
-import { z } from "zod";
+import { useState } from "react";
 import { useSession } from "@/lib/hooks/session";
 import { redirect } from "next/navigation";
 
@@ -23,10 +22,6 @@ export default function Page() {
   const [error, setError] = useState<{ field: string; message: string }>();
   const { session } = useSession();
   if (session) redirect("/");
-
-  useEffect(() => {
-    console.log(error);
-  }, [error]);
 
   return (
     <main>
