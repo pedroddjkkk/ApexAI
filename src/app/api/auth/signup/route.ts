@@ -2,6 +2,7 @@ import { auth } from "@/auth/lucia";
 import { createUserSchema } from "@/lib/validations/user";
 import { Prisma } from "@prisma/client";
 import * as context from "next/headers";
+import { redirect } from "next/navigation";
 import { NextResponse } from "next/server";
 
 import type { NextRequest } from "next/server";
@@ -50,12 +51,7 @@ export const POST = async (request: NextRequest) => {
     });
     const authRequest = auth.handleRequest(request.method, context);
     authRequest.setSession(session);
-    return new Response(null, {
-      status: 302,
-      headers: {
-        Location: "/",
-      },
-    });
+    redirect("/");
   } catch (e) {
     if (
       e instanceof Prisma.PrismaClientKnownRequestError &&

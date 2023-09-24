@@ -25,6 +25,10 @@ export function useSession() {
     }
 
     loadSession();
+
+    const sessionUpdateInterval = setInterval(loadSession, 1000 * 20);
+
+    return () => clearInterval(sessionUpdateInterval);
   }, []);
 
   return { session, loading, unlogged };

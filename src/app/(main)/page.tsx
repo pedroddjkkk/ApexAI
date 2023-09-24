@@ -10,7 +10,7 @@ export default function Home() {
       {loading ? (
         <h1>Carregando</h1>
       ) : (
-        <h1>Olá {session ? session.user.userId : ""}</h1>
+        <h1>Olá {session ? session.user.email : ""}</h1>
       )}
     </main>
   );
