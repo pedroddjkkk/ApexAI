@@ -1,4 +1,5 @@
 import { auth } from "@/auth/lucia";
+import { isRedirectError } from "@/lib/utils";
 import * as context from "next/headers";
 import { redirect } from "next/navigation";
 
@@ -15,5 +16,10 @@ export const POST = async (request: NextRequest) => {
   await auth.invalidateSession(session.sessionId);
 
   authRequest.setSession(null);
-  redirect("/");
+
+  try {
+    redirect("/login");
+  } catch (e) {
+    if (isRedirectError(e)) throw e;
+  }
 };

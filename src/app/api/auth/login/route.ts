@@ -6,6 +6,7 @@ import { LuciaError } from "lucia";
 import type { NextRequest } from "next/server";
 import { loginSchema } from "@/lib/validations/user";
 import { redirect } from "next/navigation";
+import { isRedirectError } from "@/lib/utils";
 
 export const POST = async (request: NextRequest) => {
   const formData = await request.formData();
@@ -43,6 +44,7 @@ export const POST = async (request: NextRequest) => {
 
     redirect("/");
   } catch (e) {
+    if (isRedirectError(e)) throw e;
     if (
       e instanceof LuciaError &&
       (e.message === "AUTH_INVALID_KEY_ID" ||

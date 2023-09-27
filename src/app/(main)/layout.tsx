@@ -1,7 +1,10 @@
 import { auth } from "@/auth/lucia";
+import { isRedirectError } from "@/lib/utils";
 import { LuciaError } from "lucia";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+
+export const revalidate = 0;
 
 export default async function UserRootLayout({
   children,
@@ -23,6 +26,7 @@ export default async function UserRootLayout({
 
     return <div>{children}</div>;
   } catch (e) {
+    if (isRedirectError(e)) throw e;
     if (e instanceof LuciaError && e.message === `AUTH_INVALID_SESSION_ID`) {
       redirect("/login");
     }

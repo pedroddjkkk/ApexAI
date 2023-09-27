@@ -1,4 +1,5 @@
 import { auth } from "@/auth/lucia";
+import { isRedirectError } from "@/lib/utils";
 import { createUserSchema } from "@/lib/validations/user";
 import { Prisma } from "@prisma/client";
 import * as context from "next/headers";
@@ -53,6 +54,7 @@ export const POST = async (request: NextRequest) => {
     authRequest.setSession(session);
     redirect("/");
   } catch (e) {
+    if (isRedirectError(e)) throw e;
     if (
       e instanceof Prisma.PrismaClientKnownRequestError &&
       e.code === "P2002"
