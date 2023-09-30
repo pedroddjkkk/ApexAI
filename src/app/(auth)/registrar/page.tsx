@@ -16,17 +16,22 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { useSession } from "@/lib/hooks/session";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 
 export default function Page() {
   const [error, setError] = useState<{ field: string; message: string }>();
+  const router = useRouter();
   const { session } = useSession();
   if (session) redirect("/");
 
   return (
     <main>
       <div className="flex justify-center items-center h-screen bg-blue-400">
-        <Form action="/api/auth/signup" onError={(error) => setError(error)}>
+        <Form
+          action="/api/auth/signup"
+          onError={(error) => setError(error)}
+          onSucces={() => router.push("/")}
+        >
           <Card className="w-96">
             <CardHeader>
               <CardTitle>Registrar</CardTitle>

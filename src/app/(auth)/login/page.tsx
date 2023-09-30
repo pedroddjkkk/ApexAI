@@ -15,18 +15,23 @@ import { Label } from "@/components/ui/label";
 import { Text } from "@/components/ui/text";
 import { useSession } from "@/lib/hooks/session";
 import Link from "next/link";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function Login() {
   const [error, setError] = useState<{ field: string; message: string }>();
+  const router = useRouter();
   const { session } = useSession();
   if (session) redirect("/");
 
   return (
     <main>
       <div className="flex justify-center items-center h-screen bg-blue-400">
-        <Form action="/api/auth/login" onError={(error) => setError(error)}>
+        <Form
+          action="/api/auth/login"
+          onError={(error) => setError(error)}
+          onSucces={() => router.push("/")}
+        >
           <Card className="w-96">
             <CardHeader>
               <CardTitle>Login</CardTitle>
@@ -53,9 +58,13 @@ export default function Login() {
                     type="password"
                     error={error?.field === "password"}
                   />
-                  {error?.field === "password" && <Text className="break-words">{error.message}</Text>}
+                  {error?.field === "password" && (
+                    <Text className="break-words">{error.message}</Text>
+                  )}
                 </div>
-                  {error?.field === "login" && <Text className="text-red-500">{error.message}</Text>}
+                {error?.field === "login" && (
+                  <Text className="text-red-500">{error.message}</Text>
+                )}
               </div>
             </CardContent>
             <CardFooter className="flex flex-col items-start gap-2">
