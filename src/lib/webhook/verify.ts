@@ -1,5 +1,6 @@
 import { NextRequest } from "next/server";
 import bcrypt from "bcrypt";
+import { WebhookResponse } from "../types/response";
 
 export async function verifyWebhook(req: NextRequest) {
   const signatureHeader = req.headers.get("x-signature");
@@ -13,7 +14,7 @@ export async function verifyWebhook(req: NextRequest) {
     signatureHeader
   );
 
-  const body = await req.json();
+  const body: WebhookResponse = await req.json();
 
   return { valid, body };
 }
