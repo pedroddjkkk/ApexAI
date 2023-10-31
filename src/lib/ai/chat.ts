@@ -7,6 +7,7 @@ export async function generateAiResponse(
   const completition = await openai.chat.completions.create({
     messages,
     model: "gpt-3.5-turbo",
+    max_tokens: 150,
   });
 
   return completition;

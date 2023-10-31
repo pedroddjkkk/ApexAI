@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
 
       const chat: ChatCompletionMessageParam[] = messages.map((message) => ({
         content: message.body,
-        role: message.fromMe ? "user" : "assistant",
+        role: message.fromMe ? "assistant" : "user",
       }));
 
       const generatedResponse = await generateAiResponse(chat);
