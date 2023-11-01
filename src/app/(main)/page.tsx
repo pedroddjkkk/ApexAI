@@ -56,15 +56,8 @@ export default function Home() {
             <TabsTrigger value="facebook">Facebook</TabsTrigger>
             <TabsTrigger value="telegram">Telegram</TabsTrigger>
           </TabsList>
-          <TabsContent value="instagram" className="w-full h-full flex">
-            <Card className="shadow-card-shadow w-[250px] h-[150px] mr-3">
-              <CardHeader>Total Gasto</CardHeader>
-              <CardContent>
-                <p className="font-bold text-4xl">Instagram</p>
-              </CardContent>
-            </Card>
-            <Card className="shadow-card-shadow w-[250px] h-[150px] mr-3">
-              <CardHeader>Total Gasto</CardHeader>
+          <TabsContent value="instagram" className="w-full h-full">
+            <Card className="h-full w-full">
               <CardContent>
                 <TremorCard>
                   <Text>Sales</Text>
