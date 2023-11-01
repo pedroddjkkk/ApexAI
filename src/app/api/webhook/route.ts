@@ -23,10 +23,38 @@ export async function POST(req: NextRequest) {
 
       const generatedResponse = await generateAiResponse(chat);
 
-      const res = await axios.post("http://localhost:8000/whatsapp/message", {
-        id: messages[0].id.remote,
-        message: generatedResponse.choices[0].message.content,
-      });
+      if (generatedResponse.choices[0].finish_reason === "function_call") {
+        if (
+          generatedResponse.choices[0].message.function_call?.name ===
+          "get_current_weather"
+        ) {
+          const body = JSON.parse(
+            generatedResponse.choices[0].message.function_call?.arguments
+          );
+
+          const res = await axios.get(
+            `https://api.hgbrasil.com/weather?key=6b49adc2&city_name=${body.city},${body.state}`
+          );
+
+          chat.push({
+            content: JSON.stringify(res.data.results),
+            role: "function",
+            name: "get_current_weather",
+          });
+
+          const newResponse = await generateAiResponse(chat);
+
+          await axios.post("http://localhost:8000/whatsapp/message", {
+            id: messages[0].id.remote,
+            message: newResponse.choices[0].message.content,
+          });
+        }
+      } else {
+        const res = await axios.post("http://localhost:8000/whatsapp/message", {
+          id: messages[0].id.remote,
+          message: generatedResponse.choices[0].message.content,
+        });
+      }
 
       return NextResponse.json("Message received", { status: 200 });
   }
