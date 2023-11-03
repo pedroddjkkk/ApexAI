@@ -14,7 +14,7 @@ type PropsCreate = {
   presence_penalty: number;
 }
 
-export function create(data: PropsCreate): Promise<AIConfig> {
+export function createAiConfig(data: PropsCreate): Promise<AIConfig> {
   return prisma.aIConfig.create({
     data
   });
