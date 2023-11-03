@@ -1,18 +1,52 @@
 'use client';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Text } from '@tremor/react';
-import React from 'react';
+import React, { useState } from 'react';
 
+// components
+import { ImputLabel } from '@/components/inputs/imput-label';
+import { Button } from '@/components/ui/button';
+import { TextAreaLabel } from '../company-config/page';
+import SwitchLabel from '@/components/inputs/switch-label';
+
+// hook form
+import { useForm } from 'react-hook-form';
+
+// zod
+import { z } from 'zod';
+
+// types
+type Inputs = {
+  name: string;
+  sistema: string;
+  max_tokens: number;
+  model: string;
+  temperature: number;
+  stop: string;
+  top_p: number;
+  frequency_penalty: number;
+  presence_penalty: number;
+};
 
 export default function AiConfig() {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<Inputs>()
+
+  const onSubmit = (data: Inputs) => {
+
+  };
+
+  const [advanced, setAdvanced] = useState(false);
+
   return (
     <main>
       <div className='px-8'>
         <h1 className='font-bold text-3xl'>Configuração AIs</h1>
       </div>
-      <form className='flex flex-col px-[calc(8px+1rem)] lg:px-28 xl:px-32 mt-4 gap-y-8 py-8'>
+      <form onSubmit={handleSubmit(onSubmit)}
+        className='flex flex-col px-[calc(8px+1rem)] lg:px-28 xl:px-32 mt-4 gap-y-8 py-8'>
         <div className='
         grid md:grid-cols-2 sm:grid-cols-1
         lg:gap-x-16 xl:gap-x-32 md:gap-x-8'>
@@ -21,18 +55,7 @@ export default function AiConfig() {
             placeholder='Nome'
             description='Nomeie sua AI.'
             value=''
-            onChange={(e) => {
-              console.log(e.target.value);
-            }}
-          />
-          <ImputLabel
-            label='Rede Social'
-            placeholder='Rede Social'
-            description='Escolha uma rede social.'
-            value=''
-            onChange={(e) => {
-              console.log(e.target.value);
-            }}
+            name='name'
           />
         </div>
         <TextAreaLabel
@@ -44,21 +67,20 @@ export default function AiConfig() {
             console.log(e.target.value);
           }}
         />
-        <div className='
+        <SwitchLabel
+          label="Configurações avançadas"
+          value={advanced}
+          onChange={(e) => {
+            setAdvanced(e);
+          }}
+        />
+        <div style={{ display: advanced ? 'grid' : 'none' }}
+          className='
         grid md:grid-cols-2 sm:grid-cols-1
         lg:gap-x-16 xl:gap-x-32 md:gap-x-8
         gap-y-8'>
           <ImputLabel
-            label='Max Gasto Tokens'
-            placeholder='Tokens'
-            description='Limite geral de gasta da AI.'
-            value=''
-            type='number'
-            onChange={(e) => {
-              console.log(e.target.value);
-            }}
-          />
-          <ImputLabel
+            name='model'
             label='Modelo'
             placeholder='Modelo'
             description='Escolha o modelo de AI que deseja usar, este parametro reflete no preço por tokens'
@@ -68,6 +90,7 @@ export default function AiConfig() {
             }}
           />
           <ImputLabel
+            name='max_tokens'
             label='Max Tokens Atendimento'
             placeholder='Tokens'
             description='Limite de tamanho da resposta para o cliente. '
@@ -78,6 +101,7 @@ export default function AiConfig() {
             }}
           />
           <ImputLabel
+            name='temperature'
             label='Temperatura AI'
             placeholder='Temperatura'
             description=' Controla a aleatoriedade das respostas geradas.'
@@ -88,6 +112,7 @@ export default function AiConfig() {
             }}
           />
           <ImputLabel
+            name='top_p'
             label='Qualidade'
             placeholder='Qualidade'
             description='Isso permite que você gere respostas de alta qualidade, eliminando tokens menos relevantes.'
@@ -98,6 +123,7 @@ export default function AiConfig() {
             }}
           />
           <ImputLabel
+            name='stop'
             label='Black List'
             placeholder='Black List'
             description='Permite que você especifique uma string para indicar ao modelo quando parar a geração da resposta, separe as palavras com uma “,”.'
@@ -107,6 +133,7 @@ export default function AiConfig() {
             }}
           />
           <ImputLabel
+            name='presence_penalty'
             label='Presença'
             placeholder='Presença'
             description='Reduz a probabilidade de o modelo incluir palavras específicas na resposta.'
@@ -117,6 +144,7 @@ export default function AiConfig() {
             }}
           />
           <ImputLabel
+            name='frequency_penalty'
             label='Frequencia'
             placeholder='Frequencia'
             description='Aumenta ou diminui a frequência de uso de palavras.'
@@ -125,6 +153,7 @@ export default function AiConfig() {
               console.log(e.target.value);
             }}
           />
+          <div></div>
           <div></div>
           <Button
             className='w-full bg-primary-500 hover:bg-secondary-500'
@@ -140,50 +169,3 @@ export default function AiConfig() {
   );
 }
 
-type InputLabelProps = {
-  label: string
-  value: string
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
-  placeholder?: string
-  type?: string
-  description?: string
-}
-export function ImputLabel({
-  label,
-  value,
-  onChange,
-  placeholder,
-  type,
-  description
-}: InputLabelProps) {
-  return (
-    <div className='flex flex-col gap-2'>
-      <label className='font-bold text-neutrals-500' >{label}</label>
-      <Input value={value} type={type} placeholder={placeholder} onChange={(e) => onChange(e)} />
-      <Text>{description}</Text>
-    </div>
-  );
-}
-
-type TextAreaLabelProps = {
-  label: string
-  value: string
-  onChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void
-  placeholder?: string
-  description?: string
-}
-export function TextAreaLabel({
-  label,
-  value,
-  onChange,
-  placeholder,
-  description
-}: TextAreaLabelProps) {
-  return (
-    <div className='flex flex-col gap-2'>
-      <label className='font-bold' >{label}</label>
-      <Textarea className='h-[200px]' value={value} placeholder={placeholder} onChange={(e) => onChange(e)} />
-      <Text>{description}</Text>
-    </div>
-  );
-}

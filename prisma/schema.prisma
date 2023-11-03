@@ -13,6 +13,7 @@ model User {
   email        String    @unique
   auth_session Session[]
   key          Key[]
+  ai_config    AIConfig[]
 }
 
 model Session {
@@ -32,4 +33,23 @@ model Key {
   user            User    @relation(references: [id], fields: [user_id], onDelete: Cascade)
 
   @@index([user_id])
+}
+
+// bando AI config 
+
+model AIConfig {
+  id String @id @unique
+  user_id String
+  user User @relation(references: [id], fields: [user_id], onDelete: Cascade)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  name String
+  sistema String
+  max_tokens Int
+  model String
+  temperature Int
+  stop String
+  top_p Int
+  frequency_penalty Int
+  presence_penalty Int
 }
