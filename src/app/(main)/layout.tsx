@@ -1,4 +1,6 @@
 import { auth } from "@/auth/lucia";
+import { SidNav } from "@/components/Nav/sidNav";
+import TopNav from "@/components/Nav/topNav";
 import { isRedirectError } from "@/lib/utils";
 import { LuciaError } from "lucia";
 import { cookies } from "next/headers";
@@ -24,7 +26,14 @@ export default async function UserRootLayout({
       cookieStore.set("auth_session", sessionCookie.value);
     }
 
-    return <div>{children}</div>;
+    return <div>
+      <SidNav>
+        <TopNav />
+        <div className="flex flex-col h-[calc(100vh-100px)] pt-[100px]">
+          {children}
+        </div>
+      </SidNav>
+    </div>;
   } catch (e) {
     if (isRedirectError(e)) throw e;
     if (e instanceof LuciaError && e.message === `AUTH_INVALID_SESSION_ID`) {

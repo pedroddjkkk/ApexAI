@@ -20,6 +20,12 @@ module.exports = {
     },
     extend: {
       colors: {
+        "primary-500": "#10B0BC",
+        "secondary-500": "#00778F",
+        "success-500": "#16A34A",
+        "warning-500": "#EBC248",
+        "danger-500": "#BE123C",
+        "neutrals-500": "#374957",
         tremor: {
           brand: {
             faint: "#eff6ff", // blue-50
