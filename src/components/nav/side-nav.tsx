@@ -1,6 +1,6 @@
-import NavList from "./navList";
+import NavList from "./nav-list";
 
-export function SidNav({ children }: { children: React.ReactNode }) {
+export function SideNav({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex flex-row left-0 w-full relative justify-end">
 

@@ -81,7 +81,7 @@ export default NavList;
 function Item({ item }: { item: Item }) {
 
   return (
-    <ListItem className='flex flex-col'>
+    <ul className='flex flex-col'>
       <ListItem className="flex flex-row items-center justify-start font-bold">
         {item.icon}
         <span className="ml-2 text-xl">{item.title}</span>
@@ -103,6 +103,6 @@ function Item({ item }: { item: Item }) {
           ))}
         </div>
       )}
-    </ListItem>
+    </ul>
   )
 } 
