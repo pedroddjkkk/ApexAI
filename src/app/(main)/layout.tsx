@@ -1,6 +1,6 @@
 import { auth } from "@/auth/lucia";
-import { SidNav } from "@/components/Nav/sidNav";
-import TopNav from "@/components/Nav/topNav";
+import { SideNav } from "@/components/nav/side-nav";
+import TopNav from "@/components/nav/top-nav";
 import { isRedirectError } from "@/lib/utils";
 import { LuciaError } from "lucia";
 import { cookies } from "next/headers";
@@ -26,14 +26,16 @@ export default async function UserRootLayout({
       cookieStore.set("auth_session", sessionCookie.value);
     }
 
-    return <div>
-      <SidNav>
-        <TopNav />
-        <div className="flex flex-col h-[calc(100vh-100px)] pt-[100px]">
-          {children}
-        </div>
-      </SidNav>
-    </div>;
+    return (
+      <div>
+        <SideNav>
+          <TopNav />
+          <div className="flex flex-col h-[calc(100vh-100px)] pt-[100px]">
+            {children}
+          </div>
+        </SideNav>
+      </div>
+    );
   } catch (e) {
     if (isRedirectError(e)) throw e;
     if (e instanceof LuciaError && e.message === `AUTH_INVALID_SESSION_ID`) {
