@@ -15,7 +15,7 @@ export function InputLabel({
   value
 }: InputLabelProps) {
   return (
-    <div className='flex flex-col gap-2'>
+    <div className='flex flex-col gap-2 w-full'>
       <div className='flex flex-row justify-between gap-2'>
         <label className='font-bold text-neutrals-500' >{label}</label>
         {value && <Text>{value}</Text>}

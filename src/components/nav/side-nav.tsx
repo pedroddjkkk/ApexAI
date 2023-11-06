@@ -1,10 +1,34 @@
+"use client";
+import React from "react";
 import NavList from "./nav-list";
+import TopNav from "./top-nav";
+import { cva, type VariantProps } from "class-variance-authority"
+
+import { cn } from "@/lib/utils"
 
 export function SideNav({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="flex flex-row left-0 w-full relative justify-end">
 
-      <div className="w-[280px] fixed left-0 ">
+  const [open, setOpen] = React.useState<"close" | "open" | null | undefined>("close");
+
+  const openVariant = cva(
+    "w-[280px] fixed lg:left-0 left-[-280px] transition-all duration-200 bg-white z-50",
+    {
+      variants: {
+        variant: {
+          open: "left-0",
+          close:
+            "left-[-280px]",
+        },
+      },
+      defaultVariants: {
+        variant: "close",
+      },
+    }
+  )
+
+  return (
+    <div className="flex flex-row left-0 w-full relative justify-end ">
+      <div className={cn(openVariant({ variant: open }))}>
         <div className="h-[100px]" style={{
           backgroundImage: "url('https://cdn.discordapp.com/attachments/1048010244795678771/1169737777072590969/AIPEX_LOGO_light.png?ex=65567e32&is=65440932&hm=c5661bf76a5eefe78815e6821382ada234a600cf63469015c12599c68a586890&')",
           backgroundSize: "contain",
@@ -18,8 +42,21 @@ export function SideNav({ children }: { children: React.ReactNode }) {
           <NavList />
         </div>
       </div>
-      <div className="flex flex-col w-[calc(100vw-280px)]">
-        {children}
+      <div className="flex flex-col lg:w-[calc(100vw-280px)] w-full transition-all duration-200">
+        <TopNav onMenu={() => {
+          if (open === "close") {
+            setOpen("open")
+          } else {
+            setOpen("close")
+          }
+        }} menu={open} />
+        <div onClick={() => {
+          if (open === "open") {
+            setOpen("close")
+          }
+        }}>
+          {children}
+        </div>
       </div>
     </div>
   );

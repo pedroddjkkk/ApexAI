@@ -133,7 +133,7 @@ export default function AiConfig() {
               },
             ]} onSelect={(value) => {
               setValue("model", value);
-            }} />
+            }} placeholder='Modelo' />
             {/* errors will return when field validation fails  */}
             {errors.model && <span className='text-danger-500'>{errors.model.message}</span>}
           </InputLabel>

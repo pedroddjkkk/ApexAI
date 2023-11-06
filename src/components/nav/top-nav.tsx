@@ -1,19 +1,28 @@
-import { Search } from 'lucide-react';
-import React from 'react';
+"use client";
+import { Menu, Search } from 'lucide-react';
+import React, { use } from 'react';
 
 // import { Container } from './styles';
 
-const TopNav: React.FC = () => {
+interface PropTypes {
+  onMenu: () => void;
+  menu: string | null | undefined;
+}
+
+export default function TopNav({ onMenu, menu }: PropTypes) {
   return (
     <>
-      <div className='h-[100px] t-0 flex flex-row right-0 items-center justify-between px-8 fixed w-[calc(100vw-280px)] backdrop-blur-sm '></div>
-      <div className='h-[100px] t-0 flex flex-row right-0 items-center justify-between px-8 fixed w-[calc(100vw-280px)]'>
-        <Search size={28} />
+      <div className='h-[100px] t-0 flex flex-row right-0 items-center justify-between px-8 fixed w-full lg:w-[calc(100vw-280px)] backdrop-blur-sm '></div>
+      <div className='h-[100px] t-0 flex flex-row right-0 items-center justify-between px-8 fixed w-full lg:w-[calc(100vw-280px)]'>
+        <div className='flex flex-row items-center gap-x-8'>
+          <div className='lg:hidden'>
+            <Menu size={28} onClick={() => onMenu()} />
+          </div>
+          <Search size={28} />
+        </div>
         <div className='rounded-full w-[50px] h-[50px] bg-zinc-100 border-primary-500 border-2'>
         </div>
       </div>
     </>
   );
 }
-
-export default TopNav;
