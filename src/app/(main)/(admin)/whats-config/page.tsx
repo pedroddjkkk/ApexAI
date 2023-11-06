@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 // components
 import { InputLabel } from '@/components/inputs/imput-label';
@@ -29,6 +29,18 @@ type Inputs = {
 
 export default function AiConfig() {
 
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      const ret = await axios.get('/api/qrcode').then((res) => {
+        console.log(res);
+      }) as any;
+      if (ret) {
+        clearInterval(interval);
+      }
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
   const {
     register,
     handleSubmit,
@@ -50,7 +62,7 @@ export default function AiConfig() {
   })
 
   const onSubmit = async (data: Inputs) => {
-    const ret = await axios.post('/api/ai-config', data);
+    const ret = await axios.post('/api/whats-config', data);
     console.log(ret);
   };
 
@@ -88,9 +100,9 @@ export default function AiConfig() {
           </div>
         </div>
         <div className='
-        grid md:grid-cols-2 sm:grid-cols-1
+        grid md:grid-cols-2 grid-cols-1
         lg:gap-x-16 xl:gap-x-32 md:gap-x-8
-        gap-y-8 justify-end'>
+        gap-y-8 '>
           <div />
           <Button
             type='submit'

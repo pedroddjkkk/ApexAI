@@ -25,6 +25,21 @@ export function SideNav({ children }: { children: React.ReactNode }) {
       },
     }
   )
+  const openVariantBlur = cva(
+    "transition-all duration-200",
+    {
+      variants: {
+        variant: {
+          open: "blur-sm lg:blur-0",
+          close:
+            "",
+        },
+      },
+      defaultVariants: {
+        variant: "close",
+      },
+    }
+  )
 
   return (
     <div className="flex flex-row left-0 w-full relative justify-end ">
@@ -50,7 +65,7 @@ export function SideNav({ children }: { children: React.ReactNode }) {
             setOpen("close")
           }
         }} menu={open} />
-        <div onClick={() => {
+        <div className={cn(openVariantBlur({ variant: open }))} onClick={() => {
           if (open === "open") {
             setOpen("close")
           }

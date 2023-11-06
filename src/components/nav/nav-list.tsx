@@ -19,7 +19,7 @@ export const items = [
       },
       {
         title: 'Perfis',
-        path: '/confi/perfis',
+        path: '/profiles',
         icon: (
           <Lock />
         )

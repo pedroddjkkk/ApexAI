@@ -15,6 +15,7 @@ model User {
   key          Key[]
   ai_config    AIConfig[]
   bot_config   BotWhatsappConfig[]
+  Empresa      Company[]
 }
 
 model Session {
@@ -63,4 +64,35 @@ model BotWhatsappConfig {
   updated_at DateTime @updatedAt
   user_id    String
   name       String
+}
+
+// banco Empresa 
+model Company {
+  id                 String     @id @default(uuid())
+  user               User       @relation(references: [id], fields: [user_id], onDelete: Cascade)
+  created_at         DateTime   @default(now())
+  updated_at         DateTime   @updatedAt
+  user_id            String
+  name               String
+  razao_social       String
+  cnpj               String
+  inscricao_estadual String
+  area_atividade     String
+  categoria_empresa  String
+  descricao          String
+  endereco           Endereco[]
+}
+
+// banco Endereco
+model Endereco {
+  id         String   @id @default(uuid())
+  empresa    Company  @relation(references: [id], fields: [empresa_id], onDelete: Cascade)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  empresa_id String
+  cep        String
+  cidade     String
+  estado     String
+  rua        String
+  numero     String
 }
