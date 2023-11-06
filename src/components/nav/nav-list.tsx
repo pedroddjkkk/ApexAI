@@ -1,5 +1,5 @@
 import { List, ListItem, Badge } from '@tremor/react';
-import { Computer, Cpu, Home, Lock, Rocket, Settings, Settings2, ShieldAlert } from 'lucide-react';
+import { Bot, Cpu, Home, Lock, Rocket, Settings, Settings2, ShieldAlert } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';
 
@@ -30,6 +30,14 @@ export const items = [
         new: true,
         icon: (
           <Cpu />
+        )
+      },
+      {
+        title: 'Bot Configs',
+        path: '/bot-config',
+        new: true,
+        icon: (
+          <Bot />
         )
       },
     ]

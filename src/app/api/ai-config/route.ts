@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
     
   const body = await request.json();
 
-  body.user_id = "3nltbejhgsk29sf";
+  body.user_id = "mgd3vwxl25zzlpq";
 
   console.log(body);
 

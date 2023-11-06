@@ -1,23 +1,17 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 // components
 import { InputLabel } from '@/components/inputs/imput-label';
 import { Button } from '@/components/ui/button';
 import SwitchLabel from '@/components/inputs/switch-label';
 import { Input } from '@/components/ui/input';
-import { Slider } from '@/components/ui/slider';
-import { Textarea } from '@/components/ui/textarea';
-import { Combobox } from '@/components/ui/combobox';
 
 // hook form
 import { useForm } from 'react-hook-form';
-import { createAiConfigSchema } from '@/lib/schema/ai-config';
-
-// zod
 import { zodResolver } from '@hookform/resolvers/zod';
-
-// axios
+import { createAiConfigSchema } from '@/lib/schema/ai-config';
+import { Textarea } from '@/components/ui/textarea';
 import axios from 'axios';
 
 // types
@@ -39,22 +33,21 @@ export default function AiConfig() {
     register,
     handleSubmit,
     watch,
-    setValue,
     formState: { errors },
   } = useForm<Inputs>({
     resolver: zodResolver(createAiConfigSchema),
     defaultValues: {
       name: '',
       sistema: '',
-      max_tokens: 2048,
+      max_tokens: 0,
       model: '',
-      temperature: 1,
+      temperature: 0,
       stop: '',
-      top_p: 0.5,
-      frequency_penalty: 1,
-      presence_penalty: 1,
+      top_p: 0,
+      frequency_penalty: 0,
+      presence_penalty: 0,
     }
-  });
+  })
 
   const onSubmit = async (data: Inputs) => {
     const ret = await axios.post('/api/ai-config', data);
@@ -110,65 +103,32 @@ export default function AiConfig() {
             label='Modelo'
             description='Escolha o modelo de AI que deseja usar, este parametro reflete no preço por tokens'
           >
-            <Combobox options={[
-              {
-                value: 'gpt-3',
-                label: 'GPT-3',
-              },
-              {
-                value: 'davinci',
-                label: 'Davinci',
-              },
-              {
-                value: 'curie',
-                label: 'Curie',
-              },
-              {
-                value: 'babbage',
-                label: 'Babbage',
-              },
-              {
-                value: 'ada',
-                label: 'Ada',
-              },
-            ]} onSelect={(value) => {
-              setValue("model", value);
-            }} />
+            <Input {...register("model", { required: true })} />
             {/* errors will return when field validation fails  */}
             {errors.model && <span className='text-danger-500'>{errors.model.message}</span>}
           </InputLabel>
           <InputLabel
             label='Max Tokens Atendimento'
             description='Limite de tamanho da resposta para o cliente. '
-            value={watch("max_tokens")}
           >
-            <Slider max={4096 as any} min={1 as any} step={1}
-              defaultValue={[watch("max_tokens")]}
-              onValueChange={(e) => setValue("max_tokens", e[0])} />
+            <Input {...register("max_tokens", { required: true, valueAsNumber: true })} type='number'
+            />
             {/* errors will return when field validation fails  */}
             {errors.max_tokens && <span className='text-danger-500'>{errors.max_tokens.message}</span>}
           </InputLabel>
           <InputLabel
             label='Temperatura AI'
             description=' Controla a aleatoriedade das respostas geradas.'
-            value={watch("temperature")}
           >
-            <Slider max={2 as any} min={0 as any} step={0.01}
-              defaultValue={[watch("temperature")]}
-              onValueChange={(e) => setValue("temperature", e[0])}
-            />
+            <Input {...register("temperature", { required: true, valueAsNumber: true })} type='number' />
             {/* errors will return when field validation fails  */}
             {errors.temperature && <span className='text-danger-500'>{errors.temperature.message}</span>}
           </InputLabel>
           <InputLabel
             label='Qualidade'
             description='Isso permite que você gere respostas de alta qualidade, eliminando tokens menos relevantes.'
-            value={watch("top_p")}
           >
-            <Slider max={1 as any} min={0 as any} step={0.01}
-              defaultValue={[watch("top_p")]}
-              onValueChange={(e) => setValue("top_p", e[0])}
-            />
+            <Input {...register("top_p", { required: true, valueAsNumber: true })} type='number' />
             {/* errors will return when field validation fails  */}
             {errors.top_p && <span className='text-danger-500'>{errors.top_p.message}</span>}
           </InputLabel>
@@ -183,24 +143,16 @@ export default function AiConfig() {
           <InputLabel
             label='Presença'
             description='Reduz a probabilidade de o modelo incluir palavras específicas na resposta.'
-            value={watch("presence_penalty")}
           >
-            <Slider max={2 as any} min={0 as any} step={0.01}
-              defaultValue={[watch("presence_penalty")]}
-              onValueChange={(e) => setValue("presence_penalty", e[0])}
-            />
+            <Input {...register("presence_penalty", { required: true, valueAsNumber: true })} type='number' />
             {/* errors will return when field validation fails  */}
             {errors.presence_penalty && <span className='text-danger-500'>{errors.presence_penalty.message}</span>}
           </InputLabel>
           <InputLabel
             label='Frequencia'
             description='Aumenta ou diminui a frequência de uso de palavras.'
-            value={watch("frequency_penalty")}
           >
-            <Slider max={2 as any} min={0 as any} step={0.01}
-              defaultValue={[watch("frequency_penalty")]}
-              onValueChange={(e) => setValue("frequency_penalty", e[0])}
-            />
+            <Input {...register("frequency_penalty", { required: true, valueAsNumber: true })} type='number' />
             {/* errors will return when field validation fails  */}
             {errors.frequency_penalty && <span className='text-danger-500'>{errors.frequency_penalty.message}</span>}
           </InputLabel>

@@ -47,9 +47,9 @@ model AIConfig {
   sistema           String
   max_tokens        Int
   model             String
-  temperature       Int
+  temperature       Float
   stop              String
-  top_p             Int
-  frequency_penalty Int
-  presence_penalty  Int
+  top_p             Float
+  frequency_penalty Float
+  presence_penalty  Float
 }

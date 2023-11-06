@@ -16,7 +16,7 @@ export default function CompanyConfig() {
         <div className='
         grid md:grid-cols-2 sm:grid-cols-1
         lg:gap-x-16 xl:gap-x-32 md:gap-x-8'>
-          <ImputLabel
+          <InputLabel
             label='Nome da Empresa'
             placeholder='Nome'
             value=''
@@ -24,7 +24,7 @@ export default function CompanyConfig() {
               console.log(e.target.value);
             }}
           />
-          <ImputLabel
+          <InputLabel
             label='Razao Social'
             placeholder='Razao social'
             value=''
@@ -32,7 +32,7 @@ export default function CompanyConfig() {
               console.log(e.target.value);
             }}
           />
-          <ImputLabel
+          <InputLabel
             label='CNPJ'
             placeholder='CNPJ'
             value=''
@@ -40,7 +40,7 @@ export default function CompanyConfig() {
               console.log(e.target.value);
             }}
           />
-          <ImputLabel
+          <InputLabel
             label='Inscrição Estadual'
             placeholder='Inscrição estadual'
             type='number'
@@ -49,7 +49,7 @@ export default function CompanyConfig() {
               console.log(e.target.value);
             }}
           />
-          <ImputLabel
+          <InputLabel
             label='Area de Atividade'
             placeholder='Area de atividade'
             value=''
@@ -57,7 +57,7 @@ export default function CompanyConfig() {
               console.log(e.target.value);
             }}
           />
-          <ImputLabel
+          <InputLabel
             label='Categoria da Empresa'
             placeholder='Categoria da empresa'
             value=''
@@ -80,7 +80,7 @@ export default function CompanyConfig() {
         grid md:grid-cols-2 sm:grid-cols-1
         lg:gap-x-16 xl:gap-x-32 md:gap-x-8
         gap-y-8'>
-          <ImputLabel
+          <InputLabel
             label='CEP'
             placeholder='CEP'
             value=''
@@ -89,7 +89,7 @@ export default function CompanyConfig() {
               console.log(e.target.value);
             }}
           />
-          <ImputLabel
+          <InputLabel
             label='Estado'
             placeholder='Estado'
             value=''
@@ -97,7 +97,7 @@ export default function CompanyConfig() {
               console.log(e.target.value);
             }}
           />
-          <ImputLabel
+          <InputLabel
             label='Endereço'
             placeholder='Endereço'
             value=''
@@ -106,7 +106,7 @@ export default function CompanyConfig() {
               console.log(e.target.value);
             }}
           />
-          <ImputLabel
+          <InputLabel
             label='Cidade'
             placeholder='Cidade'
             value=''
@@ -138,7 +138,7 @@ type InputLabelProps = {
   type?: string
   description?: string
 }
-export function ImputLabel({
+export function InputLabel({
   label,
   value,
   onChange,
