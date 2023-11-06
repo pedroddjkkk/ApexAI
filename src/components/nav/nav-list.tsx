@@ -33,8 +33,8 @@ export const items = [
         )
       },
       {
-        title: 'Bot Configs',
-        path: '/bot-config',
+        title: 'Whatsapp Configs',
+        path: '/whats-config',
         new: true,
         icon: (
           <Bot />

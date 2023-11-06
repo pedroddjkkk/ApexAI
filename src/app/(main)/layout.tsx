@@ -1,6 +1,5 @@
 import { auth } from "@/auth/lucia";
 import { SideNav } from "@/components/nav/side-nav";
-import TopNav from "@/components/nav/top-nav";
 import { isRedirectError } from "@/lib/utils";
 import { LuciaError } from "lucia";
 import { cookies } from "next/headers";
@@ -29,7 +28,6 @@ export default async function UserRootLayout({
     return (
       <div>
         <SideNav>
-          <TopNav />
           <div className="flex flex-col h-[calc(100vh-100px)] pt-[100px]">
             {children}
           </div>

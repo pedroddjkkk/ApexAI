@@ -47,11 +47,13 @@ type PropTypes = {
     label: string
   }[],
   onSelect: (value: string) => void
+  placeholder?: string
 }
 
 export function Combobox({
   options,
   onSelect,
+  placeholder
 }: PropTypes) {
   const [open, setOpen] = React.useState(false)
   const [value, setValue] = React.useState("")
@@ -67,13 +69,13 @@ export function Combobox({
         >
           {value
             ? options.find((framework) => framework.value === value)?.label
-            : "Select framework..."}
+            : placeholder || "Select..."}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
         <Command>
-          <CommandInput placeholder="Search framework..." />
+          <CommandInput placeholder={placeholder || "Select..."} />
           <CommandEmpty>Não encontrado.</CommandEmpty>
           <CommandGroup>
             {options.map((framework) => (
