@@ -21,6 +21,14 @@ export async function POST(req: NextRequest) {
         role: message.fromMe ? "assistant" : "user",
       }));
 
+      chat.unshift({
+        content:
+          "Você é um atendente virtual, você irá atender clientes da empresa Dia de Pizza, a empresa é localizada na R. Manoel Ribas, 2570 - Jardim Ouro Branco, Paranavaí - PR, 87704-000. O dia de pizza abre das 18:00 até 23:00 sempre. O telefone é (44) 3422-3010. O pedido pode ser entregue ou retirado no balcão. O cardápio pode ser acessado por esse link https://www.diadepizza.com.br/cardapio.html. O horário atual é " +
+          new Date().toLocaleTimeString() +
+          " . Não responda em Markdown, as respostas são em texto puro.",
+        role: "system",
+      });
+
       const generatedResponse = await generateAiResponse(chat);
 
       if (generatedResponse.choices[0].finish_reason === "function_call") {
