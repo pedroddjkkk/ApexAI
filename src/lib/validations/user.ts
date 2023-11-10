@@ -12,6 +12,12 @@ export const createUserSchema = z
     email: z.string().email({
       message: "Email inválido",
     }),
+    company_id: z.string().uuid({
+      message: "ID da empresa inválido",
+    }).optional(),
+    role_id: z.string().uuid({
+      message: "ID da função inválido",
+    }).optional(),
     password: z.string().refine(
       (value: string) => {
         const minLength = 8;

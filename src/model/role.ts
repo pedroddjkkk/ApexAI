@@ -29,3 +29,11 @@ export function createRole(data: PropsCreate): Promise<Role> {
     }
   });
 }
+
+export function getRoles(): Promise<Role[]> {
+  return prisma.role.findMany({
+    include: {
+      views: true
+    }
+  });
+}

@@ -14,46 +14,69 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 // axios
 import axios from 'axios';
-import { Company } from '@prisma/client';
+import { Company, Views } from '@prisma/client';
+import { InputLabel } from '@/components/inputs/imput-label';
+import { Input } from '@/components/ui/input';
+import { createUser } from '@/lib/schema/createUser';
+import { InputPassword } from '@/components/ui/inputPassword';
 
 // types
 type Inputs = {
   name: string;
-  sistema: string;
-  max_tokens: number;
-  model: string;
-  temperature: number;
-  stop: string;
-  top_p: number;
-  frequency_penalty: number;
-  presence_penalty: number;
+  company_id: string;
+  password: string;
+  confirmPassword: string;
+  role_id: string;
+  username: string;
+  email: string;
 };
 
 type Props = {
   empresas: Company[];
+  roles: {
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    name: string;
+    views: Views[];
+  }[];
 };
 
-export default function ProfilesView({ empresas }: Props) {
+export default function ProfilesView({ empresas, roles }: Props) {
 
   const {
     register,
     handleSubmit,
-    watch,
+    reset,
     setValue,
+    setError,
     formState: { errors },
   } = useForm<Inputs>({
-    resolver: zodResolver(createAiConfigSchema),
+    resolver: zodResolver(createUser),
     defaultValues: {
-
+      company_id: '',
+      password: '',
+      confirmPassword: '',
+      role_id: '',
+      username: '',
+      email: '',
     }
   });
 
   const onSubmit = async (data: Inputs) => {
-    const ret = await axios.post('/api/ai-config', data);
-    console.log(ret);
+    const ret = await axios.post('/api/auth/signupInterno', data);
+    if (ret.data.field) {
+      const field = ret.data.field as "company_id" | "role_id" | "username" | "email" | "password" | "confirmPassword" | "name" | "root";
+      setError(`${field}`, {
+        type: 'manual',
+        message: `${ret.data.message}`,
+      });
+      return;
+    }
+    if (ret.data.user) {
+      reset();
+    }
   };
-
-  const [advanced, setAdvanced] = useState(false);
 
   return (
     <main>
@@ -65,7 +88,10 @@ export default function ProfilesView({ empresas }: Props) {
         <div className='
         grid md:grid-cols-2 sm:grid-cols-1
         lg:gap-x-16 xl:gap-x-32 md:gap-x-8'>
-          <div>
+          <InputLabel
+            label='Empresa'
+            description='Selecione a empresa do usuario.'
+          >
             <Combobox
               placeholder='Empresa'
               options={empresas.map((empresa) => {
@@ -75,11 +101,63 @@ export default function ProfilesView({ empresas }: Props) {
                 };
               })}
               onSelect={(value) => {
-                console.log(value);
-
+                setValue('company_id', value);
               }}
             />
-          </div>
+            {/* errors will return when field validation fails  */}
+            {errors.company_id && <span className='text-danger-500'>{errors.company_id.message}</span>}
+          </InputLabel>
+          <InputLabel
+            label='Permição'
+            description='Selecione a permição do usuario.'
+          >
+            <Combobox
+              placeholder='Permição'
+              options={roles.map((empresa) => {
+                return {
+                  value: empresa.id,
+                  label: empresa.name,
+                };
+              })}
+              onSelect={(value) => {
+                setValue('role_id', value);
+              }}
+            />
+            {/* errors will return when field validation fails  */}
+            {errors.role_id && <span className='text-danger-500'>{errors.role_id.message}</span>}
+          </InputLabel>
+          <InputLabel
+            label='Nome Usuario'
+            description='Digite o nome de usuario.'
+          >
+            <Input {...register("username", { required: true })} />
+            {/* errors will return when field validation fails  */}
+            {errors.username && <span className='text-danger-500'>{errors.username.message}</span>}
+          </InputLabel>
+          <InputLabel
+            label='Email'
+            description='Digite o email do usuario.'
+          >
+            <Input {...register("email", { required: true })} />
+            {/* errors will return when field validation fails  */}
+            {errors.email && <span className='text-danger-500'>{errors.email.message}</span>}
+          </InputLabel>
+          <InputLabel
+            label='Senha'
+            description='Digite a senha do usuario.'
+          >
+            <InputPassword {...register("password", { required: true })} />
+            {/* errors will return when field validation fails  */}
+            {errors.password && <span className='text-danger-500'>{errors.password.message}</span>}
+          </InputLabel>
+          <InputLabel
+            label='Confirmar Senha'
+            description='Digite a senha do usuario novamente.'
+          >
+            <InputPassword {...register("confirmPassword", { required: true })} />
+            {/* errors will return when field validation fails  */}
+            {errors.confirmPassword && <span className='text-danger-500'>{errors.confirmPassword.message}</span>}
+          </InputLabel>
         </div>
         <div className='
         grid md:grid-cols-2 grid-cols-1
@@ -94,7 +172,7 @@ export default function ProfilesView({ empresas }: Props) {
           </Button>
         </div>
       </form>
-    </main>
+    </main >
   );
 }
 
