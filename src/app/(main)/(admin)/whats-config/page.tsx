@@ -12,7 +12,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { createAiConfigSchema } from '@/lib/schema/ai-config';
 import QRCode from 'react-qr-code';
 import axios from 'axios';
-import { Text } from '@tremor/react';
 
 // types
 type Inputs = {

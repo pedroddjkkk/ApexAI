@@ -1,3 +1,4 @@
+import { getServerSideSession } from "@/lib/session";
 import { createAiConfig } from "@/model/ai-config";
 import { NextResponse } from "next/server";
 
@@ -5,9 +6,9 @@ import { NextResponse } from "next/server";
     
   const body = await request.json();
 
-  body.user_id = "mgd3vwxl25zzlpq";
-
-  console.log(body);
+  const user = await getServerSideSession();
+  
+  body.user_id = user.user.userId;
 
   const ret = await createAiConfig(body)
 

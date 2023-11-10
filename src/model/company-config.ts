@@ -31,3 +31,11 @@ export function createCompanyConfig(data: PropsCreate): Promise<Company> {
     }
   });
 }
+
+export function getCompanysConfig(user_id: string): Promise<Company[]> {
+  return prisma.company.findMany({
+    where: {
+      user_id: user_id
+    }
+  })
+}

@@ -1,5 +1,5 @@
 import { List, ListItem, Badge } from '@tremor/react';
-import { Bot, Cpu, Home, Lock, Rocket, Settings, Settings2, ShieldAlert } from 'lucide-react';
+import { Bot, Cpu, Home, Lock, Rocket, Settings, Settings2, ShieldAlert, UserCog, UserCog2 } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';
 
@@ -15,6 +15,13 @@ export const items = [
         path: '/company-config',
         icon: (
           <Settings2 />
+        )
+      },
+      {
+        title: 'Permissão',
+        path: '/role',
+        icon: (
+          <UserCog />
         )
       },
       {

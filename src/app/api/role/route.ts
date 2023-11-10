@@ -1,6 +1,6 @@
 import { getServerSideSession } from "@/lib/session";
-import { createCompanyConfig } from "@/model/company-config";
 import { NextResponse } from "next/server";
+import { createRole } from "../../../model/role";
 
   export const POST = async (request: Request) => {
     
@@ -8,11 +8,13 @@ import { NextResponse } from "next/server";
 
   const user = await getServerSideSession();
 
-  body.user_id = user.user.userId;
+  if (!user) {
+    return NextResponse.redirect("/login");
+  }
+  
+  // body.user_id = user.user.userId;
 
-  console.log(body);
-
-  const ret = await createCompanyConfig(body)
+  const ret = await createRole(body)
 
   return NextResponse.json({ ret });
 }

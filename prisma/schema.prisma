@@ -9,13 +9,38 @@ datasource db {
 
 model User {
   id           String              @id @unique
+  company_id   String?             @unique
   username     String
   email        String              @unique
+  role         Role?               @relation(fields: [role_id], references: [id])
+  role_id      String?
   auth_session Session[]
   key          Key[]
   ai_config    AIConfig[]
   bot_config   BotWhatsappConfig[]
   Empresa      Company[]
+}
+
+model Role {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name      String
+  users     User[]
+  views     Views[]
+}
+
+model Views {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  role      Role     @relation(references: [id], fields: [role_id], onDelete: Cascade)
+  role_id   String
+  name      String
+  create    Boolean
+  edit      Boolean
+  delete    Boolean
+  view      Boolean
 }
 
 model Session {
@@ -73,7 +98,7 @@ model Company {
   created_at         DateTime   @default(now())
   updated_at         DateTime   @updatedAt
   user_id            String
-  name               String
+  name               String     @unique
   razao_social       String
   cnpj               String
   inscricao_estadual String

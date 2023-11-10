@@ -18,29 +18,6 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 
-const options = [
-  {
-    value: "next.js",
-    label: "Next.js",
-  },
-  {
-    value: "sveltekit",
-    label: "SvelteKit",
-  },
-  {
-    value: "nuxt.js",
-    label: "Nuxt.js",
-  },
-  {
-    value: "remix",
-    label: "Remix",
-  },
-  {
-    value: "astro",
-    label: "Astro",
-  },
-]
-
 type PropTypes = {
   options: {
     value: string
@@ -68,7 +45,7 @@ export function Combobox({
           className="w-full justify-between"
         >
           {value
-            ? options.find((framework) => framework.value === value)?.label
+            ? options.find((opition) => opition.value === value)?.label
             : placeholder || "Select..."}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
@@ -78,10 +55,10 @@ export function Combobox({
           <CommandInput placeholder={placeholder || "Select..."} />
           <CommandEmpty>Não encontrado.</CommandEmpty>
           <CommandGroup>
-            {options.map((framework) => (
+            {options.map((opition) => (
               <CommandItem
-                key={framework.value}
-                value={framework.value}
+                key={opition.value}
+                value={opition.value}
                 onSelect={(currentValue) => {
                   onSelect(currentValue)
                   setValue(currentValue === value ? "" : currentValue)
@@ -91,10 +68,10 @@ export function Combobox({
                 <Check
                   className={cn(
                     "mr-2 h-4 w-4",
-                    value === framework.value ? "opacity-100" : "opacity-0"
+                    value === opition.value ? "opacity-100" : "opacity-0"
                   )}
                 />
-                {framework.label}
+                {opition.label}
               </CommandItem>
             ))}
           </CommandGroup>
