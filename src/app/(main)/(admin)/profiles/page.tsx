@@ -4,7 +4,7 @@
 import { getServerSideSession } from "@/lib/session";
 import { getCompanysConfig } from "@/model/company-config";
 import { getRoles } from "@/model/role";
-import ProfilesView from "@/sections/profilesView";
+import ProfilesView from "@/sections/profiles-view";
 import { Views } from "@prisma/client";
 
 export const metadata = {

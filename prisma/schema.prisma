@@ -71,7 +71,7 @@ model AIConfig {
   updated_at        DateTime @updatedAt
   user_id           String
   name              String
-  sistema           String
+  sistema           String   @db.VarChar(3000)
   max_tokens        Int
   model             String
   temperature       Float

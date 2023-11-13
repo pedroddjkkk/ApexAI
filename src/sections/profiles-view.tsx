@@ -7,7 +7,6 @@ import { Combobox } from '@/components/ui/combobox';
 
 // hook form
 import { useForm } from 'react-hook-form';
-import { createAiConfigSchema } from '@/lib/schema/ai-config';
 
 // zod
 import { zodResolver } from '@hookform/resolvers/zod';

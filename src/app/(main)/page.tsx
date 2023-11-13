@@ -18,6 +18,7 @@ import {
   AreaChart,
 } from "@tremor/react";
 import TremorCardAtendimentos from "@/components/tremor-card-atendimentos";
+import AiConfigView from "@/sections/ai-config-view";
 
 const data = [
   {
@@ -77,19 +78,7 @@ export default function Home() {
             <TabsContent value="whatsapp" className="w-full h-full">
               <Card className="h-full w-full ">
                 <CardContent>
-                  <TremorCard>
-                    <Title>Performance</Title>
-                    <Text>Comparison between Sales and Profit</Text>
-                    <AreaChart
-                      className="mt-4 h-80"
-                      data={data}
-                      categories={["Sales", "Profit"]}
-                      index="Month"
-                      colors={["indigo", "fuchsia"]}
-                      yAxisWidth={60}
-                      valueFormatter={valueFormatter}
-                    />
-                  </TremorCard>
+                  <AiConfigView />
                 </CardContent>
               </Card>
             </TabsContent>

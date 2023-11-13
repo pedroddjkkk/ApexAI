@@ -22,7 +22,7 @@ export function TableCheckbox() {
     <Table className="w-full bg-slate-300">
       <TableHead className="w-full">
         <TableRow className='w-full'>
-          <TableCell className=''>
+          <TableCell className='w-full'>
             Telas
           </TableCell>
           <TableCell className='w-2/12'>
@@ -46,16 +46,16 @@ export function TableCheckbox() {
               <Title className='text-sm'>{view.name}</Title>
             </TableCell>
             <TableCell>
-              <Checkbox className='w-[25px] h-[25px] m-[20px]' />
+              <Checkbox className='w-[25px] h-[25px]' />
             </TableCell>
             <TableCell>
-              <Checkbox className='w-[25px] h-[25px] m-[20px]' />
+              <Checkbox className='w-[25px] h-[25px]' />
             </TableCell>
             <TableCell>
-              <Checkbox className='w-[25px] h-[25px] m-[20px]' />
+              <Checkbox className='w-[25px] h-[25px]' />
             </TableCell>
             <TableCell>
-              <Checkbox className='w-[25px] h-[25px] m-[20px]' />
+              <Checkbox className='w-[25px] h-[25px]' />
             </TableCell>
           </TableRow>))}
       </TableBody>

@@ -134,16 +134,20 @@ export default function RoleView({ }: Props) {
                       {view.name}
                     </TableCell>
                     <TableCell className='px-0'>
-                      <Checkbox className='w-[25px] h-[25px] mx-16' onCheckedChange={(e) => onCheckedChangeCheckbox(e, view, "create")} />
+                      <Checkbox className='w-[25px] h-[25px] mx-[calc(50%-25px)]'
+                        onCheckedChange={(e) => onCheckedChangeCheckbox(e, view, "create")} />
                     </TableCell>
                     <TableCell className='px-0'>
-                      <Checkbox className='w-[25px] h-[25px] mx-16' onCheckedChange={(e) => onCheckedChangeCheckbox(e, view, "edit")} />
+                      <Checkbox className='w-[25px] h-[25px] mx-[calc(50%-25px)]'
+                        onCheckedChange={(e) => onCheckedChangeCheckbox(e, view, "edit")} />
                     </TableCell>
                     <TableCell className='px-0'>
-                      <Checkbox className='w-[25px] h-[25px] mx-16' onCheckedChange={(e) => onCheckedChangeCheckbox(e, view, "delete")} />
+                      <Checkbox className='w-[25px] h-[25px] mx-[calc(50%-25px)]'
+                        onCheckedChange={(e) => onCheckedChangeCheckbox(e, view, "delete")} />
                     </TableCell>
                     <TableCell className='px-0'>
-                      <Checkbox className='w-[25px] h-[25px] mx-16' onCheckedChange={(e) => onCheckedChangeCheckbox(e, view, "view")} />
+                      <Checkbox className='w-[25px] h-[25px] mx-[calc(50%-25px)]'
+                        onCheckedChange={(e) => onCheckedChangeCheckbox(e, view, "view")} />
                     </TableCell>
                   </TableRow>))}
               </TableBody>

@@ -1,4 +1,4 @@
-import RoleView from "@/sections/roleView";
+import RoleView from "@/sections/role-view";
 
 export const metadata = {
   title: 'Perfis | AIpex',
