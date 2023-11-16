@@ -30,7 +30,7 @@ export const POST = async (request: Request) => {
       }
     );
   }
-
+ 
   try {
     
     const user = await auth.createUser({
@@ -48,15 +48,12 @@ export const POST = async (request: Request) => {
     });
     return NextResponse.json({ user });
   } catch (e) {
-    console.log("e", e);
     if (isRedirectError(e)) throw e;
     if (
       e instanceof Prisma.PrismaClientKnownRequestError &&
       e.code === "P2002"
     ) {
-      console.log("e", e);
       if (e.meta?.target === "PRIMARY") {
-        console.log("Primary", e);
         return NextResponse.json(
           {
             message: "Nome de usuário já está em uso",
@@ -64,7 +61,6 @@ export const POST = async (request: Request) => {
           }
         );
       } else if (e.meta?.target === "User_email_key") {
-        console.log("User_email_key", e);
         return NextResponse.json(
           {
             message: "Email já está em uso",

@@ -458,8 +458,6 @@ const Format = (data: Atendimento[] | undefined): any[] => {
 
     return result;
   }, []);
-
-  console.log(groupedAtendimentos);
   return groupedAtendimentos;
 }
 

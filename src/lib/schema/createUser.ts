@@ -1,6 +1,7 @@
 import z from "zod";
 
 export const createUser = z.object({
+  id: z.string(),
   company_id: z.string().uuid("ID da empresa inválido"),
   role_id: z.string().uuid("ID da função inválido"),
   username: z

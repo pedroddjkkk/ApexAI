@@ -77,9 +77,7 @@ export default function RoleView({ }: Props) {
   });
 
   const onSubmit = async (data: Inputs) => {
-    console.log(data);
     const ret = await axios.post('/api/role', data);
-    console.log(ret);
   };
 
   const onCheckedChangeCheckbox = (e: string | boolean, view: { name: string }, type: string) => {

@@ -19,3 +19,56 @@ export function createAiConfig(data: PropsCreate): Promise<AIConfig> {
     data
   });
 }
+
+export function getAiConfigs(id: string): Promise<AIConfig[] | null> {
+  return prisma.aIConfig.findMany({
+    where: {
+      user_id: id
+    }
+  });
+}
+
+export function getAiConfigsByCompanyId(company_id: string): Promise<AIConfig[] | null> {
+  return prisma.aIConfig.findMany({
+    where: {
+      user: {
+        company_id
+      }
+    }
+  });
+}
+
+
+
+export function getAiConfig(id: string): Promise<AIConfig | null> {
+  return prisma.aIConfig.findUnique({
+    where: {
+      id
+    }
+  });
+}
+
+export function deleteAiConfig(id: string): Promise<AIConfig | null> {
+  return prisma.aIConfig.delete({
+    where: {
+      id
+    }
+  });
+}
+
+export function updateAiConfig(id: string, data: PropsCreate): Promise<AIConfig | null> {
+  return prisma.aIConfig.update({
+    where: {
+      id
+    },
+    data
+  });
+}
+
+export function getAiConfigById( id: string ): Promise<AIConfig | null> {
+  return prisma.aIConfig.findUnique({
+    where: {
+      id
+    }
+  });
+}

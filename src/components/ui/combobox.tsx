@@ -23,17 +23,23 @@ type PropTypes = {
     value: string
     label: string
   }[],
-  onSelect: (value: string) => void
+  onSelect: (val: string) => void
   placeholder?: string
+  value?: string
 }
 
 export function Combobox({
   options,
   onSelect,
-  placeholder
+  placeholder,
+  value
 }: PropTypes) {
   const [open, setOpen] = React.useState(false)
-  const [value, setValue] = React.useState("")
+  const [val, setVal] = React.useState(value || "")
+
+  React.useEffect(() => {
+    setVal(value || "")
+  }, [value])
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -44,8 +50,8 @@ export function Combobox({
           aria-expanded={open}
           className="w-full justify-between"
         >
-          {value
-            ? options.find((opition) => opition.value === value)?.label
+          {val
+            ? options.find((opition) => opition.value === val)?.label
             : placeholder || "Select..."}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
@@ -59,16 +65,16 @@ export function Combobox({
               <CommandItem
                 key={opition.value}
                 value={opition.value}
-                onSelect={(currentValue) => {
-                  onSelect(currentValue)
-                  setValue(currentValue === value ? "" : currentValue)
+                onSelect={(currentVal) => {
+                  onSelect(currentVal)
+                  setVal(currentVal === val ? "" : currentVal)
                   setOpen(false)
                 }}
               >
                 <Check
                   className={cn(
                     "mr-2 h-4 w-4",
-                    value === opition.value ? "opacity-100" : "opacity-0"
+                    val === opition.value ? "opacity-100" : "opacity-0"
                   )}
                 />
                 {opition.label}

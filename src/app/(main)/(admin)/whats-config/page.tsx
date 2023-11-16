@@ -31,7 +31,6 @@ export default function AiConfig() {
   useEffect(() => {
     const interval = setInterval(async () => {
       const ret = await axios.get('/api/qrcode').then((res) => {
-        console.log(res);
       }) as any;
       if (ret) {
         clearInterval(interval);
@@ -62,7 +61,6 @@ export default function AiConfig() {
 
   const onSubmit = async (data: Inputs) => {
     const ret = await axios.post('/api/whats-config', data);
-    console.log(ret);
   };
 
   const [advanced, setAdvanced] = useState(false);

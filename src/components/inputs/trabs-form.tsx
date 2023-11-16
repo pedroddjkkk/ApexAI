@@ -64,7 +64,7 @@ export default function TabsForm({ onChange, value }: Props) {
               <Title>{quest.quest}</Title>
               <Textarea className="w-full h-[150px]" onChange={(e) => {
                 onChange(e.target.value, quest)
-              }} value={value?.find((item) => item.id === quest.id)?.response} />
+              }} value={value.find((item) => item.quest === quest.quest)?.response} />
               <div className="flex gap-2">
                 {index > 0 &&
                   <Button onClick={(e) => {
@@ -72,7 +72,9 @@ export default function TabsForm({ onChange, value }: Props) {
                     setActiveTab(quests[index - 1].id)
                   }}>Voltar</Button>}
                 {index < quests.length - 1 &&
-                  <Button onClick={(e) => setActiveTab(quests[index + 1].id)}>Próximo</Button>}
+                  <Button onClick={(e) => {
+                    setActiveTab(quests[index + 1].id)
+                  }}>Próximo</Button>}
               </div>
             </div>
           </TabsContent>

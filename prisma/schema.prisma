@@ -14,11 +14,11 @@ model User {
   role_id      String?
   email        String              @unique
   role         Role?               @relation(fields: [role_id], references: [id])
+  company      Company?            @relation(fields: [company_id], references: [id])
   auth_session Session[]
   key          Key[]
   ai_config    AIConfig[]
   bot_config   BotWhatsappConfig[]
-  Empresa      Company[]
 }
 
 model Role {
@@ -94,7 +94,6 @@ model BotWhatsappConfig {
 // banco Empresa 
 model Company {
   id                 String     @id @default(uuid())
-  user               User       @relation(references: [id], fields: [user_id], onDelete: Cascade)
   created_at         DateTime   @default(now())
   updated_at         DateTime   @updatedAt
   user_id            String
@@ -106,6 +105,7 @@ model Company {
   categoria_empresa  String
   descricao          String
   endereco           Endereco[]
+  User               User[]
 }
 
 // banco Endereco

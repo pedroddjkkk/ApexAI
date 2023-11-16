@@ -1,6 +1,7 @@
 import z from "zod";
 
 export const createAiConfigSchema = z.object({
+  id: z.string().optional(),
   name: z
     .string()
     .min(3, "Nome deve ter no mínimo 3 caracteres")

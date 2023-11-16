@@ -10,8 +10,6 @@ import { NextResponse } from "next/server";
 
   body.user_id = user.user.userId;
 
-  console.log(body);
-
   const ret = await createCompanyConfig(body)
 
   return NextResponse.json({ ret });
