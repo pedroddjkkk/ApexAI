@@ -19,6 +19,7 @@ model User {
   key          Key[]
   ai_config    AIConfig[]
   bot_config   BotWhatsappConfig[]
+  companys     Company[]           @relation(name: "UserCompany")
 }
 
 model Role {
@@ -104,8 +105,9 @@ model Company {
   area_atividade     String
   categoria_empresa  String
   descricao          String
+  user               User       @relation(name: "UserCompany", references: [id], fields: [user_id], onDelete: Cascade)
   endereco           Endereco[]
-  User               User[]
+  users              User[]
 }
 
 // banco Endereco

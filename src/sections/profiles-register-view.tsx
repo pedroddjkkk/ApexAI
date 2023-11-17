@@ -20,6 +20,7 @@ import { createUser } from '@/lib/schema/createUser';
 import { InputPassword } from '@/components/ui/inputPassword';
 import { Undo2 } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 // types
 type Inputs = {
@@ -45,6 +46,8 @@ type Props = {
 
 export default function ProfilesRegisterView({ empresas, roles }: Props) {
 
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
@@ -64,6 +67,10 @@ export default function ProfilesRegisterView({ empresas, roles }: Props) {
     }
   });
 
+  useEffect(() => {
+    console.log(errors);
+  }, [errors]);
+
   const onSubmit = async (data: Inputs) => {
     const ret = await axios.post('/api/auth/signupInterno', data);
     if (ret.data.field) {
@@ -74,8 +81,8 @@ export default function ProfilesRegisterView({ empresas, roles }: Props) {
       });
       return;
     }
-    if (ret.data.user) {
-      reset();
+    if (ret.status === 200) {
+      router.back();
     }
   };
 

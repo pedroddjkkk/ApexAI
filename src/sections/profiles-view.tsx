@@ -84,6 +84,8 @@ export default function ProfileView({ User }: Props) {
                         <div className='flex justify-between'>
                           <div className='flex flex-col text-neutral-500'>
                             <span><span className='text-neutral-950'>Email:</span> {user.email}</span>
+                            <span><span className='text-neutral-950'>Empresa:</span> {user.company?.name}</span>
+                            <span><span className='text-neutral-950'>Permissão:</span> {user.role?.name}</span>
                           </div>
                           <div className='gap-4 flex flex-col lg:flex-row mg:flex-row'>
                             <Link href={`/profiles/edit/${user.id}`}>

@@ -21,6 +21,7 @@ import axios from 'axios';
 import TabsForm from '@/components/inputs/trabs-form';
 import { Backpack, Plus, SendToBack, SkipBack, Undo2 } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 // types
 type Inputs = {
@@ -40,6 +41,8 @@ type Inputs = {
 };
 
 export default function AiConfigRegisterView() {
+
+  const router = useRouter();
 
   const {
     register,
@@ -72,7 +75,7 @@ export default function AiConfigRegisterView() {
       }).join('\n').trim(),
     });
     if (ret.status === 200) {
-      reset();
+      router.back();
     }
   };
 

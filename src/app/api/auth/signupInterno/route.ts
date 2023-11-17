@@ -10,6 +10,8 @@ export const POST = async (request: Request) => {
 
   const body = await request.json();
 
+  console.log(body);
+
   const validatedUserInput = createUserSchema.safeParse({
     username: body.username,
     password: body.password,
@@ -32,6 +34,9 @@ export const POST = async (request: Request) => {
   }
  
   try {
+
+    console.log(validatedUserInput.data);
+    
     
     const user = await auth.createUser({
       key: {

@@ -20,6 +20,7 @@ import { createUser } from '@/lib/schema/createUser';
 import { InputPassword } from '@/components/ui/inputPassword';
 import { Undo2 } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 // types
 type Inputs = {
@@ -46,6 +47,8 @@ type Props = {
 };
 
 export default function ProfilesEditView({ empresas, roles, user }: Props) {
+
+  const router = useRouter();
 
   const {
     register,
@@ -82,9 +85,8 @@ export default function ProfilesEditView({ empresas, roles, user }: Props) {
       console.log(ret.data.message);
       return;
     }
-    if (ret.data.user) {
-      console.log(ret.data.user);
-      reset();
+    if (ret.status === 200) {
+      router.back();
     }
   };
 

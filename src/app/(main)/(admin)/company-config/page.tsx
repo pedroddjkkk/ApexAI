@@ -1,15 +1,17 @@
 import { getServerSideSession } from "@/lib/session";
 import { getAiConfigsByCompanyId } from "@/model/ai-config";
-import AiConfigView from "@/sections/ai-config-view";
-import { AIConfig } from "@prisma/client";
+import { getCompanysConfig } from "@/model/company-config";
+import CompanyConfig from "@/sections/company-config-view";
+import { Endereco } from "@prisma/client";
+import { CompanyEndereco } from "@/model/company-config";
 
 export default async function page() {
 
   const user = await getServerSideSession();
 
-  const AiConfigs = await getAiConfigsByCompanyId(user.user.company_id) as AIConfig[];
+  const data = await getCompanysConfig() as CompanyEndereco[];
 
   return (
-    <AiConfigView AiConfigs={AiConfigs} />
+    <CompanyConfig Data={data} />
   )
 }

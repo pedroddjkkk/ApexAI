@@ -1,6 +1,7 @@
 import z from "zod";
 
 export const createCompanyConfigSchema = z.object({
+  id: z.string().optional(),
   name: z
     .string()
     .min(3, "Nome deve ter no mínimo 3 caracteres")
@@ -31,6 +32,7 @@ export const createCompanyConfigSchema = z.object({
     .max(255, "Descrição deve ter no máximo 255 caracteres"),
   endereco: z
     .object({
+      id: z.string().optional(),
       cep: z.string().min(8, "CEP deve ter no mínimo 8 caracteres").max(8, "CEP deve ter no máximo 8 caracteres"),
       cidade: z.string().min(3, "Cidade deve ter no mínimo 3 caracteres").max(255, "Cidade deve ter no máximo 255 caracteres"),
       estado: z.string().min(2, "Estado deve ter no mínimo 2 caracteres").max(2, "Estado deve ter no máximo 2 caracteres"),
