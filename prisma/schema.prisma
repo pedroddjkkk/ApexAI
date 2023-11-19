@@ -123,3 +123,11 @@ model Endereco {
   rua        String
   numero     String
 }
+
+model Conversation {
+  id         String   @id @default(uuid())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  thread_id  String   @unique
+  chat_id    String   @unique
+}
