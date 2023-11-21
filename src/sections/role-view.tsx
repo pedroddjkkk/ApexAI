@@ -90,7 +90,7 @@ export default function RoleView({ }: Props) {
   return (
     <main>
       <div className='px-8'>
-        <h1 className='font-bold text-3xl'>Cadastro de Permição</h1>
+        <h1 className='font-bold text-3xl'>Cadastro de Permissão</h1>
       </div>
       <form onSubmit={handleSubmit(onSubmit)}
         className='flex flex-col px-[calc(8px+1rem)] lg:px-28 xl:px-32 mt-4 gap-y-8 py-8 w-full'>

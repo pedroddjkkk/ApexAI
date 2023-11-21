@@ -126,11 +126,11 @@ export default function ProfilesRegisterView({ empresas, roles }: Props) {
             {errors.company_id && <span className='text-danger-500'>{errors.company_id.message}</span>}
           </InputLabel>
           <InputLabel
-            label='Permição'
-            description='Selecione a permição do usuario.'
+            label='Permissão'
+            description='Selecione a permissão do usuario.'
           >
             <Combobox
-              placeholder='Permição'
+              placeholder='Permissão'
               options={roles.map((empresa) => {
                 return {
                   value: empresa.id,
