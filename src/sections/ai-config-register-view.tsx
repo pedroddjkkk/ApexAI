@@ -88,7 +88,7 @@ export default function AiConfigRegisterView() {
       md:flex-row 
       flex-col 
       justify-between gap-4 text-center px-[calc(8px+1rem)] lg:px-28 xl:px-32'>
-        <h1 className='lg:text-4xl md:text-4xl font-bold text-2xl'>Configurações de IA</h1>
+        <h1 className='lg:text-4xl md:text-4xl font-bold text-2xl'>Cadastro de IA</h1>
         <Link href='/ai-config'>
           <Button className='bg-primary-500 hover:bg-secondary-500 text-white font-bold py-2 px-4 rounded-full items-center w-full'>
             <Undo2 size={24} />
