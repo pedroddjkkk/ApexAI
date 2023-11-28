@@ -15,12 +15,18 @@ export default function TopNav({ onMenu, menu }: PropTypes) {
       <div className='h-[100px] t-0 flex flex-row right-0 items-center justify-between px-8 fixed w-full lg:w-[calc(100vw-280px)] backdrop-blur-sm '></div>
       <div className='h-[100px] t-0 flex flex-row right-0 items-center justify-between px-8 fixed w-full lg:w-[calc(100vw-280px)]'>
         <div className='flex flex-row items-center gap-x-8'>
-          <div className='lg:hidden'>
+          <div className='lg:hidden drop-shadow-lg rounded-full w-[50px] h-[50px] bg-white flex items-center justify-center'>
             <Menu size={28} onClick={() => onMenu()} />
           </div>
-          <Search size={28} />
+          {/* box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.15);
+
+Ellipse 3
+Image · 1,880 x 1,253 */}
+          <div className='drop-shadow-lg rounded-full w-[50px] h-[50px] bg-white flex items-center justify-center'>
+            <Search size={25} />
+          </div>
         </div>
-        <div className='rounded-full w-[50px] h-[50px] bg-zinc-100 border-primary-500 border-2'>
+        <div className='rounded-full w-[50px] h-[50px] bg-white border-primary-500 border-2 drop-shadow-lg'>
         </div>
       </div>
     </>

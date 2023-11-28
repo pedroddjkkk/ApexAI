@@ -78,7 +78,7 @@ export default function Home() {
             <TabsContent value="whatsapp" className="w-full h-full">
               <Card className="h-full w-full ">
                 <CardContent>
-                  <AiConfigView />
+                  {/* <AiConfigView /> */}
                 </CardContent>
               </Card>
             </TabsContent>

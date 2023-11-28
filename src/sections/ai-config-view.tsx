@@ -15,6 +15,7 @@ import Link from 'next/link';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from '@/components/ui/command';
 import axios from 'axios';
 import { formatDate } from '@/lib/utils';
+import AccordionDataTable from '@/components/data-tables/acordion-data-table';
 
 type Props = {
   AiConfigs: AIConfig[];
@@ -61,59 +62,25 @@ export default function AiConfigView({ AiConfigs }: Props) {
         </Link>
       </div>
       <div className='border-2 border-gray-200 rounded-lg mt-4'>
-        <Accordion type="single" collapsible>
-          <Command>
-            <CommandInput placeholder={"Select..."} className='text-base' />
-            <CommandEmpty>Não encontrado.</CommandEmpty>
-            <CommandGroup className='p-0'>
-              {aiConfigs.map((AiConfig) => (
-                <CommandItem
-                  key={AiConfig.id}
-                  value={AiConfig.name}
-                  className='p-0 m-0'
-                >
-                  <AccordionItem
-                    className='w-full'
-                    value={AiConfig.id}
-                    key={AiConfig.id}>
-                    <AccordionTrigger className='px-4 text-xl'>
-                      {AiConfig.name}
-                    </AccordionTrigger>
-                    <AccordionContent className='px-4'>
-                      <div className='flex justify-between'>
-                        <div className='flex flex-col text-neutral-500'>
-                          <span><span className='text-neutral-950'>Criado em:</span>{formatDate(AiConfig.created_at)}</span>
-                          <span><span className='text-neutral-950'>Editado em:</span> {formatDate(AiConfig.updated_at)}</span>
-                          <span><span className='text-neutral-950'>Model:</span> {AiConfig.model}</span>
-                          <span><span className='text-neutral-950'>Max Tokens:</span> {AiConfig.max_tokens}</span>
-                          <span><span className='text-neutral-950'>Frequencia:</span> {AiConfig.frequency_penalty}</span>
-                          <span><span className='text-neutral-950'>Presença:</span> {AiConfig.presence_penalty}</span>
-                          <span><span className='text-neutral-950'>Temperatura:</span> {AiConfig.temperature}</span>
-                          <span><span className='text-neutral-950'>Qualidade:</span> {AiConfig.top_p}</span>
-                          <span><span className='text-neutral-950'>Black List:</span> {AiConfig.stop}</span>
-                        </div>
-                        <div className='gap-4 flex flex-col lg:flex-row mg:flex-row'>
-                          <Link href={`/ai-config/edit/${AiConfig.id}`}>
-                            <Button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full items-center flex gap-2'>
-                              <Edit size={24} />
-                              Editar
-                            </Button>
-                          </Link>
-                          <Button className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full items-center flex gap-2'
-                            onClick={() => handleDelete(AiConfig.id)}
-                          >
-                            <Delete size={24} />
-                            Excluir
-                          </Button>
-                        </div>
-                      </div>
-                    </AccordionContent>
-                  </AccordionItem>
-                </CommandItem>
-              ))}
-            </CommandGroup>
-          </Command>
-        </Accordion>
+        <AccordionDataTable route='/ai-config' data={aiConfigs.map((e) => {
+          return {
+            ...e,
+            created_at: formatDate(e.created_at),
+            updated_at: formatDate(e.updated_at),
+          }
+        })} handleDelete={handleDelete}
+          viewValue={[
+            { id: 'created_at', label: 'Criado em: ' },
+            { id: 'updated_at', label: 'Atualizado em: ' },
+            { id: 'model', label: 'Modelo: ' },
+            { id: 'max_tokens', label: 'Max Tokens: ' },
+            { id: 'frequency_penalty', label: 'Frequencia: ' },
+            { id: 'presence_penalty', label: 'Presença: ' },
+            { id: 'temperature', label: 'Temperatura: ' },
+            { id: 'top_p', label: 'Qualidade: ' },
+            { id: 'stop', label: 'Black List: ' },
+          ]}
+        />
       </div>
     </main >
   );

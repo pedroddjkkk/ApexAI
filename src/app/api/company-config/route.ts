@@ -20,7 +20,6 @@ import { NextResponse } from "next/server";
   if (body.action === "update") {
     delete body.action;
     const ret = await updateCompanyConfig(body.id, body);
-    console.log("ret", ret);
     return NextResponse.json({ ret });
   }
 
