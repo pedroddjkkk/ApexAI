@@ -18,4 +18,9 @@ export const createAiConfigSchema = z.object({
   top_p: z.number().optional(),
   frequency_penalty: z.number().optional(),
   presence_penalty: z.number().optional(),
+  faq: z.array(z.object({
+    id: z.string(),
+    quest: z.string(),
+    response: z.string(),
+  })),
 });
