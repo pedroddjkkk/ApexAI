@@ -6,7 +6,7 @@ export async function generateAiResponse(
 ) {
   const completition = await openai.chat.completions.create({
     messages,
-    model: "gpt-4",
+    model: "gpt-4-1106-preview",
     max_tokens: 150,
     functions: [
       {

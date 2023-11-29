@@ -82,7 +82,7 @@ export async function POST(req: NextRequest) {
     case "ready":
       await prisma.whatsappClient.update({
         data: {
-          active: true,
+          ready: true,
         },
         where: {
           id: body.clientId,
@@ -90,5 +90,16 @@ export async function POST(req: NextRequest) {
       });
 
       return NextResponse.json("Client ready");
+    case "disconnected":
+      await prisma.whatsappClient.update({
+        data: {
+          ready: false,
+        },
+        where: {
+          id: body.clientId,
+        },
+      });
+
+      return NextResponse.json("Client disconnected");
   }
 }

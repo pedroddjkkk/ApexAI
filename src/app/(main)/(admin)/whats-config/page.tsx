@@ -112,7 +112,7 @@ export default function AiConfig() {
           <div />
           <Button
             type="submit"
-            disabled={loading || !ready}
+            disabled={!ready}
             className="w-full bg-primary-500 hover:bg-secondary-500"
           >
             Cadastrar
