@@ -53,19 +53,23 @@ export async function POST(req: NextRequest) {
           const newResponse = await generateAiResponse(chat);
 
           await axios.post("http://localhost:8000/whatsapp/message", {
-            id: messages[0].id.remote,
+            conversationId: messages[0].id.remote,
             message: newResponse.choices[0].message.content,
+            clientId: body.clientId,
           });
         }
       } else {
         const res = await axios.post("http://localhost:8000/whatsapp/message", {
-          id: messages[0].id.remote,
+          conversationId: messages[0].id.remote,
           message: generatedResponse.choices[0].message.content,
+          clientId: body.clientId,
         });
       }
 
       return NextResponse.json("Message received", { status: 200 });
     case "qrcode":
-      
+      console.log(body);
+
+      return NextResponse.json("Qrcode received", { status: 200 });
   }
 }

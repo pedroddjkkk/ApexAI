@@ -123,3 +123,11 @@ model Endereco {
   rua        String
   numero     String
 }
+
+model WhatsappClient {
+  id         String   @id @default(uuid())
+  active     Boolean  @default(true)
+  qrCode     String?
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
