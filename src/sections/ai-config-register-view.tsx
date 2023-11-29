@@ -114,7 +114,7 @@ export default function AiConfigRegisterView() {
         </div>
         <div className='flex justify-center'>
           <InputLabel
-            label='Comfiguração AI'
+            label='Com figuração AI'
             description='Este será o contexto que a AI usara para interagir.'
           >
             <TabsForm onChange={(e, quest) => {
