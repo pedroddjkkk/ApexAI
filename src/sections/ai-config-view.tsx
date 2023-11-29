@@ -53,7 +53,7 @@ export default function AiConfigView({ AiConfigs }: Props) {
       md:flex-row 
       flex-col 
       justify-between gap-4 text-center '>
-        <h1 className='lg:text-4xl md:text-4xl font-bold text-2xl'>Configurações de IA</h1>
+        <h1 className='lg:text-4xl md:text-4xl font-bold text-2xl'>IAs</h1>
         <Link href='/ai-config/register'>
           <Button className='bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full items-center w-full'>
             <Plus size={24} />
@@ -61,7 +61,7 @@ export default function AiConfigView({ AiConfigs }: Props) {
           </Button>
         </Link>
       </div>
-      <div className='border-2 border-gray-200 rounded-lg mt-4'>
+      <div className='rounded-2xl mt-4 drop-shadow-lg'>
         <AccordionDataTable route='/ai-config' data={aiConfigs.map((e) => {
           return {
             ...e,

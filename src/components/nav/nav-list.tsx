@@ -1,14 +1,34 @@
 import { List, ListItem, Badge } from '@tremor/react';
-import { Bot, ChevronDown, ChevronUp, Cpu, Home, Lock, Plus, Rocket, Settings, Settings2, ShieldAlert, UserCog, UserCog2 } from 'lucide-react';
+import { FaWhatsapp } from "react-icons/fa";
+import { AiOutlineDashboard } from "react-icons/ai";
+import { BsCpu } from "react-icons/bs";
+import { TbPlus } from "react-icons/tb";
+import { FaChevronUp } from "react-icons/fa6";
+import { FaChevronDown } from "react-icons/fa6";
+
+
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
 export const items = [
   {
-    title: 'Admin',
+    // title: 'Dashboard',
+    children: [
+      {
+        title: 'Home',
+        path: '/',
+        icon: (
+          <AiOutlineDashboard />
+        )
+      },
+    ]
+
+  },
+  {
+    // title: 'Admin',
     icon: (
-      <ShieldAlert />
+      <></>
     ),
     children: [
       {
@@ -16,7 +36,7 @@ export const items = [
         path: '/ai-config',
         new: false,
         icon: (
-          <Cpu />
+          <BsCpu />
         ),
         children: [
           {
@@ -24,7 +44,15 @@ export const items = [
             path: '/ai-config/register',
             new: false,
             icon: (
-              <Plus />
+              <TbPlus />
+            )
+          },
+          {
+            title: 'Cadastro',
+            path: '/ai-config/register',
+            new: false,
+            icon: (
+              <TbPlus />
             )
           },
         ]
@@ -34,26 +62,10 @@ export const items = [
         path: '/whats-config',
         new: false,
         icon: (
-          <Bot />
+          <FaWhatsapp />
         )
       },
     ]
-  },
-  {
-    title: 'Dashboard',
-    icon: (
-      <Rocket />
-    ),
-    children: [
-      {
-        title: 'Home',
-        path: '/',
-        icon: (
-          <Home />
-        )
-      },
-    ]
-
   }
 ] as Item[];
 
@@ -69,7 +81,7 @@ const NavList: React.FC = () => {
   const pathname = usePathname();
   return (
     <div >
-      <div className='text-white pt-2'>
+      <div className='text-white pt-4 flex flex-col gap-1'>
         {items.map((item, index) => (
           <Item key={index} item={item} pathname={pathname} />
         ))}
@@ -89,11 +101,11 @@ import { Button } from '../ui/button';
 function Item({ item, pathname }: { item: Item, pathname: string }) {
 
   const ItemListVariant = cva(
-    "px-4 flex flex-row items-center justify-between text-white/90 font-bold hover:bg-secondary-500 hover:text-white rounded-lg after",
+    "px-3 flex flex-row items-center justify-between text-white/90 font-bold hover:bg-secondary-500/60 hover:text-white rounded-full after",
     {
       variants: {
         active: {
-          true: "bg-secondary-500 text-white",
+          true: "bg-secondary-500/60 text-white",
           false: "",
         },
         visible: {
@@ -108,11 +120,11 @@ function Item({ item, pathname }: { item: Item, pathname: string }) {
   )
 
   const ItemChildrenOpen = cva(
-    "pl-4 pt-1",
+    "pl-4 pt-1 flex flex-col gap-1 overflow-hidden transition-all duration-500 ease-in-out",
     {
       variants: {
         active: {
-          true: "",
+          true: "h-auto",
           false: "h-0",
         },
       },
@@ -133,10 +145,10 @@ function Item({ item, pathname }: { item: Item, pathname: string }) {
   return (
     <div>
       <ul className='flex flex-col px-4'>
-        <ListItem className="flex flex-row items-center justify-start font-bold">
+        {item.title && <ListItem className="flex flex-row items-center justify-start font-bold">
           {item.icon}
           <span className="ml-2 text-lg ">{item.title.toUpperCase()}</span>
-        </ListItem>
+        </ListItem>}
         {item.children && (
           <div className='w-full flex flex-col gap-1'>
             {item.children.map((child, index) => {
@@ -149,8 +161,10 @@ function Item({ item, pathname }: { item: Item, pathname: string }) {
                   <Link href={child.path}>
                     <ListItem key={index} className={ItemListVariant({ active: itemActive || childrenActive && !open[index] })}>
                       <div className="flex flex-row items-center justify-start">
-                        {child.icon}
-                        <span className="ml-2 text-[16px] text-white">{child.title}</span>
+                        <span className='text-[24px]'>
+                          {child.icon}
+                        </span>
+                        <span className="ml-2 text-[14px] text-white">{child.title}</span>
                       </div>
                       <div className='flex justify-center items-center'>
                         {child.new && <Badge size={"sm"} className='text-primary-500 font-bold bg-white'>
@@ -163,7 +177,7 @@ function Item({ item, pathname }: { item: Item, pathname: string }) {
                             handleOpen(index)
                           }}
                         >
-                          {open[index] ? <ChevronUp /> : <ChevronDown />}
+                          {open[index] ? <FaChevronUp /> : <FaChevronDown />}
                         </Button>}
                       </div>
                     </ListItem>
@@ -177,8 +191,8 @@ function Item({ item, pathname }: { item: Item, pathname: string }) {
                         <Link href={child2.path} key={index}>
                           <ListItem key={index2} className={ItemListVariant({ active: itemActive, visible: open[index] })}>
                             <div className="flex flex-row items-center justify-start">
-                              {child2.icon}
-                              <span className="ml-2 text-[16px]">{child2.title}</span>
+                              <span className='text-[24px]'>{child2.icon}</span>
+                              <span className="ml-2 text-[14px]">{child2.title}</span>
                             </div>
                             {child2.new && <Badge size={"sm"} className='text-primary-500 font-bold bg-white'>
                               New
@@ -194,7 +208,6 @@ function Item({ item, pathname }: { item: Item, pathname: string }) {
           </div>
         )}
       </ul>
-      <hr className='border-white/20 my-2' />
     </div>
   )
 } 

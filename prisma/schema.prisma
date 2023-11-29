@@ -9,39 +9,12 @@ datasource db {
 
 model User {
   id           String              @id @unique
-  company_id   String?
   username     String
-  role_id      String?
   email        String              @unique
-  role         Role?               @relation(fields: [role_id], references: [id])
-  company      Company?            @relation(fields: [company_id], references: [id])
   auth_session Session[]
   key          Key[]
   ai_config    AIConfig[]
   bot_config   BotWhatsappConfig[]
-  companys     Company[]           @relation(name: "UserCompany")
-}
-
-model Role {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  name      String
-  users     User[]
-  views     Views[]
-}
-
-model Views {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  role      Role     @relation(references: [id], fields: [role_id], onDelete: Cascade)
-  role_id   String
-  name      String
-  create    Boolean
-  edit      Boolean
-  delete    Boolean
-  view      Boolean
 }
 
 model Session {
@@ -90,38 +63,6 @@ model BotWhatsappConfig {
   updated_at DateTime @updatedAt
   user_id    String
   name       String
-}
-
-// banco Empresa 
-model Company {
-  id                 String     @id @default(uuid())
-  created_at         DateTime   @default(now())
-  updated_at         DateTime   @updatedAt
-  user_id            String
-  name               String     @unique
-  razao_social       String
-  cnpj               String
-  inscricao_estadual String
-  area_atividade     String
-  categoria_empresa  String
-  descricao          String
-  user               User       @relation(name: "UserCompany", references: [id], fields: [user_id], onDelete: Cascade)
-  endereco           Endereco[]
-  users              User[]
-}
-
-// banco Endereco
-model Endereco {
-  id         String   @id @default(uuid())
-  empresa    Company  @relation(references: [id], fields: [empresa_id], onDelete: Cascade)
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-  empresa_id String
-  cep        String
-  cidade     String
-  estado     String
-  rua        String
-  numero     String
 }
 
 model WhatsappClient {
