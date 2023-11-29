@@ -8,14 +8,14 @@ datasource db {
 }
 
 model User {
-  id               String              @id @unique
-  username         String
-  email            String              @unique
-  auth_session     Session[]
-  key              Key[]
-  ai_config        AIConfig[]
-  bot_config       BotWhatsappConfig[]
-  whatsappClient   WhatsappClient?
+  id             String              @id @unique
+  username       String
+  email          String              @unique
+  auth_session   Session[]
+  key            Key[]
+  ai_config      AIConfig[]
+  bot_config     BotWhatsappConfig[]
+  whatsappClient WhatsappClient?
 }
 
 model Session {
@@ -67,9 +67,9 @@ model BotWhatsappConfig {
 }
 
 model WhatsappClient {
-  id         String   @id @default(uuid())
+  id         Int      @id @default(autoincrement())
   active     Boolean  @default(true)
-  qrCode     String?
+  qrCode     String?  @db.MediumText()
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
   user_id    String   @unique

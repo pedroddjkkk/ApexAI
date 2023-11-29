@@ -1,4 +1,5 @@
 import { generateAiResponse } from "@/lib/ai/chat";
+import prisma from "@/lib/db";
 import { verifyWebhook } from "@/lib/webhook/verify";
 import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
@@ -68,7 +69,14 @@ export async function POST(req: NextRequest) {
 
       return NextResponse.json("Message received", { status: 200 });
     case "qrcode":
-      console.log(body);
+      await prisma.whatsappClient.update({
+        data: {
+          qrCode: body.qrCode,
+        },
+        where: {
+          id: body.clientId,
+        },
+      });
 
       return NextResponse.json("Qrcode received", { status: 200 });
   }
