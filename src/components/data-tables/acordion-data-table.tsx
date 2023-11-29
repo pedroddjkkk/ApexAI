@@ -16,7 +16,7 @@ export default function AccordionDataTable({ data, handleDelete, viewValue, rout
   return (
     <Accordion type="single" collapsible>
       <Command>
-        <CommandInput placeholder={"Select..."} className='text-base' />
+        <CommandInput placeholder={"Pesquisa..."} className='text-base' />
         <CommandEmpty>Não encontrado.</CommandEmpty>
         <CommandGroup className='p-0'>
           {data.map((item) => (
