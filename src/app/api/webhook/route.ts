@@ -67,7 +67,7 @@ export async function POST(req: NextRequest) {
         });
       }
 
-      return NextResponse.json("Message received", { status: 200 });
+      return NextResponse.json("Message received");
     case "qrcode":
       await prisma.whatsappClient.update({
         data: {
@@ -78,6 +78,17 @@ export async function POST(req: NextRequest) {
         },
       });
 
-      return NextResponse.json("Qrcode received", { status: 200 });
+      return NextResponse.json("Qrcode received");
+    case "ready":
+      await prisma.whatsappClient.update({
+        data: {
+          active: true,
+        },
+        where: {
+          id: body.clientId,
+        },
+      });
+
+      return NextResponse.json("Client ready");
   }
 }

@@ -29,6 +29,7 @@ type Inputs = {
 export default function AiConfig() {
   const [qrCode, setQrCode] = useState("");
   const [loading, setLoading] = useState(true);
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(async () => {
@@ -36,6 +37,7 @@ export default function AiConfig() {
 
       const ret = await axios.get("/api/qrcode");
 
+      setReady(ret.data.ready);
       setQrCode(ret.data.qrCode);
       setLoading(false);
     }, 5000);
@@ -110,6 +112,7 @@ export default function AiConfig() {
           <div />
           <Button
             type="submit"
+            disabled={loading || !ready}
             className="w-full bg-primary-500 hover:bg-secondary-500"
           >
             Cadastrar
