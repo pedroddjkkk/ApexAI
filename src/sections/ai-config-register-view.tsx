@@ -26,6 +26,7 @@ import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, Tabl
 import { BsPlusLg } from "react-icons/bs";
 import { AiOutlineDelete } from "react-icons/ai";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { PopoverFormFaq } from "@/components/form/popoverFormFaq";
 
 // types
 type Inputs = {
@@ -92,6 +93,7 @@ export default function AiConfigRegisterView() {
   };
 
   const [advanced, setAdvanced] = useState(false);
+  const [pgFaq, setPgFaq] = useState(0);
 
   return (
     <main>
@@ -178,12 +180,19 @@ export default function AiConfigRegisterView() {
         <div
           style={{ display: advanced ? "grid" : "none" }}
         >
-          <div className="border-neutral-300 border-[1px] rounded-lg p-6 gap-4 flex flex-col">
+          <div className="border-input border-[1px] rounded-lg p-6 gap-4 flex flex-col">
             <div className="gap-4 flex">
-              <Button className="gap-2 font-bold bg-success-500">
-                <BsPlusLg size={20} />
-                Adicionar FAQ
-              </Button>
+              <PopoverFormFaq
+                onChange={(e) => {
+                  console.log(e);
+                }}
+              >
+                <Button
+                  className="gap-2 font-bold bg-success-500/90 hover:bg-success-500">
+                  <BsPlusLg size={20} />
+                  Adicionar FAQ
+                </Button>
+              </PopoverFormFaq>
               <Button className="gap-2 font-bold bg-success-500">
                 <BsPlusLg size={20} />
                 Importar FAQs
@@ -193,7 +202,7 @@ export default function AiConfigRegisterView() {
                 Deletar
               </Button>
             </div>
-            <div className="rounded-t-lg border-neutral-300 border-[1px] ">
+            <div className="rounded-t-lg border-input border-[1px] ">
               <Table >
                 <TableHeader>
                   <TableRow>
@@ -203,22 +212,42 @@ export default function AiConfigRegisterView() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  <TableRow>
-                    <TableCell className="font-medium">pergunta</TableCell>
-                    <TableCell>Credit Card</TableCell>
-                    <TableCell className="text-right">$250.00</TableCell>
-                  </TableRow>
+                  {watch("faq")
+                    .slice(pgFaq, 10)
+                    .map((item, index) => (
+                      <TableRow key={index}>
+                        <TableCell className="font-medium">pergunta</TableCell>
+                        <TableCell>Credit Card</TableCell>
+                        <TableCell className="text-right">$250.00</TableCell>
+                      </TableRow>))}
                 </TableBody>
               </Table>
             </div>
             <div className="flex justify-end items-center gap-2">
-              <Button className="bg-transparent text-neutrals-500 hover:bg-black/5 rounded-full p-2 w-[40px] h-[40px]">
+              <Button className="bg-transparent text-neutrals-500 hover:bg-black/5 rounded-full p-2 w-[40px] h-[40px]"
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (pgFaq > 0) {
+                    setPgFaq(pgFaq - 10);
+                  }
+                }}
+              >
                 <FaChevronLeft size={20} />
               </Button>
               <div>
-                3
+                <span className="text-neutrals-500">
+                  {pgFaq + 1} - {watch("faq")
+                    .slice(pgFaq, 10).length} de {watch("faq").length}
+                </span>
               </div>
-              <Button className="bg-transparent text-neutrals-500 hover:bg-black/5 rounded-full p-2 w-[40px] h-[40px]">
+              <Button className="bg-transparent text-neutrals-500 hover:bg-black/5 rounded-full p-2 w-[40px] h-[40px]"
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (pgFaq < watch("faq").length) {
+                    setPgFaq(pgFaq + 10);
+                  }
+                }}
+              >
                 <FaChevronRight size={20} />
               </Button>
             </div>
