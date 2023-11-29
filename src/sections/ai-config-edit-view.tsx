@@ -134,8 +134,8 @@ export default function AiConfigEditView({ aiConfig }: { aiConfig: AIConfig }) {
         </div>
         <div className="flex justify-center">
           <InputLabel
-            label="Comfiguração AI"
-            description="Este será o contexto que a AI usara para interagir."
+            label='Com figuração AI'
+            description='Este será o contexto que a AI usara para interagir.'
           >
             <TabsForm
               onChange={(e, quest) => {

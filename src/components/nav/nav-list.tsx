@@ -5,6 +5,7 @@ import { BsCpu } from "react-icons/bs";
 import { TbPlus } from "react-icons/tb";
 import { FaChevronUp } from "react-icons/fa6";
 import { FaChevronDown } from "react-icons/fa6";
+import { RiRobot2Line } from "react-icons/ri";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -37,11 +38,29 @@ export const items = [
             new: false,
             icon: <TbPlus />,
           },
-        ],
+        ]
       },
       {
-        title: "Whatsapp",
-        path: "/whats-config",
+        title: 'FAQ Bot',
+        path: '/faq',
+        new: false,
+        icon: (
+          <RiRobot2Line />
+        ),
+        children: [
+          {
+            title: 'Cadastro',
+            path: '/faq/register',
+            new: false,
+            icon: (
+              <TbPlus />
+            )
+          },
+        ]
+      },
+      {
+        title: 'WhatsApp',
+        path: '/whats-config',
         new: false,
         icon: <FaWhatsapp />,
       },
