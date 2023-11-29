@@ -1,21 +1,44 @@
 import prisma from "@/lib/db";
 import { getServerSideSession } from "@/lib/session";
+import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
-  const user = await getServerSideSession();
+  const session = await getServerSideSession();
 
-  if (!user) {
+  if (!session) {
     return NextResponse.redirect("/login");
   }
 
-  const whatsappClient = await prisma.whatsappClient.findFirst({
+  let whatsappClient = await prisma.whatsappClient.findFirst({
     where: {
-      
-    }
-  })
-
-  return NextResponse.json({
-    message: "Hello World",
+      user_id: session.user.userId,
+    },
   });
+
+  if (!whatsappClient) {
+    whatsappClient = await prisma.whatsappClient.create({
+      data: {
+        user_id: session.user.userId,
+      },
+    });
+  } else if (whatsappClient.qrCode) {
+    return NextResponse.json({
+      qrCode: whatsappClient.qrCode,
+    });
+  }
+
+  const res = await axios.post("http://localhost:8000/whatsapp/qrcode", {
+    clientId: whatsappClient.id,
+  });
+
+  if (res.data.message === "QrCode Generated") {
+    return NextResponse.json({
+      message: "Generating QrCode",
+    });
+  } else {
+    return NextResponse.json({
+      message: "Error generating QrCode",
+    });
+  }
 }
