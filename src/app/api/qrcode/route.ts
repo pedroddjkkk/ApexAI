@@ -25,6 +25,7 @@ export async function GET(req: NextRequest) {
   } else if (whatsappClient.qrCode) {
     return NextResponse.json({
       qrCode: whatsappClient.qrCode,
+      ready: whatsappClient.ready,
     });
   }
 
