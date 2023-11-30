@@ -12,6 +12,7 @@ type PropsCreate = {
   top_p: number;
   frequency_penalty: number;
   presence_penalty: number;
+  faq: string;
 }
 
 export function createAiConfig(data: PropsCreate): Promise<AIConfig> {
@@ -27,18 +28,6 @@ export function getAiConfigs(id: string): Promise<AIConfig[] | null> {
     }
   });
 }
-
-export function getAiConfigsByCompanyId(company_id: string): Promise<AIConfig[] | null> {
-  return prisma.aIConfig.findMany({
-    where: {
-      user: {
-        company_id
-      }
-    }
-  });
-}
-
-
 
 export function getAiConfig(id: string): Promise<AIConfig | null> {
   return prisma.aIConfig.findUnique({

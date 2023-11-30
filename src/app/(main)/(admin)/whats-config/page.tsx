@@ -31,6 +31,7 @@ const createWhatsappClientSchema = z.object({
 
 export default function AiConfig() {
   const [qrCode, setQrCode] = useState("");
+
   const [loading, setLoading] = useState(true);
   const [ready, setReady] = useState(false);
   const [aiConfigs, setAiConfigs] = useState<Prisma.AIConfigGetPayload<{}>[]>();
@@ -44,6 +45,11 @@ export default function AiConfig() {
       setReady(res.data.ready);
       setQrCode(res.data.qrCode);
       setLoading(false);
+
+      setReady(res.data.ready);
+
+      if (res.data.qrCode === qrCode) return;
+      setQrCode(res.data.qrCode);
     }, 5000);
 
     const fetchData = async () => {
@@ -89,7 +95,7 @@ export default function AiConfig() {
             <InputLabel
               label="Nome Seção"
               description="Nomeie sua seção para identificação"
-              
+
             >
               <Input {...register("name", { required: true })} />
               {/* errors will return when field validation fails  */}
