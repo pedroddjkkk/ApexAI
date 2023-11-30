@@ -10,7 +10,7 @@ import { Slider } from "@/components/ui/slider";
 import { Combobox } from "@/components/ui/combobox";
 
 // hook form
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import { createAiConfigSchema } from "@/lib/schema/ai-config";
 
 // zod
@@ -22,14 +22,10 @@ import TabsForm from "@/components/inputs/trabs-form";
 import { Backpack, Plus, SendToBack, SkipBack, Undo2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { BsPlusLg } from "react-icons/bs";
-import { AiOutlineDelete } from "react-icons/ai";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
-import { PopoverFormFaq } from "@/components/form/popoverFormFaq";
+import FacDataTables from "@/components/data-tables/form-faq-table";
 
 // types
-type Inputs = {
+export type InputsAionfig = {
   name: string;
   sistema: {
     id: string;
@@ -60,7 +56,7 @@ export default function AiConfigRegisterView() {
     setValue,
     reset,
     formState: { errors },
-  } = useForm<Inputs>({
+  } = useForm<InputsAionfig>({
     resolver: zodResolver(createAiConfigSchema),
     defaultValues: {
       name: "",
@@ -76,7 +72,7 @@ export default function AiConfigRegisterView() {
     },
   });
 
-  const onSubmit = async (data: Inputs) => {
+  const onSubmit = async (data: InputsAionfig) => {
     // trsforma o array em uma string com pegunta e respostas
     const ret = await axios.post("/api/ai-config", {
       ...data,
@@ -93,7 +89,6 @@ export default function AiConfigRegisterView() {
   };
 
   const [advanced, setAdvanced] = useState(false);
-  const [pgFaq, setPgFaq] = useState(0);
 
   return (
     <main>
@@ -180,78 +175,10 @@ export default function AiConfigRegisterView() {
         <div
           style={{ display: advanced ? "grid" : "none" }}
         >
-          <div className="border-input border-[1px] rounded-lg p-6 gap-4 flex flex-col">
-            <div className="gap-4 flex">
-              <PopoverFormFaq
-                onChange={(e) => {
-                  console.log(e);
-                }}
-              >
-                <Button
-                  className="gap-2 font-bold bg-success-500/90 hover:bg-success-500">
-                  <BsPlusLg size={20} />
-                  Adicionar FAQ
-                </Button>
-              </PopoverFormFaq>
-              <Button className="gap-2 font-bold bg-success-500">
-                <BsPlusLg size={20} />
-                Importar FAQs
-              </Button>
-              <Button className="gap-2 font-bold bg-danger-500">
-                <AiOutlineDelete size={20} />
-                Deletar
-              </Button>
-            </div>
-            <div className="rounded-t-lg border-input border-[1px] ">
-              <Table >
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Perguntas</TableHead>
-                    <TableHead>Resposta</TableHead>
-                    <TableHead className="w-[10%]">Ação</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {watch("faq")
-                    .slice(pgFaq, 10)
-                    .map((item, index) => (
-                      <TableRow key={index}>
-                        <TableCell className="font-medium">pergunta</TableCell>
-                        <TableCell>Credit Card</TableCell>
-                        <TableCell className="text-right">$250.00</TableCell>
-                      </TableRow>))}
-                </TableBody>
-              </Table>
-            </div>
-            <div className="flex justify-end items-center gap-2">
-              <Button className="bg-transparent text-neutrals-500 hover:bg-black/5 rounded-full p-2 w-[40px] h-[40px]"
-                onClick={(e) => {
-                  e.preventDefault();
-                  if (pgFaq > 0) {
-                    setPgFaq(pgFaq - 10);
-                  }
-                }}
-              >
-                <FaChevronLeft size={20} />
-              </Button>
-              <div>
-                <span className="text-neutrals-500">
-                  {pgFaq + 1} - {watch("faq")
-                    .slice(pgFaq, 10).length} de {watch("faq").length}
-                </span>
-              </div>
-              <Button className="bg-transparent text-neutrals-500 hover:bg-black/5 rounded-full p-2 w-[40px] h-[40px]"
-                onClick={(e) => {
-                  e.preventDefault();
-                  if (pgFaq < watch("faq").length) {
-                    setPgFaq(pgFaq + 10);
-                  }
-                }}
-              >
-                <FaChevronRight size={20} />
-              </Button>
-            </div>
-          </div>
+          <FacDataTables
+            setValue={setValue}
+            watch={watch}
+          />
           <div
             className="
         grid md:grid-cols-2 sm:grid-cols-1
