@@ -9,39 +9,50 @@ import { Input } from "@/components/ui/input";
 // hook form
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createAiConfigSchema } from "@/lib/schema/ai-config";
 import QRCode from "react-qr-code";
 import axios from "axios";
 import { BeatLoader } from "react-spinners";
+import { Combobox } from "@/components/ui/combobox";
+import { z } from "zod";
+import { Prisma } from "@prisma/client";
 
 // types
 type Inputs = {
   name: string;
-  sistema: string;
-  max_tokens: number;
-  model: string;
-  temperature: number;
-  stop: string;
-  top_p: number;
-  frequency_penalty: number;
-  presence_penalty: number;
+  configId: string;
 };
+
+const createWhatsappClientSchema = z.object({
+  name: z.string()
+    .min(3, "Nome deve ter no mínimo 3 caracteres")
+    .max(255, "Nome deve ter no máximo 255 caracteres"),
+  configId: z.string()
+})
 
 export default function AiConfig() {
   const [qrCode, setQrCode] = useState("");
   const [loading, setLoading] = useState(true);
   const [ready, setReady] = useState(false);
+  const [aiConfigs, setAiConfigs] = useState<Prisma.AIConfigGetPayload<{}>[]>();
 
   useEffect(() => {
     const interval = setInterval(async () => {
       setLoading(true);
 
-      const ret = await axios.get("/api/qrcode");
+      const res = await axios.get("/api/qrcode");
 
-      setReady(ret.data.ready);
-      setQrCode(ret.data.qrCode);
+      setReady(res.data.ready);
+      setQrCode(res.data.qrCode);
       setLoading(false);
     }, 5000);
+
+    const fetchData = async () => {
+      const res = await axios.get("/api/ai-config");
+
+      setAiConfigs(res.data)
+    }
+
+    fetchData();
     return () => clearInterval(interval);
   }, []);
 
@@ -49,20 +60,10 @@ export default function AiConfig() {
     register,
     handleSubmit,
     watch,
+    setValue,
     formState: { errors },
   } = useForm<Inputs>({
-    resolver: zodResolver(createAiConfigSchema),
-    defaultValues: {
-      name: "",
-      sistema: "",
-      max_tokens: 0,
-      model: "",
-      temperature: 0,
-      stop: "",
-      top_p: 0,
-      frequency_penalty: 0,
-      presence_penalty: 0,
-    },
+    resolver: zodResolver(createWhatsappClientSchema),
   });
 
   const onSubmit = async (data: Inputs) => {
@@ -84,7 +85,7 @@ export default function AiConfig() {
         lg:gap-x-16 xl:gap-x-32 md:gap-x-8
         "
         >
-          <div className="items-center flex ">
+          <div className="items-center flex flex-col">
             <InputLabel
               label="Nome Seção"
               description="Nomeie sua seção para identificação"
@@ -93,6 +94,26 @@ export default function AiConfig() {
               {/* errors will return when field validation fails  */}
               {errors.name && (
                 <span className="text-danger-500">{errors.name.message}</span>
+              )}
+            </InputLabel>
+            <InputLabel
+              label="Modelo"
+              description="Escolha o modelo de AI que deseja usar, este parametro reflete no preço por tokens"
+            >
+              <Combobox
+                options={aiConfigs ? aiConfigs.map((config) => {
+                  return {
+                    label: config.name,
+                    value: config.id
+                  }
+                }) : []}
+                onSelect={(value) => {
+                  setValue("configId", value);
+                }}
+                placeholder="Configuração de IA"
+              />
+              {errors.configId && (
+                <span className="text-danger-500">{errors.configId.message}</span>
               )}
             </InputLabel>
           </div>
