@@ -28,18 +28,6 @@ export function getAiConfigs(id: string): Promise<AIConfig[] | null> {
   });
 }
 
-export function getAiConfigsByCompanyId(company_id: string): Promise<AIConfig[] | null> {
-  return prisma.aIConfig.findMany({
-    where: {
-      user: {
-        company_id
-      }
-    }
-  });
-}
-
-
-
 export function getAiConfig(id: string): Promise<AIConfig | null> {
   return prisma.aIConfig.findUnique({
     where: {

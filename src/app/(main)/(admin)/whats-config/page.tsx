@@ -29,6 +29,7 @@ type Inputs = {
 
 export default function AiConfig() {
   const [qrCode, setQrCode] = useState("");
+
   const [loading, setLoading] = useState(true);
   const [ready, setReady] = useState(false);
 
@@ -38,9 +39,12 @@ export default function AiConfig() {
 
       const ret = await axios.get("/api/qrcode");
 
-      setReady(ret.data.ready);
-      setQrCode(ret.data.qrCode);
       setLoading(false);
+
+      setReady(ret.data.ready);
+
+      if (ret.data.qrCode === qrCode) return;
+      setQrCode(ret.data.qrCode);
     }, 5000);
     return () => clearInterval(interval);
   }, []);
