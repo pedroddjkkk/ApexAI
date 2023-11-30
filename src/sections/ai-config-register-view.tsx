@@ -137,8 +137,8 @@ export default function AiConfigRegisterView() {
         </div>
         <div className="flex justify-center">
           <InputLabel
-            label='Com figuração AI'
-            description='Este será o contexto que a AI usara para interagir.'
+            label="Configuração AI"
+            description="Este será o contexto que a AI usara para interagir."
           >
             <TabsForm
               onChange={(e, quest) => {
@@ -179,13 +179,8 @@ export default function AiConfigRegisterView() {
             setAdvanced(e);
           }}
         />
-        <div
-          style={{ display: advanced ? "grid" : "none" }}
-        >
-          <FacDataTables
-            setValue={setValue}
-            watch={watch}
-          />
+        <div style={{ display: advanced ? "grid" : "none" }}>
+          <FacDataTables setValue={setValue} watch={watch} />
           <div
             className="
         grid md:grid-cols-2 sm:grid-cols-1

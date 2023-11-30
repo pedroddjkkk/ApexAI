@@ -56,7 +56,7 @@ export default function Home() {
           <Tabs defaultValue="account" className="w-full h-full">
             <TabsList>
               <TabsTrigger value="instagram">Instagram</TabsTrigger>
-              <TabsTrigger value="whatsapp">Watizapi</TabsTrigger>
+              <TabsTrigger value="whatsapp">WhatsApp</TabsTrigger>
               <TabsTrigger value="facebook">Facebook</TabsTrigger>
               <TabsTrigger value="telegram">Telegram</TabsTrigger>
             </TabsList>
@@ -77,9 +77,7 @@ export default function Home() {
             </TabsContent>
             <TabsContent value="whatsapp" className="w-full h-full">
               <Card className="h-full w-full ">
-                <CardContent>
-                  {/* <AiConfigView /> */}
-                </CardContent>
+                <CardContent>{/* <AiConfigView /> */}</CardContent>
               </Card>
             </TabsContent>
             <TabsContent value="facebook" className="w-full ">
@@ -107,7 +105,9 @@ export default function Home() {
                 </CardContent>
               </Card>
             </TabsContent>
-            <TabsContent value="password">Change your password here.</TabsContent>
+            <TabsContent value="password">
+              Change your password here.
+            </TabsContent>
           </Tabs>
         </div>
       )}
