@@ -45,6 +45,7 @@
     "react-hook-form": "^7.47.0",
     "react-icons": "^4.12.0",
     "react-qr-code": "^2.0.12",
+    "react-spinners": "^0.13.8",
     "tailwind-merge": "^1.14.0",
     "tailwindcss": "3.3.3",
     "tailwindcss-animate": "^1.0.7",

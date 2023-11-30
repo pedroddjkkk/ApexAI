@@ -60,7 +60,7 @@ export async function POST(req: NextRequest) {
           });
         }
       } else {
-        const res = await axios.post("http://localhost:8000/whatsapp/message", {
+        await axios.post("http://localhost:8000/whatsapp/message", {
           conversationId: messages[0].id.remote,
           message: generatedResponse.choices[0].message.content,
           clientId: body.clientId,
@@ -72,6 +72,7 @@ export async function POST(req: NextRequest) {
       await prisma.whatsappClient.update({
         data: {
           qrCode: body.qrCode,
+          ready: false,
         },
         where: {
           id: body.clientId,

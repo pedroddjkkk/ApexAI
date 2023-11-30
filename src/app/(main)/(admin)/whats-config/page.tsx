@@ -12,6 +12,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { createAiConfigSchema } from "@/lib/schema/ai-config";
 import QRCode from "react-qr-code";
 import axios from "axios";
+import { BeatLoader } from "react-spinners";
 
 // types
 type Inputs = {
@@ -95,9 +96,15 @@ export default function AiConfig() {
               )}
             </InputLabel>
           </div>
-          <div className="flex flex-col items-center justify-center gap-2">
+          <div className="flex flex-col items-center justify-center gap-2 relative">
+            {loading ? (
+              <BeatLoader
+                color="#36d7b7"
+                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+              />
+            ) : null}
             <h1 className="font-bold text-neutrals-500">Whatsapp</h1>
-            <QRCode value={qrCode} />
+            <QRCode value={qrCode} opacity={ready || loading ? 0.3 : 1} />
             <h2 className="font-bold text-neutrals-500">
               Escaneie o QRCode para conectar o Whatsapp
             </h2>
