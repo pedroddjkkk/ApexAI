@@ -41,24 +41,6 @@ export const items = [
         ]
       },
       {
-        title: 'FAQ Bot',
-        path: '/faq',
-        new: false,
-        icon: (
-          <RiRobot2Line />
-        ),
-        children: [
-          {
-            title: 'Cadastro',
-            path: '/faq/register',
-            new: false,
-            icon: (
-              <TbPlus />
-            )
-          },
-        ]
-      },
-      {
         title: 'WhatsApp',
         path: '/whats-config',
         new: false,
