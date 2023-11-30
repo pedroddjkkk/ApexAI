@@ -89,6 +89,7 @@ export default function AiConfig() {
             <InputLabel
               label="Nome Seção"
               description="Nomeie sua seção para identificação"
+              
             >
               <Input {...register("name", { required: true })} />
               {/* errors will return when field validation fails  */}
@@ -99,6 +100,7 @@ export default function AiConfig() {
             <InputLabel
               label="Modelo"
               description="Escolha o modelo de AI que deseja usar, este parametro reflete no preço por tokens"
+              className=""
             >
               <Combobox
                 options={aiConfigs ? aiConfigs.map((config) => {
