@@ -26,6 +26,7 @@ import FacDataTables from "@/components/data-tables/form-faq-table";
 
 // types
 export type InputsAionfig = {
+  id?: string;
   name: string;
   sistema: {
     id: string;
@@ -77,6 +78,12 @@ export default function AiConfigRegisterView() {
     const ret = await axios.post("/api/ai-config", {
       ...data,
       sistema: data.sistema
+        .map((item) => {
+          return `${item.quest}: ${item.response}`;
+        })
+        .join("\n")
+        .trim(),
+      faq: data.faq
         .map((item) => {
           return `${item.quest}: ${item.response}`;
         })
