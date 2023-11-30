@@ -46,10 +46,10 @@ export default function AiConfig() {
       setQrCode(res.data.qrCode);
       setLoading(false);
 
-      setReady(ret.data.ready);
+      setReady(res.data.ready);
 
-      if (ret.data.qrCode === qrCode) return;
-      setQrCode(ret.data.qrCode);
+      if (res.data.qrCode === qrCode) return;
+      setQrCode(res.data.qrCode);
     }, 5000);
 
     const fetchData = async () => {
@@ -95,7 +95,7 @@ export default function AiConfig() {
             <InputLabel
               label="Nome Seção"
               description="Nomeie sua seção para identificação"
-              
+
             >
               <Input {...register("name", { required: true })} />
               {/* errors will return when field validation fails  */}
