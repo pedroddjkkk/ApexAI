@@ -180,7 +180,9 @@ export default function AiConfigRegisterView() {
           }}
         />
         <div style={{ display: advanced ? "grid" : "none" }}>
-          <FacDataTables setValue={setValue} watch={watch} />
+          <div className="pb-8">
+            <FacDataTables setValue={setValue} watch={watch} />
+          </div>
           <div
             className="
         grid md:grid-cols-2 sm:grid-cols-1

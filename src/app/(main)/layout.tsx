@@ -26,7 +26,7 @@ export default async function UserRootLayout({
     }
 
     return (
-      <div>
+      <div >
         <SideNav>
           <div className="flex flex-col h-[calc(100vh-100px)] pt-[100px]">
             {children}
