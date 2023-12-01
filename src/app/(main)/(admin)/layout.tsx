@@ -1,4 +1,5 @@
 'use client'
+import Loading from "@/components/loading";
 import { useSession } from "@/lib/hooks/session";
 import React from 'react';
 
@@ -7,5 +8,5 @@ import React from 'react';
 export default function LayutAdmin({ children }: { children: React.ReactNode; }) {
   const { session, loading } = useSession();
 
-  return loading ? <div >Carregando...</div> : children
+  return loading ? <Loading /> : children
 }
