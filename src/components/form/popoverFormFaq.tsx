@@ -80,22 +80,25 @@ export function PopoverFormFaq({
         <div className="p-4 flex flex-col" >
           <Label className="mb-2">Pergunta</Label>
           <Input className="mb-4" value={quest} onChange={(e) => setQuest(e.target.value)} />
-          <Label className="mb-2">Resposta</Label>
-          <Input className="mb-4" value={response} onChange={(e) => setResponse(e.target.value)} />
-          <span className="text-red-500">{errors}</span>
-          <div className="flex gap-2 mb-2 items-center">
-            <Checkbox checked={arquivoOpen} onCheckedChange={(e) => setArquivoOpen(e as boolean)} />
-            <Label>Arquivo</Label>
+          <div className="flex justify-between">
+            <Label className="mb-2">Resposta</Label>
+            <div className="flex gap-2 mb-2 items-center">
+              <Checkbox checked={arquivoOpen} onCheckedChange={(e) => setArquivoOpen(e as boolean)} />
+              <Label>Arquivo</Label>
+            </div>
           </div>
-          {arquivoOpen && <Input className="mb-4" type="file" onChange={(e) => {
-            if (!e.target.files) return
-            const file = e.target.files[0]
-            const reader = new FileReader()
-            reader.readAsDataURL(file)
-            reader.onloadend = () => {
-              setResponse(reader.result as string)
-            }
-          }} />}
+          {!arquivoOpen ?
+            <Input className="mb-4" value={response} onChange={(e) => setResponse(e.target.value)} /> :
+            <Input className="mb-4" type="file" onChange={(e) => {
+              if (!e.target.files) return
+              const file = e.target.files[0]
+              const reader = new FileReader()
+              reader.readAsDataURL(file)
+              reader.onloadend = () => {
+                setResponse(reader.result as string)
+              }
+            }} />}
+          <span className="text-red-500">{errors}</span>
           <Button className={btn({ variant: questId ? "edit" : "default" })}
             onClick={() => {
               if (!quest) {
