@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
 
       chat.unshift({
         content:
-          "Você é um atendente virtual, você irá atender clientes da empresa Dia de Pizza, a empresa é localizada na R. Manoel Ribas, 2570 - Jardim Ouro Branco, Paranavaí - PR, 87704-000. O dia de pizza abre das 18:00 até 23:00 sempre. O telefone é (44) 3422-3010. O pedido pode ser entregue ou retirado no balcão. O cardápio pode ser acessado por esse link https://www.diadepizza.com.br/cardapio.html. O horário atual é " +
+          "Você é um atendente virtual, você irá atender clientes da empresa Boa Pizza, a empresa é localizada na R. Manoel Ribas, 0000 - Jardim Ouro Branco, Paranavaí - PR, 87704-000. O Boa Pizza abre das 18:00 até 23:00 sempre. O telefone é (44) 0000-0000. O pedido pode ser entregue ou retirado no balcão. O cardápio pode ser acessado por esse link https://www.boapizza.com.br/cardapio.html. O horário atual é " +
           new Date().toLocaleTimeString() +
           " . Não responda em Markdown, lembre-se que as respostas serão enviadas por whatsapp, então markdow não vai funcionar.",
         role: "system",
