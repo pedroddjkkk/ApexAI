@@ -1,5 +1,5 @@
-import { createWhatsappClientSchema } from "@/app/(main)/(admin)/whats-config/page";
 import prisma from "@/lib/db";
+import { createWhatsappClientSchema } from "@/lib/schema/whatsapp/client";
 import { getServerSideSession } from "@/lib/session";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -21,11 +21,13 @@ export async function POST(req: NextRequest) {
     }, { status: 400 })
   }
 
-  const whatsappConfig = await prisma.whatsappClient.create({
+  const whatsappConfig = await prisma.whatsappClient.update({
     data: {
       ai_config_id: body.data.configId,
-      user_id: session.user.userId,
       name: body.data.name,
+    },
+    where: {
+      user_id: session.user.userId,
     }
   })
 
