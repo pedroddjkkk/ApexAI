@@ -31,7 +31,6 @@ const createWhatsappClientSchema = z.object({
 
 export default function AiConfig() {
   const [qrCode, setQrCode] = useState("");
-
   const [loading, setLoading] = useState(true);
   const [ready, setReady] = useState(false);
   const [aiConfigs, setAiConfigs] = useState<Prisma.AIConfigGetPayload<{}>[]>();
@@ -48,7 +47,6 @@ export default function AiConfig() {
 
       setReady(res.data.ready);
 
-      if (res.data.qrCode === qrCode) return;
       setQrCode(res.data.qrCode);
     }, 5000);
 
@@ -73,7 +71,7 @@ export default function AiConfig() {
   });
 
   const onSubmit = async (data: Inputs) => {
-    const ret = await axios.post("/api/whats-config", data);
+    console.log(data);
   };
 
   return (
