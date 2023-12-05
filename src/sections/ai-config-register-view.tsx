@@ -24,6 +24,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import FaqDataTables from "@/components/data-tables/form-faq-table";
 import { Label } from "@/components/ui/label";
+import puppeteer from "puppeteer";
 
 // types
 export type InputsAionfig = {
@@ -44,7 +45,7 @@ export type InputsAionfig = {
   faq: {
     id: string;
     quest: string;
-    response: string;
+    response: string | File;
   }[];
   file: File[];
 };
@@ -96,6 +97,12 @@ export default function AiConfigRegisterView() {
     if (ret.status === 200) {
       router.back();
     }
+  };
+
+  const onSearch = async (e: React.FormEvent) => {
+    const res = await axios.post("api/web-scraping", { teste: "teste" });
+
+    console.log(res);
   };
 
   const [advanced, setAdvanced] = useState(false);
@@ -150,7 +157,6 @@ export default function AiConfigRegisterView() {
                   const file = e.target.files[0];
                   setValue("file", [...watch("file"), file]);
                   console.log("watch", watch("file"));
-
                 }}
               />
               {/* errors will return when field validation fails  */}
@@ -160,10 +166,27 @@ export default function AiConfigRegisterView() {
               <Label className="text-sm text-gray-500 flex flex-col">
                 Arquivos:
                 {watch("file").map((item, index) => (
-                  <span key={index} className="text-primary-500"> {item.name}</span>
+                  <span key={index} className="text-primary-500">
+                    {" "}
+                    {item.name}
+                  </span>
                 ))}
               </Label>
             </InputLabel>
+          </div>
+          <div>
+            <InputLabel
+              label="Site"
+              description="Responda suas perguntas com seu web site"
+            >
+              <Input />
+            </InputLabel>
+            <Button
+              className="gap-2 font-bold bg-success-500/90 hover:bg-success-500"
+              onClick={onSearch}
+            >
+              Procurar
+            </Button>
           </div>
         </div>
         <div className="flex justify-center">
