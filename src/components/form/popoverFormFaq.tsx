@@ -15,13 +15,13 @@ type Props = {
   children: React.ReactNode
   onChange: (e: {
     quest: string
-    response: string
+    response: string | File
     id: string
   }) => void
   open: boolean
   setOpen: (e: boolean) => void
-  response: string
-  setResponse: (e: string) => void
+  response: string | File
+  setResponse: (e: string | File) => void
   quest: string
   setQuest: (e: string) => void
   questId?: string
@@ -88,15 +88,11 @@ export function PopoverFormFaq({
             </div>
           </div>
           {!arquivoOpen ?
-            <Input className="mb-4" value={response} onChange={(e) => setResponse(e.target.value)} /> :
+            <Input className="mb-4" value={response as string} onChange={(e) => setResponse(e.target.value)} /> :
             <Input className="mb-4" type="file" onChange={(e) => {
               if (!e.target.files) return
               const file = e.target.files[0]
-              const reader = new FileReader()
-              reader.readAsDataURL(file)
-              reader.onloadend = () => {
-                setResponse(reader.result as string)
-              }
+              setResponse(file)
             }} />}
           <span className="text-red-500">{errors}</span>
           <Button className={btn({ variant: questId ? "edit" : "default" })}
