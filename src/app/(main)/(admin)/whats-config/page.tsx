@@ -41,13 +41,13 @@ export default function AiConfig() {
 
       const res = await axios.get("/api/qrcode");
 
+      if (!res.data.qrCode) {
+        return;
+      }
+
       setReady(res.data.ready);
       setQrCode(res.data.qrCode);
       setLoading(false);
-
-      setReady(res.data.ready);
-
-      setQrCode(res.data.qrCode);
     }, 5000);
 
     const fetchData = async () => {
