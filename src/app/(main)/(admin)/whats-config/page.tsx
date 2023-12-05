@@ -71,7 +71,7 @@ export default function AiConfig() {
   });
 
   const onSubmit = async (data: Inputs) => {
-    console.log(data);
+    const res = await axios.post("/api/clients/whatsapp", data);
   };
 
   return (

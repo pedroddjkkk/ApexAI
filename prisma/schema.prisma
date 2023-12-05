@@ -8,13 +8,12 @@ datasource db {
 }
 
 model User {
-  id             String              @id @unique
+  id             String          @id @unique
   username       String
-  email          String              @unique
+  email          String          @unique
   auth_session   Session[]
   key            Key[]
   ai_config      AIConfig[]
-  bot_config     BotWhatsappConfig[]
   whatsappClient WhatsappClient?
 }
 
@@ -40,14 +39,14 @@ model Key {
 // banco AI config 
 
 model AIConfig {
-  id                String   @id @default(uuid())
-  user              User     @relation(references: [id], fields: [user_id], onDelete: Cascade)
-  created_at        DateTime @default(now())
-  updated_at        DateTime @updatedAt
+  id                String          @id @default(uuid())
+  user              User            @relation(references: [id], fields: [user_id], onDelete: Cascade)
+  created_at        DateTime        @default(now())
+  updated_at        DateTime        @updatedAt
   user_id           String
   name              String
-  sistema           String   @db.VarChar(3000)
-  faq               String   @db.VarChar(3000)
+  sistema           String          @db.VarChar(3000)
+  faq               String          @db.VarChar(3000)
   max_tokens        Int
   model             String
   temperature       Float
@@ -55,25 +54,18 @@ model AIConfig {
   top_p             Float
   frequency_penalty Float
   presence_penalty  Float
-}
-
-// banco bot whatssapp config
-model BotWhatsappConfig {
-  id         String   @id @default(uuid())
-  user       User     @relation(references: [id], fields: [user_id], onDelete: Cascade)
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-  user_id    String
-  name       String
+  WhatsappClient    WhatsappClient?
 }
 
 model WhatsappClient {
-  id         Int      @id @default(autoincrement())
-  active     Boolean  @default(true)
-  qrCode     String?  @db.MediumText()
-  ready      Boolean  @default(false)
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-  user_id    String   @unique
-  user       User     @relation(references: [id], fields: [user_id])
+  id           Int      @id @default(autoincrement())
+  active       Boolean  @default(true)
+  qrCode       String?  @db.MediumText()
+  ready        Boolean  @default(false)
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
+  user_id      String   @unique
+  user         User     @relation(references: [id], fields: [user_id])
+  ai_config    AIConfig @relation(fields: [ai_config_id], references: [id])
+  ai_config_id String   @unique
 }
