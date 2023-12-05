@@ -8,7 +8,7 @@ export async function GET(req: NextRequest) {
 
   if (!session) {
     return NextResponse.json({
-    }, {status: 401});
+    }, { status: 401 });
   }
 
   let whatsappClient = await prisma.whatsappClient.findFirst({
@@ -18,11 +18,9 @@ export async function GET(req: NextRequest) {
   });
 
   if (!whatsappClient) {
-    whatsappClient = await prisma.whatsappClient.create({
-      data: {
-        user_id: session.user.userId,
-      },
-    });
+    return NextResponse.json({
+      message: "No Whatsapp Client Found"
+    })
   } else if (whatsappClient.qrCode) {
     return NextResponse.json({
       qrCode: whatsappClient.qrCode,
