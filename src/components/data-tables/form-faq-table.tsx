@@ -15,7 +15,7 @@ type Props = {
   setValue: UseFormSetValue<InputsAionfig>
 }
 
-export default function FacDataTables({
+export default function FaqDataTables({
   watch,
   setValue
 }: Props) {

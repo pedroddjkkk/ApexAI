@@ -22,7 +22,8 @@ import TabsForm from "@/components/inputs/trabs-form";
 import { Backpack, Plus, SendToBack, SkipBack, Undo2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import FacDataTables from "@/components/data-tables/form-faq-table";
+import FaqDataTables from "@/components/data-tables/form-faq-table";
+import { Label } from "@/components/ui/label";
 
 // types
 export type InputsAionfig = {
@@ -45,6 +46,7 @@ export type InputsAionfig = {
     quest: string;
     response: string;
   }[];
+  file: File[];
 };
 
 export default function AiConfigRegisterView() {
@@ -70,6 +72,7 @@ export default function AiConfigRegisterView() {
       frequency_penalty: 1,
       presence_penalty: 1,
       faq: [],
+      file: [],
     },
   });
 
@@ -134,6 +137,34 @@ export default function AiConfigRegisterView() {
               )}
             </InputLabel>
           </div>
+          {/* upload file */}
+          <div>
+            <InputLabel label="Arquivo" description="Envie arquivo.">
+              <Input
+                type="file"
+                {...register("file", { required: true })}
+                onChange={(e) => {
+                  if (!e.target.files) return;
+                  console.log("e.target.files", e.target.files);
+                  console.log("e.target.files[0]", e.target.files[0]);
+                  const file = e.target.files[0];
+                  setValue("file", [...watch("file"), file]);
+                  console.log("watch", watch("file"));
+
+                }}
+              />
+              {/* errors will return when field validation fails  */}
+              {errors.file && (
+                <span className="text-danger-500">{errors.file.message}</span>
+              )}
+              <Label className="text-sm text-gray-500 flex flex-col">
+                Arquivos:
+                {watch("file").map((item, index) => (
+                  <span key={index} className="text-primary-500"> {item.name}</span>
+                ))}
+              </Label>
+            </InputLabel>
+          </div>
         </div>
         <div className="flex justify-center">
           <InputLabel
@@ -172,6 +203,14 @@ export default function AiConfigRegisterView() {
             )}
           </InputLabel>
         </div>
+        <div className="pb-8">
+          <InputLabel
+            label="FAQ"
+            description="Adicione perguntas e respostas para sua AI."
+          >
+            <FaqDataTables setValue={setValue} watch={watch} />
+          </InputLabel>
+        </div>
         <SwitchLabel
           label="Configurações avançadas"
           value={advanced}
@@ -180,9 +219,6 @@ export default function AiConfigRegisterView() {
           }}
         />
         <div style={{ display: advanced ? "grid" : "none" }}>
-          <div className="pb-8">
-            <FacDataTables setValue={setValue} watch={watch} />
-          </div>
           <div
             className="
         grid md:grid-cols-2 sm:grid-cols-1
