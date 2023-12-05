@@ -32,16 +32,19 @@ export async function POST(req: NextRequest) {
     );
     pageContent = pageContent.replace(
       `<!DOCTYPE html>${headContent}</head>`,
-      `${pageTitle}<meta name="description" content="${descriptionContent}">${headContent}`
+      `Nome:${pageTitle};DescricaoHead:${descriptionContent}${headContent}`
     );
   }
 
-  console.log(pageContent);
+  // console.log(pageContent);
 
   await browser.close();
 
-  return NextResponse.json({
-    status: 200,
-    mensagem: "deu bom!",
-  });
+  return NextResponse.json(
+    {
+      nome: pageTitle,
+      descricaoHead: descriptionContent,
+    },
+    { status: 200 }
+  );
 }
