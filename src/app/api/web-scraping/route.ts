@@ -5,8 +5,16 @@ export async function POST(req: NextRequest) {
   const browser = await puppeteer.launch({ headless: true });
   const page = await browser.newPage();
 
-  await page.goto("http://localhost:3000/");
+  await page.goto("https://www.npmjs.com/package/puppeteer");
   // await page.screenshot({ path: "example.png" });
+
+  // Use o método evaluate para obter o conteúdo da meta description
+  const descriptionContent = await page.evaluate(() => {
+    const metaDescriptionTag = document.querySelector(
+      'meta[name="description"]'
+    );
+    return metaDescriptionTag ? metaDescriptionTag.getAttribute("content") : "";
+  });
 
   let pageContent = await page.content();
 
@@ -18,11 +26,11 @@ export async function POST(req: NextRequest) {
   const titleMatch = pageContent.match(/<title>(.*?)<\/title>/);
   const pageTitle = titleMatch ? titleMatch[1] : "";
 
-  // Salva o conteúdo da tag <meta name="description">
-  const descriptionMatch = pageContent.match(
-    /<meta\s+name="description"\s+content="(.*?)"\s*\/?>/
-  );
-  const descriptionContent = descriptionMatch ? descriptionMatch[1] : "";
+  // // Salva o conteúdo da tag <meta name="description">
+  // const descriptionMatch = pageContent.match(
+  //   /<meta\s+name="description"\s+content="(.*?)"\s*\/?>/
+  // );
+  // const descriptionContent = descriptionMatch ? descriptionMatch[1] : "";
 
   // Remove o conteúdo entre as tags <head> e </head>
   if (startIndex !== -1 && endIndex !== -1) {
