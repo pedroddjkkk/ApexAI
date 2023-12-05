@@ -59,6 +59,7 @@ model AIConfig {
 
 model WhatsappClient {
   id           Int      @id @default(autoincrement())
+  name         String
   active       Boolean  @default(true)
   qrCode       String?  @db.MediumText()
   ready        Boolean  @default(false)
