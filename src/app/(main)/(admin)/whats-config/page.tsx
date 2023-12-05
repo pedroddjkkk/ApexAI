@@ -15,19 +15,13 @@ import { BeatLoader } from "react-spinners";
 import { Combobox } from "@/components/ui/combobox";
 import { z } from "zod";
 import { Prisma } from "@prisma/client";
+import { createWhatsappClientSchema } from "@/lib/schema/whatsapp/client";
 
 // types
 type Inputs = {
   name: string;
   configId: string;
 };
-
-export const createWhatsappClientSchema = z.object({
-  name: z.string()
-    .min(3, "Nome deve ter no mínimo 3 caracteres")
-    .max(255, "Nome deve ter no máximo 255 caracteres"),
-  configId: z.string()
-})
 
 export default function AiConfig() {
   const [qrCode, setQrCode] = useState("");
@@ -114,6 +108,8 @@ export default function AiConfig() {
                   }
                 }) : []}
                 onSelect={(value) => {
+                  console.log(value);
+                  
                   setValue("configId", value);
                 }}
                 placeholder="Configuração de IA"
