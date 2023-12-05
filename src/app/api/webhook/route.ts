@@ -17,6 +17,21 @@ export async function POST(req: NextRequest) {
     case "message":
       const messages = body.messages as Message[];
 
+      const whatsappConfig = await prisma.whatsappClient.findUnique({
+        where: {
+          id: body.clientId,
+        },
+        include: {
+          ai_config: true,
+        }
+      });
+
+      if (!whatsappConfig || !whatsappConfig.active) {
+        return NextResponse.json("Client not active");
+      } else if (!whatsappConfig.ai_config) {
+        return NextResponse.json("Client not configured yet");
+      }
+
       const chat: ChatCompletionMessageParam[] = messages.map((message) => ({
         content: message.body,
         role: message.fromMe ? "assistant" : "user",
@@ -24,7 +39,7 @@ export async function POST(req: NextRequest) {
 
       chat.unshift({
         content:
-          "Você é um atendente virtual, você irá atender clientes da empresa Boa Pizza, a empresa é localizada na R. Manoel Ribas, 2570 - Jardim Ouro Branco, Paranavaí - PR, 87704-000. O dia de pizza abre das 18:00 até 23:00 sempre. O telefone é (44) 3422-3010. O pedido pode ser entregue ou retirado no balcão. O cardápio pode ser acessado por esse link https://www.boapizza.com.br/cardapio.html. O horário atual é " +
+          "Você é um atendente virtual, aqui estão os dados da empresa que você vai atender os clientes " + whatsappConfig.ai_config.sistema + ".\n\n" +
           new Date().toLocaleTimeString() +
           " . Não responda em Markdown, lembre-se que as respostas serão enviadas por whatsapp, então markdow não vai funcionar.",
         role: "system",
