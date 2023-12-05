@@ -18,9 +18,11 @@ export async function GET(req: NextRequest) {
   });
 
   if (!whatsappClient) {
-    return NextResponse.json({
-      message: "No Whatsapp Client Found"
-    })
+    whatsappClient = await prisma.whatsappClient.create({
+      data: {
+        user_id: session.user.userId,
+      },
+    });
   } else if (whatsappClient.qrCode) {
     return NextResponse.json({
       qrCode: whatsappClient.qrCode,
