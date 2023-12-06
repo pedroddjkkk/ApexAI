@@ -6,6 +6,8 @@ import HomeSection1 from './home-section-1';
 import HomeSection2 from './home-section-2';
 import HomeSection3 from './home-section-3';
 import HomeSection4 from './home-section-4';
+import Link from 'next/link';
+import HomeSection5 from './home-section-5';
 
 type Props = {
 
@@ -31,6 +33,7 @@ export default function HomeView({ }: Props) {
           <HomeSection4 />
           {/* Planos */}
           {/* section 5 */}
+          <HomeSection5 />
           <div>
           </div>
           {/* vantagem */}
