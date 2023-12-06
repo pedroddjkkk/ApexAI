@@ -13,11 +13,20 @@ type PropsCreate = {
   frequency_penalty: number;
   presence_penalty: number;
   faq: string;
+  files:{
+    name: string;
+    url: string;
+  }[]
 }
 
 export function createAiConfig(data: PropsCreate): Promise<AIConfig> {
   return prisma.aIConfig.create({
-    data
+    data: {
+      ...data,
+      files: {
+        create: data.files
+      }
+    }
   });
 }
 
@@ -50,7 +59,12 @@ export function updateAiConfig(id: string, data: PropsCreate): Promise<AIConfig 
     where: {
       id
     },
-    data
+    data: {
+      ...data,
+      files: {
+        create: data.files
+      }
+    }
   });
 }
 

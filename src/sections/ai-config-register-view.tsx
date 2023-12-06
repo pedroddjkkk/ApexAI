@@ -10,7 +10,7 @@ import { Slider } from "@/components/ui/slider";
 import { Combobox } from "@/components/ui/combobox";
 
 // hook form
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { createAiConfigSchema } from "@/lib/schema/ai-config";
 
 // zod
@@ -19,12 +19,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 // axios
 import axios from "axios";
 import TabsForm from "@/components/inputs/trabs-form";
-import { Backpack, Plus, SendToBack, SkipBack, Undo2 } from "lucide-react";
+import { Undo2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import FaqDataTables from "@/components/data-tables/form-faq-table";
 import { Label } from "@/components/ui/label";
-import puppeteer from "puppeteer";
+import { MdDeleteForever } from "react-icons/md";
 
 // types
 export type InputsAionfig = {
@@ -79,7 +79,8 @@ export default function AiConfigRegisterView() {
 
   const onSubmit = async (data: InputsAionfig) => {
     // trsforma o array em uma string com pegunta e respostas
-    const ret = await axios.post("/api/ai-config", {
+
+    const objtData = {
       ...data,
       sistema: data.sistema
         .map((item) => {
@@ -89,11 +90,35 @@ export default function AiConfigRegisterView() {
         .trim(),
       faq: data.faq
         .map((item) => {
+          if (item.response instanceof File) return {
+            quest: item.quest,
+            response: item.response
+          };
           return `${item.quest}: ${item.response}`;
         })
         .join("\n")
         .trim(),
+    }
+
+    const formData = new FormData();
+
+    formData.append("name", objtData.name);
+    formData.append("sistema", objtData.sistema);
+    formData.append("max_tokens", objtData.max_tokens.toString());
+    formData.append("model", objtData.model);
+    formData.append("temperature", objtData.temperature.toString());
+    formData.append("stop", objtData.stop);
+    formData.append("top_p", objtData.top_p.toString());
+    formData.append("frequency_penalty", objtData.frequency_penalty.toString());
+    formData.append("presence_penalty", objtData.presence_penalty.toString());
+    // envia um array de arquivos
+    objtData.file.forEach((item) => {
+      formData.append("file", item);
     });
+    formData.append("faq", objtData.faq);
+
+
+    const ret = await axios.post("/api/ai-config", formData);
     if (ret.status === 200) {
       router.back();
     }
@@ -149,11 +174,8 @@ export default function AiConfigRegisterView() {
             <InputLabel label="Arquivo" description="Envie arquivo.">
               <Input
                 type="file"
-                {...register("file", { required: true })}
                 onChange={(e) => {
                   if (!e.target.files) return;
-                  console.log("e.target.files", e.target.files);
-                  console.log("e.target.files[0]", e.target.files[0]);
                   const file = e.target.files[0];
                   setValue("file", [...watch("file"), file]);
                   console.log("watch", watch("file"));
@@ -166,9 +188,10 @@ export default function AiConfigRegisterView() {
               <Label className="text-sm text-gray-500 flex flex-col">
                 Arquivos:
                 {watch("file").map((item, index) => (
-                  <span key={index} className="text-primary-500">
+                  <span key={index} className="text-primary-500 flex flex-row items-center gap-2" onClick={(e) => setValue("file", watch("file").filter((e) => e.name != item.name))}>
+                    <MdDeleteForever size={18} />
                     {" "}
-                    {item.name}
+                    {item?.name}
                   </span>
                 ))}
               </Label>

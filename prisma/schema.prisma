@@ -54,7 +54,18 @@ model AIConfig {
   top_p             Float
   frequency_penalty Float
   presence_penalty  Float
+  files             File[]
   WhatsappClient    WhatsappClient?
+}
+
+model File {
+  id           String   @id @default(uuid())
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
+  name         String
+  url          String
+  ai_config    AIConfig @relation(references: [id], fields: [ai_config_id], onDelete: Cascade)
+  ai_config_id String
 }
 
 model WhatsappClient {
