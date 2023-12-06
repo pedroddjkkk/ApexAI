@@ -76,6 +76,8 @@ export default function AiConfig() {
       const whatsappConfig: WhatsappClientData = data.whatsappConfig;
 
       if (whatsappConfig) {
+        console.log(whatsappConfig);
+        
         setValue("name", whatsappConfig.name ?? "");
         setValue("configId", whatsappConfig.ai_config?.id ?? "");
       }

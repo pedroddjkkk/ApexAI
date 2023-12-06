@@ -48,6 +48,9 @@ export async function GET(req: NextRequest) {
   const whatsappConfig = await prisma.whatsappClient.findFirst({
     where: {
       user_id: session.user.userId,
+    },
+    include: {
+      ai_config: true,
     }
   })
 
