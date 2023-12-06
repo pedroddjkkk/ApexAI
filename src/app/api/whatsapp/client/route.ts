@@ -36,3 +36,22 @@ export async function POST(req: NextRequest) {
     whatsappConfig
   })
 }
+
+export async function GET(req: NextRequest) {
+  const session = await getServerSideSession();
+
+  if (!session) {
+    return NextResponse.json({
+    }, { status: 401 });
+  }
+
+  const whatsappConfig = await prisma.whatsappClient.findFirst({
+    where: {
+      user_id: session.user.userId,
+    }
+  })
+
+  return NextResponse.json({
+    whatsappConfig
+  })
+}
