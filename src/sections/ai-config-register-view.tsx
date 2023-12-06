@@ -125,7 +125,9 @@ export default function AiConfigRegisterView() {
   };
 
   const onSearch = async (e: React.FormEvent) => {
-    const res = await axios.post("api/web-scraping", { teste: "teste" });
+    const res = await axios.post("/api/web-scraping", {
+      teste: "teste",
+    });
 
     console.log(res);
   };
@@ -150,6 +152,22 @@ export default function AiConfigRegisterView() {
             Voltar
           </Button>
         </Link>
+      </div>
+      <div className="grid md:grid-cols-2 sm:grid-cols-1 flex-col px-[calc(8px+1rem)] lg:px-28 xl:px-32 mt-4 gap-y-8 py-8">
+        <div>
+          <InputLabel
+            label="Site"
+            description="Responda suas perguntas com seu web site"
+          >
+            <Input />
+          </InputLabel>
+          <Button
+            className="gap-2 font-bold bg-success-500/90 hover:bg-success-500"
+            onClick={onSearch}
+          >
+            Procurar
+          </Button>
+        </div>
       </div>
       <form
         onSubmit={handleSubmit(onSubmit)}
@@ -197,7 +215,7 @@ export default function AiConfigRegisterView() {
               </Label>
             </InputLabel>
           </div>
-          <div>
+          {/* <div>
             <InputLabel
               label="Site"
               description="Responda suas perguntas com seu web site"
@@ -210,7 +228,7 @@ export default function AiConfigRegisterView() {
             >
               Procurar
             </Button>
-          </div>
+          </div> */}
         </div>
         <div className="flex justify-center">
           <InputLabel
