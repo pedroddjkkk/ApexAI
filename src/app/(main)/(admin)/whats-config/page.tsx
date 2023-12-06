@@ -77,7 +77,7 @@ export default function AiConfig() {
 
       if (whatsappConfig) {
         console.log(whatsappConfig);
-        
+
         setValue("name", whatsappConfig.name ?? "");
         setValue("configId", whatsappConfig.ai_config?.id ?? "");
       }
@@ -128,10 +128,9 @@ export default function AiConfig() {
                   }
                 }) : []}
                 onSelect={(value) => {
-                  console.log(value);
-
                   setValue("configId", value);
                 }}
+                value={watch("configId")}
                 placeholder="Configuração de IA"
               />
               {errors.configId && (
