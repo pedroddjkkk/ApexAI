@@ -3,10 +3,13 @@ import puppeteer from "puppeteer";
 import cheerio from "cheerio";
 
 export async function POST(req: NextRequest) {
+  const body = await req.json();
+  const site = body.site;
+
   const browser = await puppeteer.launch({ headless: true });
   const page = await browser.newPage();
 
-  await page.goto("http://localhost:3000/");
+  await page.goto(site);
   // await page.screenshot({ path: "example.png" });
 
   // Use o método evaluate para obter o conteúdo da meta description
