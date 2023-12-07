@@ -130,6 +130,8 @@ export default function AiConfigRegisterView() {
       site: watch("site"),
     });
 
+    setValue("name", res.data.nome);
+
     console.log(res);
   };
 

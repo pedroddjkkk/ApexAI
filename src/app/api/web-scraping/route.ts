@@ -6,6 +6,15 @@ export async function POST(req: NextRequest) {
   const body = await req.json();
   const site = body.site;
 
+  if (!site) {
+    return NextResponse.json(
+      { message: "Campo vazio" },
+      {
+        status: 401,
+      }
+    );
+  }
+
   const browser = await puppeteer.launch({ headless: true });
   const page = await browser.newPage();
 
