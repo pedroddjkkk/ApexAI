@@ -23,11 +23,31 @@ type Inputs = {
   configId: string;
 };
 
+type WhatsappClientData = Prisma.WhatsappClientGetPayload<{
+  include: {
+    ai_config: true;
+  };
+}>;
+
 export default function AiConfig() {
   const [qrCode, setQrCode] = useState("");
   const [loading, setLoading] = useState(true);
   const [ready, setReady] = useState(false);
   const [aiConfigs, setAiConfigs] = useState<Prisma.AIConfigGetPayload<{}>[]>();
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    setValue,
+    formState: { errors },
+  } = useForm<Inputs>({
+    resolver: zodResolver(createWhatsappClientSchema),
+  });
+
+  const onSubmit = async (data: Inputs) => {
+    const res = await axios.post("/api/whatsapp/clients", data);
+  };
 
   useEffect(() => {
     const interval = setInterval(async () => {
@@ -44,29 +64,29 @@ export default function AiConfig() {
       setLoading(false);
     }, 5000);
 
-    const fetchData = async () => {
+    const fetchAiConfigs = async () => {
       const res = await axios.get("/api/ai-config");
 
       setAiConfigs(res.data)
     }
 
-    fetchData();
+    const fetchClient = async () => {
+      const { data } = await axios.get("/api/whatsapp/client");
+
+      const whatsappConfig: WhatsappClientData = data.whatsappConfig;
+
+      if (whatsappConfig) {
+        console.log(whatsappConfig);
+
+        setValue("name", whatsappConfig.name ?? "");
+        setValue("configId", whatsappConfig.ai_config?.id ?? "");
+      }
+    }
+
+    fetchAiConfigs();
+    fetchClient();
     return () => clearInterval(interval);
-  }, []);
-
-  const {
-    register,
-    handleSubmit,
-    watch,
-    setValue,
-    formState: { errors },
-  } = useForm<Inputs>({
-    resolver: zodResolver(createWhatsappClientSchema),
-  });
-
-  const onSubmit = async (data: Inputs) => {
-    const res = await axios.post("/api/clients/whatsapp", data);
-  };
+  }, [setValue]);
 
   return (
     <main>
@@ -108,10 +128,9 @@ export default function AiConfig() {
                   }
                 }) : []}
                 onSelect={(value) => {
-                  console.log(value);
-                  
                   setValue("configId", value);
                 }}
+                value={watch("configId")}
                 placeholder="Configuração de IA"
               />
               {errors.configId && (

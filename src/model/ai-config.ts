@@ -1,7 +1,7 @@
 import prisma from "@/lib/db";
 import { AIConfig } from "@prisma/client";
 
-type PropsCreate = {
+export type PropsCreateAiConfig = {
   user_id: string;
   name: string;
   sistema: string;
@@ -19,7 +19,7 @@ type PropsCreate = {
   }[]
 }
 
-export function createAiConfig(data: PropsCreate): Promise<AIConfig> {
+export function createAiConfig(data: PropsCreateAiConfig): Promise<AIConfig> {
   return prisma.aIConfig.create({
     data: {
       ...data,
@@ -54,7 +54,7 @@ export function deleteAiConfig(id: string): Promise<AIConfig | null> {
   });
 }
 
-export function updateAiConfig(id: string, data: PropsCreate): Promise<AIConfig | null> {
+export function updateAiConfig(id: string, data: PropsCreateAiConfig): Promise<AIConfig | null> {
   return prisma.aIConfig.update({
     where: {
       id

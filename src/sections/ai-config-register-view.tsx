@@ -77,47 +77,48 @@ export default function AiConfigRegisterView() {
     },
   });
 
-  const onSubmit = async (data: InputsAionfig) => {
-    // trsforma o array em uma string com pegunta e respostas
+  useEffect(() => {
+    console.log(errors);
+  }, [errors]);
 
-    const objtData = {
+
+  const onSubmit = async (data: InputsAionfig) => {
+
+    const { file, ...objData } = {
       ...data,
       sistema: data.sistema
         .map((item) => {
           return `${item.quest}: ${item.response}`;
         })
         .join("\n")
-        .trim(),
-      faq: data.faq
-        .map((item) => {
-          if (item.response instanceof File) return {
-            quest: item.quest,
-            response: item.response
-          };
-          return `${item.quest}: ${item.response}`;
-        })
-        .join("\n")
-        .trim(),
-    }
+        .trim()
+    };
 
     const formData = new FormData();
 
-    formData.append("name", objtData.name);
-    formData.append("sistema", objtData.sistema);
-    formData.append("max_tokens", objtData.max_tokens.toString());
-    formData.append("model", objtData.model);
-    formData.append("temperature", objtData.temperature.toString());
-    formData.append("stop", objtData.stop);
-    formData.append("top_p", objtData.top_p.toString());
-    formData.append("frequency_penalty", objtData.frequency_penalty.toString());
-    formData.append("presence_penalty", objtData.presence_penalty.toString());
     // envia um array de arquivos
-    objtData.file.forEach((item) => {
+    data.file?.forEach((item) => {
       formData.append("file", item);
     });
-    formData.append("faq", objtData.faq);
+
+    // valida se o faq tem um arquivo na resposta
+
+    const faq = data.faq.map((item) => {
+      if (item.response instanceof File) {
+        console.log("item.response", item.response);
+        formData.append("fileFaq", item.response);
+        return {
+          ...item,
+          response: item.response.name,
+        };
+      }
+      return item;
+    });
+
+    console.log("faq", faq);
 
 
+    formData.append("data", JSON.stringify({ ...objData, faq }));
     const ret = await axios.post("/api/ai-config", formData);
     if (ret.status === 200) {
       router.back();
@@ -125,6 +126,7 @@ export default function AiConfigRegisterView() {
   };
 
   const onSearch = async (e: React.FormEvent) => {
+    e.preventDefault();
     const res = await axios.post("/api/web-scraping", {
       teste: "teste",
     });
@@ -153,22 +155,6 @@ export default function AiConfigRegisterView() {
           </Button>
         </Link>
       </div>
-      <div className="grid md:grid-cols-2 sm:grid-cols-1 flex-col px-[calc(8px+1rem)] lg:px-28 xl:px-32 mt-4 gap-y-8 py-8">
-        <div>
-          <InputLabel
-            label="Site"
-            description="Responda suas perguntas com seu web site"
-          >
-            <Input />
-          </InputLabel>
-          <Button
-            className="gap-2 font-bold bg-success-500/90 hover:bg-success-500"
-            onClick={onSearch}
-          >
-            Procurar
-          </Button>
-        </div>
-      </div>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col px-[calc(8px+1rem)] lg:px-28 xl:px-32 mt-4 gap-y-8 py-8"
@@ -187,48 +173,24 @@ export default function AiConfigRegisterView() {
               )}
             </InputLabel>
           </div>
-          {/* upload file */}
-          <div>
-            <InputLabel label="Arquivo" description="Envie arquivo.">
-              <Input
-                type="file"
-                onChange={(e) => {
-                  if (!e.target.files) return;
-                  const file = e.target.files[0];
-                  setValue("file", [...watch("file"), file]);
-                  console.log("watch", watch("file"));
-                }}
-              />
-              {/* errors will return when field validation fails  */}
-              {errors.file && (
-                <span className="text-danger-500">{errors.file.message}</span>
-              )}
-              <Label className="text-sm text-gray-500 flex flex-col">
-                Arquivos:
-                {watch("file").map((item, index) => (
-                  <span key={index} className="text-primary-500 flex flex-row items-center gap-2" onClick={(e) => setValue("file", watch("file").filter((e) => e.name != item.name))}>
-                    <MdDeleteForever size={18} />
-                    {" "}
-                    {item?.name}
-                  </span>
-                ))}
-              </Label>
-            </InputLabel>
-          </div>
-          {/* <div>
+          <div className="flex gap-2 ">
             <InputLabel
               label="Site"
               description="Responda suas perguntas com seu web site"
             >
-              <Input />
+              <div className="flex gap-2">
+                <Input />
+                <div>
+                  <Button
+                    className="bg-primary-500 hover:bg-primary-500/75 font-bold"
+                    onClick={onSearch}
+                  >
+                    Procurar
+                  </Button>
+                </div>
+              </div>
             </InputLabel>
-            <Button
-              className="gap-2 font-bold bg-success-500/90 hover:bg-success-500"
-              onClick={onSearch}
-            >
-              Procurar
-            </Button>
-          </div> */}
+          </div>
         </div>
         <div className="flex justify-center">
           <InputLabel
@@ -267,14 +229,6 @@ export default function AiConfigRegisterView() {
             )}
           </InputLabel>
         </div>
-        <div className="pb-8">
-          <InputLabel
-            label="FAQ"
-            description="Adicione perguntas e respostas para sua AI."
-          >
-            <FaqDataTables setValue={setValue} watch={watch} />
-          </InputLabel>
-        </div>
         <SwitchLabel
           label="Configurações avançadas"
           value={advanced}
@@ -283,12 +237,47 @@ export default function AiConfigRegisterView() {
           }}
         />
         <div style={{ display: advanced ? "grid" : "none" }}>
+          <div className="pb-8">
+            <InputLabel
+              label="FAQ"
+              description="Adicione perguntas e respostas para sua AI."
+            >
+              <FaqDataTables setValue={setValue} watch={watch} />
+            </InputLabel>
+          </div>
           <div
             className="
         grid md:grid-cols-2 sm:grid-cols-1
         lg:gap-x-16 xl:gap-x-32 md:gap-x-8
         gap-y-8"
           >
+            {/* upload file */}
+            <InputLabel label="Arquivo" description="Envie arquivo.">
+              <Input
+                type="file"
+                accept=".jpg, .jpeg, .png, .pdf, .xlsx, .csv"
+                onChange={(e) => {
+                  if (!e.target.files) return;
+                  const file = e.target.files[0];
+                  setValue("file", [...watch("file"), file]);
+                  console.log("watch", watch("file"));
+                }}
+              />
+              {/* errors will return when field validation fails  */}
+              {errors.file && (
+                <span className="text-danger-500">{errors.file.message}</span>
+              )}
+              <Label className="text-sm text-gray-500 flex flex-col">
+                Arquivos:
+                {watch("file").map((item, index) => (
+                  <span key={index} className="text-primary-500 flex flex-row items-center gap-2" onClick={(e) => setValue("file", watch("file").filter((e) => e.name != item.name))}>
+                    <MdDeleteForever size={18} />
+                    {" "}
+                    {item?.name}
+                  </span>
+                ))}
+              </Label>
+            </InputLabel>
             <InputLabel
               label="Modelo"
               description="Escolha o modelo de AI que deseja usar, este parametro reflete no preço por tokens"

@@ -6,11 +6,13 @@ export const createAiConfigSchema = z.object({
     .string()
     .min(3, "Nome deve ter no mínimo 3 caracteres")
     .max(255, "Nome deve ter no máximo 255 caracteres"),
-  sistema: z.array(z.object({
-    id: z.string(),
-    quest: z.string(),
-    response: z.string(),
-  })),
+  sistema: z.array(
+    z.object({
+      id: z.string(),
+      quest: z.string(),
+      response: z.string(),
+    })
+  ),
   max_tokens: z.number().optional(),
   model: z.string().optional(),
   temperature: z.number().optional(),
@@ -18,22 +20,20 @@ export const createAiConfigSchema = z.object({
   top_p: z.number().optional(),
   frequency_penalty: z.number().optional(),
   presence_penalty: z.number().optional(),
-  faq: z.array(z.object({
-    id: z.string(),
-    quest: z.string(),
-    response: z
-    .instanceof(File)
-    .refine((file) => {
+  faq: z.array(
+    z.object({
+      id: z.string(),
+      quest: z.string(),
+      response: z.string().or(
+        z.instanceof(File).refine((file) => {
+          return file.size < 1000000 * 5;
+        }, "O arquivo deve ter no máximo 5MB")
+      ),
+    })
+  ),
+  file: z.array(
+    z.instanceof(File).refine((file) => {
       return file.size < 1000000 * 5;
     }, "O arquivo deve ter no máximo 5MB")
-    || z.string()
-    ,
-  })),
-  file: z
-    .array(z
-      .instanceof(File)
-      .refine((file) => {
-        return file.size < 1000000 * 5;
-      }, "O arquivo deve ter no máximo 5MB")
-    )
+  ),
 });

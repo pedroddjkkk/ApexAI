@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
       if (!whatsappConfig || !whatsappConfig.active) {
         return NextResponse.json("Client not active");
       } else if (!whatsappConfig.ai_config) {
-        return NextResponse.json("Client not configured yet");
+        return NextResponse.json("Client not configured");
       }
 
       const chat: ChatCompletionMessageParam[] = messages.map((message) => ({
@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
         content:
           "Você é um atendente virtual, aqui estão os dados da empresa que você vai atender os clientes " + whatsappConfig.ai_config.sistema + ".\n\n" +
           new Date().toLocaleTimeString() +
-          " . Não responda em Markdown, lembre-se que as respostas serão enviadas por whatsapp, então markdow não vai funcionar.",
+          " . Não responda em Markdown, lembre-se que as respostas serão enviadas por whatsapp, então markdow não vai funcionar. Tente ser o mais breve possivel não escreva nada além no necessário, envie emojis. Não responda perguntas fora do escopo comercial da empresa",
         role: "system",
       });
 
