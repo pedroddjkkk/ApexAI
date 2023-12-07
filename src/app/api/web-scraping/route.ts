@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import puppeteer from "puppeteer";
+import cheerio from "cheerio";
 
 export async function POST(req: NextRequest) {
   const browser = await puppeteer.launch({ headless: true });
   const page = await browser.newPage();
 
-  await page.goto("https://www.npmjs.com/package/puppeteer");
+  await page.goto("http://localhost:3000/");
   // await page.screenshot({ path: "example.png" });
 
   // Use o método evaluate para obter o conteúdo da meta description
@@ -26,12 +27,6 @@ export async function POST(req: NextRequest) {
   const titleMatch = pageContent.match(/<title>(.*?)<\/title>/);
   const pageTitle = titleMatch ? titleMatch[1] : "";
 
-  // // Salva o conteúdo da tag <meta name="description">
-  // const descriptionMatch = pageContent.match(
-  //   /<meta\s+name="description"\s+content="(.*?)"\s*\/?>/
-  // );
-  // const descriptionContent = descriptionMatch ? descriptionMatch[1] : "";
-
   // Remove o conteúdo entre as tags <head> e </head>
   if (startIndex !== -1 && endIndex !== -1) {
     const headContent = pageContent.substring(
@@ -44,7 +39,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // console.log(pageContent);
+  console.log(pageContent);
 
   await browser.close();
 
