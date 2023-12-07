@@ -7,7 +7,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { cva, type VariantProps } from "class-variance-authority"
 import { Checkbox } from "../ui/checkbox";
 
@@ -63,6 +63,10 @@ export function PopoverFormFaq({
 
   const [arquivoOpen, setArquivoOpen] = useState(false)
 
+  useEffect(() => {
+    setResponse('')
+  }, [arquivoOpen])
+
   return (
     <Popover open={open} onOpenChange={(e) => {
       if (!e) {
@@ -72,6 +76,7 @@ export function PopoverFormFaq({
         setQuestId('')
       }
       setOpen(e)
+      setArquivoOpen(false)
     }}>
       <PopoverTrigger asChild>
         {children}
@@ -89,11 +94,12 @@ export function PopoverFormFaq({
           </div>
           {!arquivoOpen ?
             <Input className="mb-4" value={response as string} onChange={(e) => setResponse(e.target.value)} /> :
-            <Input className="mb-4" type="file" onChange={(e) => {
+            <Input className="mb-4" type="file" accept=".jpg, .jpeg, .png, .pdf, .xlsx, .csv" onChange={(e) => {
               if (!e.target.files) return
               const file = e.target.files[0]
               setResponse(file)
-            }} />}
+            }}
+            />}
           <span className="text-red-500">{errors}</span>
           <Button className={btn({ variant: questId ? "edit" : "default" })}
             onClick={() => {

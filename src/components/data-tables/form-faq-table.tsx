@@ -22,13 +22,13 @@ export default function FaqDataTables({
 
   const [open, setOpen] = useState(false)
 
-  const [response, setResponse] = useState('')
+  const [response, setResponse] = useState<File | string>('')
   const [quest, setQuest] = useState('')
   const [questId, setQuestId] = useState('')
   const [pgFaq, setPgFaq] = useState(0);
 
   return (
-    <div className="border-input border-[1px] rounded-lg p-6 gap-4 flex flex-col">
+    <div className="gap-4 flex flex-col">
       <div className="gap-4 flex">
         <PopoverFormFaq
           open={open}
@@ -62,77 +62,86 @@ export default function FaqDataTables({
           </Button>
         </PopoverFormFaq>
       </div>
-      <div className="rounded-t-lg border-input border-[1px] ">
-        <Table >
-          <TableHeader>
-            <TableRow>
-              <TableHead className='lg:min-w-[300px] md:min-w-[300px] min-w-[0px]'>Perguntas</TableHead>
-              <TableHead>Respostas</TableHead>
-              <TableHead className="w-[140px] text-center">Ações</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {watch("faq")
-              .slice(pgFaq, pgFaq + 5)
-              .map((item, index) => (
-                <TableRow key={index}>
-                  <TableCell className="font-medium">
-                    {item.quest}
-                  </TableCell>
-                  <TableCell>
-                    {item.response}
-                  </TableCell>
-                  <TableCell className="flex gap-1">
-                    <Button className="bg-red-500 hover:bg-red-700" onClick={(e) => {
-                      e.preventDefault()
-                      setValue('faq', watch('faq').filter((itemFaq) => itemFaq.id !== item.id))
-                    }}>
-                      <AiOutlineDelete size={20} />
-                    </Button>
-                    <Button className="bg-blue-500 hover:bg-blue-700"
-                      onClick={(e) => {
+      <div className='border-input border-[1px] rounded-lg '>
+        <div className="rounded-t-lg border-input border-b-[1px] ">
+
+          <Table >
+            <TableHeader>
+              <TableRow>
+                <TableHead className='lg:min-w-[300px] md:min-w-[300px] min-w-[0px]'>Perguntas</TableHead>
+                <TableHead>Respostas</TableHead>
+                <TableHead className="w-[140px] text-center">Ações</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {watch("faq").length > 0 && watch("faq")
+                .slice(pgFaq, pgFaq + 5)
+                .map((item, index) => (
+                  <TableRow key={index}>
+                    <TableCell className="font-medium">
+                      {item.quest}
+                    </TableCell>
+                    <TableCell>
+                      {/* valda se é um file e coloca o nome dese se for */}
+                      {typeof item.response === 'string' ? item.response : item.response.name}
+                    </TableCell>
+                    <TableCell className="flex gap-1 p-2">
+                      <Button className="bg-red-500 hover:bg-red-700" onClick={(e) => {
                         e.preventDefault()
-                        setQuest(item.quest)
-                        setResponse(item.response)
-                        setQuestId(item.id)
-                        setOpen(true)
-                      }}
-                    >
-                      <MdOutlineEdit size={20} />
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-          </TableBody>
-        </Table>
-      </div>
-      <div className="flex justify-end items-center gap-2">
-        <Button className="bg-transparent text-neutrals-500 hover:bg-black/5 rounded-full p-2 w-[40px] h-[40px]"
-          onClick={(e) => {
-            e.preventDefault();
-            if (pgFaq > 0) {
-              setPgFaq(pgFaq - 5);
-            }
-          }}
-        >
-          <FaChevronLeft size={20} />
-        </Button>
-        <div>
-          <span className="text-neutrals-500">
-            {/* 1 - 5 de 9 */}
-            {pgFaq + 1} - {pgFaq + 5} de {watch("faq").length}
-          </span>
+                        setValue('faq', watch('faq').filter((itemFaq) => itemFaq.id !== item.id))
+                      }}>
+                        <AiOutlineDelete size={20} />
+                      </Button>
+                      <Button className="bg-blue-500 hover:bg-blue-700"
+                        onClick={(e) => {
+                          e.preventDefault()
+                          setQuest(item.quest)
+                          typeof item.response === 'string' ? setResponse(item.response) : setResponse("")
+                          setQuestId(item.id)
+                          setOpen(true)
+                        }}
+                      >
+                        <MdOutlineEdit size={20} />
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+            </TableBody>
+          </Table>
+          {!watch("faq").length && <div className='flex justify-center items-center p-4'>
+            <span>
+              Não há dados...
+            </span>
+          </div>}
         </div>
-        <Button className="bg-transparent text-neutrals-500 hover:bg-black/5 rounded-full p-2 w-[40px] h-[40px]"
-          onClick={(e) => {
-            e.preventDefault();
-            if (pgFaq < watch("faq").length) {
-              setPgFaq(pgFaq + 5);
-            }
-          }}
-        >
-          <FaChevronRight size={20} />
-        </Button>
+        <div className="flex justify-end items-center gap-2">
+          <Button className="bg-transparent text-neutrals-500 hover:bg-black/5 rounded-full p-2 w-[40px] h-[40px]"
+            onClick={(e) => {
+              e.preventDefault();
+              if (pgFaq > 0) {
+                setPgFaq(pgFaq - 5);
+              }
+            }}
+          >
+            <FaChevronLeft size={20} />
+          </Button>
+          <div>
+            <span className="text-neutrals-500">
+              {/* 1 - 5 de 9 */}
+              {pgFaq + 1} - {pgFaq + 5} de {watch("faq").length}
+            </span>
+          </div>
+          <Button className="bg-transparent text-neutrals-500 hover:bg-black/5 rounded-full p-2 w-[40px] h-[40px]"
+            onClick={(e) => {
+              e.preventDefault();
+              if (pgFaq < watch("faq").length) {
+                setPgFaq(pgFaq + 5);
+              }
+            }}
+          >
+            <FaChevronRight size={20} />
+          </Button>
+        </div>
       </div>
     </div>
   )

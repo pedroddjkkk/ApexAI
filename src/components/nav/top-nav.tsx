@@ -9,8 +9,8 @@ interface PropTypes {
 export default function TopNav({ onMenu, menu }: PropTypes) {
   return (
     <>
-      <div className='h-[100px] t-0 flex flex-row right-0 items-center justify-between px-8 fixed w-full lg:w-[calc(290vw-280px)] backdrop-blur-sm'></div>
-      <div className='h-[100px] t-0 flex flex-row right-0 items-center justify-between px-8 fixed w-full lg:w-[calc(100vw-280px)]'>
+      <div className='h-[100px] t-0 flex flex-row right-0 items-center justify-between px-8 fixed w-full lg:w-[calc(100vw-290px)] backdrop-blur-sm'></div>
+      <div className='h-[100px] t-0 flex flex-row right-0 items-center justify-between px-8 fixed w-full lg:w-[calc(100vw-290px)]'>
         <div className='flex flex-row items-center gap-x-8'>
           <div className='lg:hidden drop-shadow-lg rounded-full w-[50px] h-[50px] bg-white flex items-center justify-center cursor-pointer'>
             <Menu size={28} onClick={() => onMenu()} />
