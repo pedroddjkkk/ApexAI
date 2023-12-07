@@ -105,6 +105,7 @@ export default function AiConfigRegisterView() {
 
     const faq = data.faq.map((item) => {
       if (item.response instanceof File) {
+        console.log("item.response", item.response);
         formData.append("fileFaq", item.response);
         return {
           ...item,
@@ -113,6 +114,9 @@ export default function AiConfigRegisterView() {
       }
       return item;
     });
+
+    console.log("faq", faq);
+
 
     formData.append("data", JSON.stringify({ ...objData, faq }));
     const ret = await axios.post("/api/ai-config", formData);

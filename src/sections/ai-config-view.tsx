@@ -37,9 +37,9 @@ export default function AiConfigView({ AiConfigs }: Props) {
 
   const handleDelete = async (id: string) => {
     // delete
-    const ret = await axios.post(`/api/ai-config`,
-      { id: id, action: 'delete' }
-    ).then((e) => {
+    const form = new FormData();
+    form.append('data', JSON.stringify({ id, action: 'delete' }));
+    const ret = await axios.post(`/api/ai-config`, form).then((e) => {
       if (e.status === 200) {
         // update list
         updateData();
