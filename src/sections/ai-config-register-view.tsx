@@ -185,7 +185,7 @@ export default function AiConfigRegisterView() {
               <div className="flex gap-2">
                 <Input
                   {...register("site")}
-                  placeholder="Exemplo http://localhost:3000/"
+                  placeholder="Exemplo https://aipex.com.br/"
                 />
                 <div>
                   <Button
