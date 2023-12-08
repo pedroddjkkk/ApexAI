@@ -32,15 +32,16 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  console.log(response);
-  // await page.screenshot({ path: "example.png" });
-
   let pageContent = await page.content();
+  // console.log(pageContent)
+
+  // console.log(response);
+  // await page.screenshot({ path: "example.png" });
 
   const $ = cheerio.load(pageContent);
   const textContent = $("body").text();
 
-  // console.log(textContent);
+  console.log(textContent);
 
   await browser.close();
 
