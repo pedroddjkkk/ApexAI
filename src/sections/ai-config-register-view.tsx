@@ -126,11 +126,16 @@ export default function AiConfigRegisterView() {
 
   const onSearch = async (e: React.FormEvent) => {
     e.preventDefault();
-    const res = await axios.post("/api/web-scraping", {
-      site: watch("site"),
-    });
 
-    console.log(res);
+    try {
+      const res = await axios.post("/api/web-scraping", {
+        site: watch("site"),
+      });
+
+      console.log(res.data);
+    } catch (error: any) {
+      console.error(error.response.data.message);
+    }
   };
 
   const [advanced, setAdvanced] = useState(false);
