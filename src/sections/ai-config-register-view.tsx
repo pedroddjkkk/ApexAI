@@ -30,6 +30,7 @@ import { MdDeleteForever } from "react-icons/md";
 export type InputsAionfig = {
   id?: string;
   name: string;
+  site: string;
   sistema: {
     id: string;
     quest: string;
@@ -64,6 +65,7 @@ export default function AiConfigRegisterView() {
     resolver: zodResolver(createAiConfigSchema),
     defaultValues: {
       name: "",
+      site: "",
       sistema: [],
       max_tokens: 2048,
       model: "gpt-4-1106-preview",
@@ -81,9 +83,7 @@ export default function AiConfigRegisterView() {
     console.log(errors);
   }, [errors]);
 
-
   const onSubmit = async (data: InputsAionfig) => {
-
     const { file, ...objData } = {
       ...data,
       sistema: data.sistema
@@ -91,7 +91,7 @@ export default function AiConfigRegisterView() {
           return `${item.quest}: ${item.response}`;
         })
         .join("\n")
-        .trim()
+        .trim(),
     };
 
     const formData = new FormData();
@@ -117,7 +117,6 @@ export default function AiConfigRegisterView() {
 
     console.log("faq", faq);
 
-
     formData.append("data", JSON.stringify({ ...objData, faq }));
     const ret = await axios.post("/api/ai-config", formData);
     if (ret.status === 200) {
@@ -128,7 +127,7 @@ export default function AiConfigRegisterView() {
   const onSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     const res = await axios.post("/api/web-scraping", {
-      teste: "teste",
+      site: watch("site"),
     });
 
     console.log(res);
@@ -179,7 +178,10 @@ export default function AiConfigRegisterView() {
               description="Responda suas perguntas com seu web site"
             >
               <div className="flex gap-2">
-                <Input />
+                <Input
+                  {...register("site")}
+                  placeholder="Exemplo http://localhost:3000/"
+                />
                 <div>
                   <Button
                     className="bg-primary-500 hover:bg-primary-500/75 font-bold"
@@ -270,10 +272,17 @@ export default function AiConfigRegisterView() {
               <Label className="text-sm text-gray-500 flex flex-col">
                 Arquivos:
                 {watch("file").map((item, index) => (
-                  <span key={index} className="text-primary-500 flex flex-row items-center gap-2" onClick={(e) => setValue("file", watch("file").filter((e) => e.name != item.name))}>
-                    <MdDeleteForever size={18} />
-                    {" "}
-                    {item?.name}
+                  <span
+                    key={index}
+                    className="text-primary-500 flex flex-row items-center gap-2"
+                    onClick={(e) =>
+                      setValue(
+                        "file",
+                        watch("file").filter((e) => e.name != item.name)
+                      )
+                    }
+                  >
+                    <MdDeleteForever size={18} /> {item?.name}
                   </span>
                 ))}
               </Label>
