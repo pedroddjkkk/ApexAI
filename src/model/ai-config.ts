@@ -1,5 +1,7 @@
 import prisma from "@/lib/db";
 import { AIConfig } from "@prisma/client";
+import axios from "axios";
+import { string } from "zod";
 
 export type PropsCreateAiConfig = {
   user_id: string;
@@ -13,65 +15,73 @@ export type PropsCreateAiConfig = {
   frequency_penalty: number;
   presence_penalty: number;
   faq: string;
-  files:{
+  files: {
     name: string;
     url: string;
-  }[]
-}
+  }[];
+};
 
 export function createAiConfig(data: PropsCreateAiConfig): Promise<AIConfig> {
   return prisma.aIConfig.create({
     data: {
       ...data,
       files: {
-        create: data.files
-      }
-    }
+        create: data.files,
+      },
+    },
   });
 }
 
 export function getAiConfigs(id: string): Promise<AIConfig[] | null> {
   return prisma.aIConfig.findMany({
     where: {
-      user_id: id
-    }
+      user_id: id,
+    },
   });
 }
 
 export function getAiConfig(id: string): Promise<AIConfig | null> {
   return prisma.aIConfig.findUnique({
     where: {
-      id
-    }
+      id,
+    },
   });
 }
 
 export function deleteAiConfig(id: string): Promise<AIConfig | null> {
   return prisma.aIConfig.delete({
     where: {
-      id
-    }
+      id,
+    },
   });
 }
 
-export function updateAiConfig(id: string, data: PropsCreateAiConfig): Promise<AIConfig | null> {
+export function updateAiConfig(
+  id: string,
+  data: PropsCreateAiConfig
+): Promise<AIConfig | null> {
   return prisma.aIConfig.update({
     where: {
-      id
+      id,
     },
     data: {
       ...data,
       files: {
-        create: data.files
-      }
-    }
+        create: data.files,
+      },
+    },
   });
 }
 
-export function getAiConfigById( id: string ): Promise<AIConfig | null> {
-  return prisma.aIConfig.findUnique({
+export async function getAiConfigById(id: string): Promise<AIConfig | null> {
+  const ret = await prisma.aIConfig.findUnique({
     where: {
-      id
-    }
+      id,
+    },
+    include: {
+      files: true,
+    },
   });
+
+  return ret;
 }

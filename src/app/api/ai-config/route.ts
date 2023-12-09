@@ -59,7 +59,7 @@ export const POST = async (request: NextRequest) => {
   // recebe um array de files
   const files = form.getAll("file") as File[];
 
-  const faqFiles = await saveFiles(filesFaq);
+  const faqFiles = await saveFiles(filesFaq, "faq=");
 
   console.log("faqFiles", faqFiles);
 
@@ -83,6 +83,7 @@ export const POST = async (request: NextRequest) => {
       : data?.faq;
 
   data.files = await saveFiles(files);
+  data.files = [...faqFiles, ...data.files];
   data.user_id = user.user.userId;
 
   console.log("data", data);
@@ -114,14 +115,14 @@ export const GET = async (request: NextRequest) => {
   return NextResponse.json(ret);
 };
 
-export async function saveFiles(files: File[]) {
+export async function saveFiles(files: File[], id?: string) {
   const ret = [] as { name: string; url: string }[];
 
   await Promise.all(
     files.map(async (file) => {
       const name = `${uuidv4()}.${file.type.split("/")[1]}`;
 
-      const destinationDirPath = path.join(process.cwd(), "files");
+      const destinationDirPath = path.join(process.cwd(), "public/files");
 
       const fileArrayBuffer = await file.arrayBuffer();
 
@@ -135,7 +136,7 @@ export async function saveFiles(files: File[]) {
       );
 
       ret.push({
-        name: file.name,
+        name: `${id ? id : ""}${file.name}`,
         url: `files/${name}`,
       });
     })
