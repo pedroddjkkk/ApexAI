@@ -1,57 +1,53 @@
 import { NextRequest, NextResponse } from "next/server";
 import puppeteer from "puppeteer";
+import cheerio from "cheerio";
 
 export async function POST(req: NextRequest) {
-  const browser = await puppeteer.launch({ headless: true });
-  const page = await browser.newPage();
+  const body = await req.json();
+  const site = body.site;
 
-  await page.goto("https://www.npmjs.com/package/puppeteer");
-  // await page.screenshot({ path: "example.png" });
-
-  // Use o método evaluate para obter o conteúdo da meta description
-  const descriptionContent = await page.evaluate(() => {
-    const metaDescriptionTag = document.querySelector(
-      'meta[name="description"]'
-    );
-    return metaDescriptionTag ? metaDescriptionTag.getAttribute("content") : "";
-  });
-
-  let pageContent = await page.content();
-
-  // Encontra índices das tags <head> e </head>
-  const startIndex = pageContent.indexOf("<!DOCTYPE html>");
-  const endIndex = pageContent.indexOf("</head>");
-
-  // Salva o conteúdo da tag <title>
-  const titleMatch = pageContent.match(/<title>(.*?)<\/title>/);
-  const pageTitle = titleMatch ? titleMatch[1] : "";
-
-  // // Salva o conteúdo da tag <meta name="description">
-  // const descriptionMatch = pageContent.match(
-  //   /<meta\s+name="description"\s+content="(.*?)"\s*\/?>/
-  // );
-  // const descriptionContent = descriptionMatch ? descriptionMatch[1] : "";
-
-  // Remove o conteúdo entre as tags <head> e </head>
-  if (startIndex !== -1 && endIndex !== -1) {
-    const headContent = pageContent.substring(
-      startIndex + "<!DOCTYPE html>".length,
-      endIndex
-    );
-    pageContent = pageContent.replace(
-      `<!DOCTYPE html>${headContent}</head>`,
-      `Nome:${pageTitle};DescricaoHead:${descriptionContent}${headContent}`
+  if (!site) {
+    return NextResponse.json(
+      { message: "Campo vazio" },
+      {
+        status: 401,
+      }
     );
   }
 
-  // console.log(pageContent);
+  const browser = await puppeteer.launch({ headless: true });
+  const page = await browser.newPage();
+
+  let response;
+
+  try {
+    response = await page.goto(site);
+  } catch (error) {
+    console.error("Erro ao acessar o site:", error);
+    return NextResponse.json(
+      { message: "Erro ao acessar o site" },
+      {
+        status: 500,
+      }
+    );
+  }
+
+  let pageContent = await page.content();
+  // console.log(pageContent)
+
+  // console.log(response);
+  // await page.screenshot({ path: "example.png" });
+
+  const $ = cheerio.load(pageContent);
+  const textContent = $("body").text();
+
+  console.log(textContent);
 
   await browser.close();
 
   return NextResponse.json(
     {
-      nome: pageTitle,
-      descricaoHead: descriptionContent,
+      message: "Joinha",
     },
     { status: 200 }
   );
