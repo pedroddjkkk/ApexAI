@@ -86,10 +86,10 @@ export function PopoverFormFaq({
           <Input className="mb-4" value={quest} onChange={(e) => setQuest(e.target.value)} />
           <div className="flex justify-between">
             <Label className="mb-2">Resposta</Label>
-            <div className="flex gap-2 mb-2 items-center">
+            {/* <div className="flex gap-2 mb-2 items-center">
               <Checkbox checked={arquivoOpen} onCheckedChange={(e) => setArquivoOpen(e as boolean)} />
               <Label>Arquivo</Label>
-            </div>
+            </div> */}
           </div>
           {!arquivoOpen ?
             <Input className="mb-4" value={response as string} onChange={(e) => setResponse(e.target.value)} /> :

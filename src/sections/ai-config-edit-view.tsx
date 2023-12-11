@@ -19,7 +19,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 // axios
 import axios from "axios";
 import TabsForm from "@/components/inputs/trabs-form";
-import { Undo2 } from "lucide-react";
+import {
+  Undo2
+} from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import FaqDataTables from "@/components/data-tables/form-faq-table";
@@ -43,8 +45,26 @@ export type AIConfigInFiles = {
   top_p: number;
   frequency_penalty: number;
   presence_penalty: number;
-  files: Files[] | File[];
+  files: Files[];
 }
+
+export type Data = {
+  id: string;
+  created_at: Date;
+  updated_at: Date;
+  user_id: string;
+  name: string;
+  sistema: string;
+  faq: string;
+  max_tokens: number;
+  model: string;
+  temperature: number;
+  stop: string;
+  top_p: number;
+  frequency_penalty: number;
+  presence_penalty: number;
+  files: File[];
+};
 
 export default function AiConfigEditView({ aiConfig }: { aiConfig: AIConfigInFiles }) {
   const router = useRouter();
@@ -61,15 +81,15 @@ export default function AiConfigEditView({ aiConfig }: { aiConfig: AIConfigInFil
     defaultValues: {
       id: aiConfig.id,
       name: aiConfig.name,
-      sistema: aiConfig.sistema.split("\n").map((item) => {
+      sistema: aiConfig.sistema ? aiConfig.sistema.split("\n").map((item) => {
         const [quest, response] = item.split(":");
         return {
           id: quest,
           quest,
           response,
         };
-      }),
-      faq: aiConfig.faq?.split("\n").map((item, index) => {
+      }) : [],
+      faq: aiConfig.faq.split("\n").map((item, index) => {
         const [quest, response] = item.split(":");
         return {
           id: index.toString(),
@@ -77,7 +97,9 @@ export default function AiConfigEditView({ aiConfig }: { aiConfig: AIConfigInFil
           response,
         };
       }),
-      file: [],
+      file: aiConfig.files.filter((item) => !item.name.includes("faq=")).map((item) => {
+        return new File([], item.name, { type: item.url });
+      }),
       max_tokens: aiConfig.max_tokens,
       model: aiConfig.model,
       temperature: aiConfig.temperature,
@@ -87,6 +109,12 @@ export default function AiConfigEditView({ aiConfig }: { aiConfig: AIConfigInFil
       presence_penalty: aiConfig.presence_penalty,
     },
   });
+
+  useEffect(() => {
+    console.log("errors", errors);
+    console.log("data", watch());
+    console.log("sistema", aiConfig);
+  }, [errors]);
 
   const onSubmit = async (data: InputsAionfig) => {
 
@@ -232,7 +260,7 @@ export default function AiConfigEditView({ aiConfig }: { aiConfig: AIConfigInFil
         gap-y-8"
           >
             {/* upload file */}
-            <InputLabel label="Arquivo" description="Envie arquivo.">
+            {/* <InputLabel label="Arquivo" description="Envie arquivo.">
               <Input
                 type="file"
                 accept=".jpg, .jpeg, .png, .pdf, .xlsx, .csv"
@@ -243,7 +271,6 @@ export default function AiConfigEditView({ aiConfig }: { aiConfig: AIConfigInFil
                   console.log("watch", watch("file"));
                 }}
               />
-              {/* errors will return when field validation fails  */}
               {errors.file && (
                 <span className="text-danger-500">{errors.file.message}</span>
               )}
@@ -257,7 +284,7 @@ export default function AiConfigEditView({ aiConfig }: { aiConfig: AIConfigInFil
                   </span>
                 ))}
               </Label>
-            </InputLabel>
+            </InputLabel> */}
             <InputLabel
               label="Modelo"
               description="Escolha o modelo de AI que deseja usar, este parametro reflete no preço por tokens"
