@@ -1,7 +1,9 @@
 import prisma from "@/lib/db";
 import { AIConfig } from "@prisma/client";
-import axios from "axios";
-import { string } from "zod";
+import path from "path";
+import { existsSync } from "fs";
+import { mkdir, writeFile } from "fs/promises";
+import { v4 as uuidv4 } from "uuid";
 
 export type PropsCreateAiConfig = {
   user_id: string;
@@ -82,6 +84,36 @@ export async function getAiConfigById(id: string): Promise<AIConfig | null> {
       files: true,
     },
   });
+
+  return ret;
+}
+
+export async function saveFiles(files: File[], id?: string) {
+  const ret = [] as { name: string; url: string }[];
+
+  await Promise.all(
+    files.map(async (file) => {
+      const name = `${uuidv4()}.${file.type.split("/")[1]}`;
+
+      const destinationDirPath = path.join(process.cwd(), "public/files");
+
+      const fileArrayBuffer = await file.arrayBuffer();
+
+      if (!existsSync(destinationDirPath)) {
+        await mkdir(destinationDirPath, { recursive: true });
+      }
+
+      await writeFile(
+        path.join(destinationDirPath, name),
+        Buffer.from(fileArrayBuffer)
+      );
+
+      ret.push({
+        name: `${id ? id : ""}${file.name}`,
+        url: `files/${name}`,
+      });
+    })
+  );
 
   return ret;
 }

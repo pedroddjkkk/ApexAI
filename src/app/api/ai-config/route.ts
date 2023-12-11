@@ -4,13 +4,10 @@ import {
   createAiConfig,
   deleteAiConfig,
   getAiConfigs,
+  saveFiles,
   updateAiConfig,
 } from "@/model/ai-config";
 import { NextRequest, NextResponse } from "next/server";
-import path from "path";
-import { existsSync } from "fs";
-import fs, { mkdir, writeFile } from "fs/promises";
-import { v4 as uuidv4 } from "uuid";
 
 type PropsForm = {
   id?: string;
@@ -114,33 +111,3 @@ export const GET = async (request: NextRequest) => {
 
   return NextResponse.json(ret);
 };
-
-export async function saveFiles(files: File[], id?: string) {
-  const ret = [] as { name: string; url: string }[];
-
-  await Promise.all(
-    files.map(async (file) => {
-      const name = `${uuidv4()}.${file.type.split("/")[1]}`;
-
-      const destinationDirPath = path.join(process.cwd(), "public/files");
-
-      const fileArrayBuffer = await file.arrayBuffer();
-
-      if (!existsSync(destinationDirPath)) {
-        await mkdir(destinationDirPath, { recursive: true });
-      }
-
-      await writeFile(
-        path.join(destinationDirPath, name),
-        Buffer.from(fileArrayBuffer)
-      );
-
-      ret.push({
-        name: `${id ? id : ""}${file.name}`,
-        url: `files/${name}`,
-      });
-    })
-  );
-
-  return ret;
-}
