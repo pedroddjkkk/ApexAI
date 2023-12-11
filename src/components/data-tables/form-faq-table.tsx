@@ -255,7 +255,7 @@ export default function FaqDataTables({
           </Table>
           {!watch("faq").length && <div className='flex justify-center items-center p-4'>
             <span>
-              Não há dados...
+              Não há FAQs...
             </span>
           </div>}
         </div>

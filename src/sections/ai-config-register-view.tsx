@@ -259,7 +259,7 @@ export default function AiConfigRegisterView() {
         gap-y-8"
           >
             {/* upload file */}
-            <InputLabel label="Arquivo" description="Envie arquivo.">
+            {/* <InputLabel label="Arquivo" description="Envie arquivo.">
               <Input
                 type="file"
                 accept=".jpg, .jpeg, .png, .pdf, .xlsx, .csv"
@@ -270,7 +270,6 @@ export default function AiConfigRegisterView() {
                   console.log("watch", watch("file"));
                 }}
               />
-              {/* errors will return when field validation fails  */}
               {errors.file && (
                 <span className="text-danger-500">{errors.file.message}</span>
               )}
@@ -291,7 +290,7 @@ export default function AiConfigRegisterView() {
                   </span>
                 ))}
               </Label>
-            </InputLabel>
+            </InputLabel> */}
             <InputLabel
               label="Modelo"
               description="Escolha o modelo de AI que deseja usar, este parametro reflete no preço por tokens"
