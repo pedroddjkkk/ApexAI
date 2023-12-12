@@ -18,7 +18,9 @@ jobs:
         port: 22
         script: |
           cd ~/aipex-main/ApexAI
-          git pull origin master
+          git stash
+          git pull origin main
+          git stash pop
           git status
           npm install
           npx prisma db push
