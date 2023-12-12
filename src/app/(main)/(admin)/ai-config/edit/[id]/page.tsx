@@ -3,7 +3,7 @@ import AiConfigEditView, { AIConfigInFiles } from "@/sections/ai-config-edit-vie
 
 export default async function page({ params: { id }, }: { params: { id: string; }; }) {
 
-  const aiConfig = await getAiConfigById(id) as any;
+  const aiConfig = await getAiConfigById(id) as AIConfigInFiles;
 
   console.log("aiConfig", aiConfig);
 

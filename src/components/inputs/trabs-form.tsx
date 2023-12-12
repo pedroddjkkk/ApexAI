@@ -4,7 +4,7 @@ import { Button } from "../ui/button";
 import { Title } from "@tremor/react";
 import { Textarea } from "../ui/textarea";
 
-const quests = [
+export const quests = [
   {
     id: "nome",
     quest: "Qual o nome da empresa?",

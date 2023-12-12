@@ -174,7 +174,6 @@ export default function FaqDataTables({
 
                       // Transforma o response de base64 para file
                       const base64Response = item.response.split(',')[1];
-                      console.log(base64Response);
                       const file = readBase64AsFile(base64Response, name, type);
                       return {
                         id: item.id,
@@ -183,7 +182,6 @@ export default function FaqDataTables({
                       };
                     })
                     setValue("faq", data)
-                    console.log(watch("faq"));
                   }
                 }
               }
