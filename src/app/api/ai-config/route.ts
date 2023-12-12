@@ -4,13 +4,10 @@ import {
   createAiConfig,
   deleteAiConfig,
   getAiConfigs,
+  saveFiles,
   updateAiConfig,
 } from "@/model/ai-config";
 import { NextRequest, NextResponse } from "next/server";
-import path from "path";
-import { existsSync } from "fs";
-import fs, { mkdir, writeFile } from "fs/promises";
-import { v4 as uuidv4 } from "uuid";
 
 type PropsForm = {
   id?: string;
@@ -59,7 +56,7 @@ export const POST = async (request: NextRequest) => {
   // recebe um array de files
   const files = form.getAll("file") as File[];
 
-  const faqFiles = await saveFiles(filesFaq);
+  const faqFiles = await saveFiles(filesFaq, "faq=");
 
   console.log("faqFiles", faqFiles);
 
@@ -83,6 +80,7 @@ export const POST = async (request: NextRequest) => {
       : data?.faq;
 
   data.files = await saveFiles(files);
+  data.files = [...faqFiles, ...data.files];
   data.user_id = user.user.userId;
 
   console.log("data", data);
@@ -113,33 +111,3 @@ export const GET = async (request: NextRequest) => {
 
   return NextResponse.json(ret);
 };
-
-export async function saveFiles(files: File[]) {
-  const ret = [] as { name: string; url: string }[];
-
-  await Promise.all(
-    files.map(async (file) => {
-      const name = `${uuidv4()}.${file.type.split("/")[1]}`;
-
-      const destinationDirPath = path.join(process.cwd(), "files");
-
-      const fileArrayBuffer = await file.arrayBuffer();
-
-      if (!existsSync(destinationDirPath)) {
-        await mkdir(destinationDirPath, { recursive: true });
-      }
-
-      await writeFile(
-        path.join(destinationDirPath, name),
-        Buffer.from(fileArrayBuffer)
-      );
-
-      ret.push({
-        name: file.name,
-        url: `files/${name}`,
-      });
-    })
-  );
-
-  return ret;
-}

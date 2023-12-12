@@ -32,8 +32,23 @@ export const createAiConfigSchema = z.object({
     })
   ),
   file: z.array(
-    z.instanceof(File).refine((file) => {
-      return file.size < 1000000 * 5;
-    }, "O arquivo deve ter no máximo 5MB")
+    z
+      .instanceof(File)
+      .refine((file) => {
+        return file.size < 1000000 * 5;
+      }, "O arquivo deve ter no máximo 5MB")
+      .optional()
+      .or(
+        z
+          .object({
+            id: z.string(),
+            ai_config_id: z.string(),
+            name: z.string(),
+            url: z.string(),
+            updated_at: z.string(),
+            created_at: z.string(),
+          })
+          .optional()
+      )
   ),
 });

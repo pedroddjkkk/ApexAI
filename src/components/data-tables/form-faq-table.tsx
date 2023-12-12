@@ -79,7 +79,7 @@ export default function FaqDataTables({
 
   return (
     <div className="gap-4 flex flex-col">
-      <div className='flex justify-between'>
+      <div className='flex justify-between lg:flex-row flex-col gap-4'>
         <div className="gap-4 flex">
           <PopoverFormFaq
             open={open}
@@ -194,16 +194,18 @@ export default function FaqDataTables({
             Importar FAQs
           </Button>
         </div>
-        <Button
-          className="gap-2 font-bold bg-danger-500/90 hover:bg-danger-500"
-          onClick={(e) => {
-            e.preventDefault()
-            setValue("faq", [])
-          }}
-        >
-          <RiDeleteBin2Line size={20} />
-          Limpar FAQs
-        </Button>
+        <div className="flex">
+          <Button
+            className="gap-2 font-bold bg-danger-500/90 hover:bg-danger-500 flex"
+            onClick={(e) => {
+              e.preventDefault()
+              setValue("faq", [])
+            }}
+          >
+            <RiDeleteBin2Line size={20} />
+            Limpar FAQs
+          </Button>
+        </div>
       </div>
       <div className='border-input border-[1px] rounded-lg '>
         <div className="rounded-t-lg border-input border-b-[1px] ">
@@ -226,7 +228,7 @@ export default function FaqDataTables({
                     </TableCell>
                     <TableCell>
                       {/* valda se é um file e coloca o nome dese se for */}
-                      {typeof item.response === 'string' ? item.response : item.response.name}
+                      {typeof item.response === 'string' ? item.response : item.response?.name || ""}
                     </TableCell>
                     <TableCell className="flex gap-1 p-2">
                       <Button className="bg-red-500 hover:bg-red-700" onClick={(e) => {
@@ -253,7 +255,7 @@ export default function FaqDataTables({
           </Table>
           {!watch("faq").length && <div className='flex justify-center items-center p-4'>
             <span>
-              Não há dados...
+              Não há FAQs...
             </span>
           </div>}
         </div>
