@@ -38,6 +38,18 @@ export async function POST(req: NextRequest) {
   // console.log(response);
   // await page.screenshot({ path: "example.png" });
 
+  // Salva a descrição que vai estar na tag do <meta> com o parâmetro name="description"
+  const descriptionContent = await page.evaluate(() => {
+    const metaDescriptionTag = document.querySelector(
+      'meta[name="description"]'
+    );
+    return metaDescriptionTag ? metaDescriptionTag.getAttribute("content") : "";
+  });
+
+  // Salva o conteúdo da tag <title>
+  const titleMatch = pageContent.match(/<title>(.*?)<\/title>/);
+  const pageTitle = titleMatch ? titleMatch[1] : "";
+
   const $ = cheerio.load(pageContent);
   const textContent = $("body").text();
 
