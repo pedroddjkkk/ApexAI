@@ -89,14 +89,14 @@ export default function AiConfigEditView({ aiConfig }: { aiConfig: AIConfigInFil
           response,
         };
       }) : [],
-      faq: aiConfig.faq.split("\n").map((item, index) => {
+      faq: aiConfig.faq ? aiConfig.faq.split("\n").map((item, index) => {
         const [quest, response] = item.split(":");
         return {
           id: index.toString(),
           quest,
           response,
         };
-      }),
+      }) : [],
       file: aiConfig.files.filter((item) => !item.name.includes("faq=")).map((item) => {
         return new File([], item.name, { type: item.url });
       }),

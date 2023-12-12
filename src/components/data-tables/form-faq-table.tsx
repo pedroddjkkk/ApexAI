@@ -228,7 +228,7 @@ export default function FaqDataTables({
                     </TableCell>
                     <TableCell>
                       {/* valda se é um file e coloca o nome dese se for */}
-                      {typeof item.response === 'string' ? item.response : item.response.name}
+                      {typeof item.response === 'string' ? item.response : item.response?.name || ""}
                     </TableCell>
                     <TableCell className="flex gap-1 p-2">
                       <Button className="bg-red-500 hover:bg-red-700" onClick={(e) => {
