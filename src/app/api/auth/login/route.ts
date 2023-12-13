@@ -7,6 +7,7 @@ import type { NextRequest } from "next/server";
 import { loginSchema } from "@/lib/validations/user";
 import { redirect } from "next/navigation";
 import { isRedirectError } from "@/lib/utils";
+import prisma from "@/lib/db";
 
 export const POST = async (request: NextRequest) => {
   const formData = await request.formData();
@@ -36,7 +37,8 @@ export const POST = async (request: NextRequest) => {
 
     const session = await auth.createSession({
       userId: key.userId,
-      attributes: {},
+      attributes: {
+      },
     });
 
     const authRequest = auth.handleRequest(request.method, context);
