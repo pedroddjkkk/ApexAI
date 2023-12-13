@@ -20,9 +20,6 @@ import { useState } from "react";
 
 export default function Login() {
   const [error, setError] = useState<{ field: string; message: string }>();
-  const router = useRouter();
-  const { session } = useSession();
-  if (session) redirect("/");
 
   return (
     <main>
@@ -30,7 +27,6 @@ export default function Login() {
         <Form
           action="/api/auth/login"
           onError={(error) => setError(error)}
-          onSucces={() => router.push("/")}
         >
           <Card className="w-96">
             <CardHeader>

@@ -13,14 +13,14 @@ export default async function UserRootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const cookieStore = cookies();
+  const cookieStore = cookies();  
+  
+  const sessionCookie = cookieStore.get("auth_session");
+  if (!sessionCookie) redirect("/login");
 
   let session;
 
   try {
-    const sessionCookie = cookieStore.get("auth_session");
-    if (!sessionCookie) redirect("/login");
-
     session = await auth.validateSession(sessionCookie?.value);
   } catch (e) {
     if (isRedirectError(e)) throw e;

@@ -20,9 +20,6 @@ import { redirect, useRouter } from "next/navigation";
 
 export default function Page() {
   const [error, setError] = useState<{ field: string; message: string }>();
-  const router = useRouter();
-  const { session } = useSession();
-  if (session) redirect("/");
 
   return (
     <main>
@@ -30,7 +27,6 @@ export default function Page() {
         <Form
           action="/api/auth/signup"
           onError={(error) => setError(error)}
-          onSucces={() => router.push("/")}
         >
           <Card className="w-96">
             <CardHeader>
