@@ -1,8 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
+
+import { getServerSideSession } from "@/lib/session";
+
+import { openai } from "@/lib/ai/config";
 import puppeteer from "puppeteer";
 import cheerio from "cheerio";
 
 export async function POST(req: NextRequest) {
+  const user = await getServerSideSession();
+
+  if (!user.user) return NextResponse.json({ ret: "not found" });
+
   const body = await req.json();
   const site = body.site;
 
@@ -38,12 +46,42 @@ export async function POST(req: NextRequest) {
   // console.log(response);
   // await page.screenshot({ path: "example.png" });
 
+  // Salva a descrição que vai estar na tag do <meta> com o parâmetro name="description"
+  const descriptionContent = await page.evaluate(() => {
+    const metaDescriptionTag = document.querySelector(
+      'meta[name="description"]'
+    );
+    return metaDescriptionTag ? metaDescriptionTag.getAttribute("content") : "";
+  });
+
+  // Salva o conteúdo da tag <title>
+  const titleMatch = pageContent.match(/<title>(.*?)<\/title>/);
+  const pageTitle = titleMatch ? titleMatch[1] : "";
+
   const $ = cheerio.load(pageContent);
   const textContent = $("body").text();
 
   console.log(textContent);
 
   await browser.close();
+
+  // Vai resumir o conteúdo do site
+  const resumo = await openai.chat.completions.create({
+    model: "gpt-3.5-turbo",
+    messages: [
+      {
+        role: "system",
+        content:
+          "Sabendo que o título do site é " +
+          pageTitle +
+          " e a descrição que está na tag do <meta> é " +
+          descriptionContent +
+          ", faça um resumo desse web scrap: " +
+          textContent,
+      },
+    ],
+    max_tokens: 2000,
+  });
 
   return NextResponse.json(
     {

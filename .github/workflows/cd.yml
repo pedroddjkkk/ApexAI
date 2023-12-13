@@ -1,0 +1,28 @@
+name: Next CD
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Deploy using ssh
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        password: ${{ secrets.PASSWORD }}
+        port: 22
+        script: |
+          cd ~/aipex-main/ApexAI
+          git stash
+          git pull origin main
+          git stash pop
+          git status
+          npm install
+          npx prisma migrate deploy
+          npm run build
+          pm2 restart aipex
