@@ -58,7 +58,13 @@ export async function POST(req: NextRequest) {
   const titleMatch = pageContent.match(/<title>(.*?)<\/title>/);
   const pageTitle = titleMatch ? titleMatch[1] : "";
 
-  const $ = cheerio.load(pageContent);
+  // Remove o conteúdo dos scripts novamente, pois Cheerio não lida com scripts
+  const pageContentWithoutScripts = pageContent.replace(
+    /<script\b[^>]*>.*?<\/script>/gs,
+    ""
+  );
+
+  const $ = cheerio.load(pageContentWithoutScripts);
   const textContent = $("body").text();
 
   console.log(textContent);
@@ -82,6 +88,8 @@ export async function POST(req: NextRequest) {
     ],
     max_tokens: 2000,
   });
+
+  console.log(resumo.choices[0].message.content);
 
   return NextResponse.json(
     {
