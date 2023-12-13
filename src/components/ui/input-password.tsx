@@ -25,7 +25,7 @@ const InputPassword = React.forwardRef<HTMLInputElement, InputProps>(
           ref={ref}
           {...props}
         />
-        {showPassword ? <Eye className='absolute text-muted-foreground top-2 right-3' onClick={() => { setShowPassword(!showPassword) }} /> : <EyeOff className='absolute text-muted-foreground top-2 right-3' onClick={() => { setShowPassword(!showPassword) }} />}
+        {!showPassword ? <Eye className='absolute text-muted-foreground top-2 right-3' onClick={() => { setShowPassword(!showPassword) }} /> : <EyeOff className='absolute text-muted-foreground top-2 right-3' onClick={() => { setShowPassword(!showPassword) }} />}
       </div>
     );
   }

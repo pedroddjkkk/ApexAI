@@ -11,6 +11,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { InputPassword } from "@/components/ui/input-password";
 import { Label } from "@/components/ui/label";
 import { Text } from "@/components/ui/text";
 import { useSession } from "@/lib/hooks/session";
@@ -48,7 +49,7 @@ export default function Login() {
                 </div>
                 <div className="flex flex-col gap-2">
                   <Label htmlFor="password">Senha</Label>
-                  <Input
+                  <InputPassword
                     id="password"
                     name="password"
                     type="password"
