@@ -9,6 +9,13 @@ module.exports = {
     "./node_modules/@tremor/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
+    screens: {
+      sm: "640px",
+      md: "768px",
+      lg: "1024px",
+      xl: "1280px", // default
+      "2xl": "1600px",
+    },
     transparent: "transparent",
     current: "currentColor",
     container: {
@@ -20,8 +27,29 @@ module.exports = {
     },
     extend: {
       colors: {
+        // primary
+        "primary-50": "#E7F7F8",
+        "primary-100": "#CBEAEA",
+        "primary-200": "#91E0E3",
+        "primary-300": "#5FCAD2",
+        "primary-400": "#40C0C9",
         "primary-500": "#10B0BC",
+        "primary-600": "#0FA0AB",
+        "primary-700": "#0B7D85",
+        "primary-800": "#096167",
+        "primary-900": "#074F4F",
+        // secondary
+        "secondary-50": "#E6F1F4",
+        "secondary-100": "#CBEAEA",
+        "secondary-200": "#8AC0CB",
+        "secondary-300": "#5194B1",
+        "secondary-400": "#3392A5",
         "secondary-500": "#00778F",
+        "secondary-600": "#006C82",
+        "secondary-700": "#005466",
+        "secondary-800": "#00414F",
+        "secondary-900": "#00323C",
+        // success
         "success-500": "#16A34A",
         "warning-500": "#EBC248",
         "danger-500": "#BE123C",
