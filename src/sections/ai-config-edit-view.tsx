@@ -18,7 +18,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 // axios
 import axios from "axios";
-import TabsForm from "@/components/inputs/trabs-form";
+import TabsForm, { quests } from "@/components/inputs/trabs-form";
 import {
   Undo2
 } from "lucide-react";
@@ -81,10 +81,10 @@ export default function AiConfigEditView({ aiConfig }: { aiConfig: AIConfigInFil
     defaultValues: {
       id: aiConfig.id,
       name: aiConfig.name,
-      sistema: aiConfig.sistema ? aiConfig.sistema.split("\n").map((item) => {
+      sistema: aiConfig.sistema ? aiConfig.sistema.split("\n").map((item, index) => {
         const [quest, response] = item.split(":");
         return {
-          id: quest,
+          id: quests.find((e) => e.quest === quest)?.id || index.toString(),
           quest,
           response,
         };
