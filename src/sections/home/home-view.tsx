@@ -8,6 +8,8 @@ import HomeSection3 from './home-section-3';
 import HomeSection4 from './home-section-4';
 import Link from 'next/link';
 import HomeSection5 from './home-section-5';
+import HomeSection6 from './home-section-6';
+import HomeFooter from './home-footer';
 
 type Props = {
 
@@ -16,10 +18,13 @@ type Props = {
 export default function HomeView({ }: Props) {
 
   return (
-    <main className='min-h-screen bg-[#f0f0f3] flex justify-center'>
+    <main className='min-h-screen flex justify-center' style={{
+      backgroundImage: "url('https://cdn.discordapp.com/attachments/1083082099994673184/1184651136188289116/Bg-Home.png?ex=658cbf58&is=657a4a58&hm=9969aa3edfc35380e721e3851a7d0bde3788caa208c8130742a8022450f1ab77&')",
+      backgroundAttachment: "fixed",
+    }}>
+      {/* Top nav */}
+      <HomeTopNav />
       <div className='lg:w-2/3 h-full w-11/12 flex flex-col'>
-        {/* Top nav */}
-        <HomeTopNav />
         <div className=' gap-16 flex flex-col mt-32'>
           {/* apresentação */}
           {/* Section 1 */}
@@ -38,9 +43,11 @@ export default function HomeView({ }: Props) {
           </div>
           {/* vantagem */}
           {/* section 6 */}
+          <HomeSection6 />
           <div>
           </div>
           {/* footer */}
+          <HomeFooter />
           <div>
           </div>
         </div>
