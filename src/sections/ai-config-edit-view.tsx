@@ -18,15 +18,55 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 // axios
 import axios from "axios";
-import TabsForm from "@/components/inputs/trabs-form";
-import { Backpack, Plus, SendToBack, SkipBack, Undo2 } from "lucide-react";
+import TabsForm, { quests } from "@/components/inputs/trabs-form";
+import {
+  Undo2
+} from "lucide-react";
 import Link from "next/link";
-import { AIConfig } from "@prisma/client";
 import { useRouter } from "next/navigation";
-import FacDataTables from "@/components/data-tables/form-faq-table";
+import FaqDataTables from "@/components/data-tables/form-faq-table";
 import { InputsAionfig } from "./ai-config-register-view";
+import { Label } from "@/components/ui/label";
+import { MdDeleteForever } from "react-icons/md";
+import { File as Files } from "@prisma/client";
 
-export default function AiConfigEditView({ aiConfig }: { aiConfig: AIConfig }) {
+export type AIConfigInFiles = {
+  id: string;
+  created_at: Date;
+  updated_at: Date;
+  user_id: string;
+  name: string;
+  sistema: string;
+  faq: string;
+  max_tokens: number;
+  model: string;
+  temperature: number;
+  stop: string;
+  top_p: number;
+  frequency_penalty: number;
+  presence_penalty: number;
+  files: Files[];
+}
+
+export type Data = {
+  id: string;
+  created_at: Date;
+  updated_at: Date;
+  user_id: string;
+  name: string;
+  sistema: string;
+  faq: string;
+  max_tokens: number;
+  model: string;
+  temperature: number;
+  stop: string;
+  top_p: number;
+  frequency_penalty: number;
+  presence_penalty: number;
+  files: File[];
+};
+
+export default function AiConfigEditView({ aiConfig }: { aiConfig: AIConfigInFiles }) {
   const router = useRouter();
 
   const {
@@ -41,21 +81,24 @@ export default function AiConfigEditView({ aiConfig }: { aiConfig: AIConfig }) {
     defaultValues: {
       id: aiConfig.id,
       name: aiConfig.name,
-      sistema: aiConfig.sistema.split("\n").map((item) => {
+      sistema: aiConfig.sistema ? aiConfig.sistema.split("\n").map((item, index) => {
         const [quest, response] = item.split(":");
         return {
-          id: quest,
+          id: quests.find((e) => e.quest === quest)?.id || index.toString(),
           quest,
           response,
         };
-      }),
-      faq: aiConfig.faq.split("\n").map((item, index) => {
+      }) : [],
+      faq: aiConfig.faq ? aiConfig.faq.split("\n").map((item, index) => {
         const [quest, response] = item.split(":");
         return {
           id: index.toString(),
           quest,
           response,
         };
+      }) : [],
+      file: aiConfig.files.filter((item) => !item.name.includes("faq=")).map((item) => {
+        return new File([], item.name, { type: item.url });
       }),
       max_tokens: aiConfig.max_tokens,
       model: aiConfig.model,
@@ -67,9 +110,15 @@ export default function AiConfigEditView({ aiConfig }: { aiConfig: AIConfig }) {
     },
   });
 
+  useEffect(() => {
+    console.log("errors", errors);
+    console.log("data", watch());
+    console.log("sistema", aiConfig);
+  }, [errors]);
+
   const onSubmit = async (data: InputsAionfig) => {
-    // trsforma o array em uma string com pergunta e respostas
-    const ret = await axios.post("/api/ai-config", {
+
+    const { file, ...objData } = {
       ...data,
       action: "update",
       sistema: data.sistema
@@ -77,14 +126,35 @@ export default function AiConfigEditView({ aiConfig }: { aiConfig: AIConfig }) {
           return `${item.quest}: ${item.response}`;
         })
         .join("\n")
-        .trim(),
-      faq: data.faq
-        .map((item) => {
-          return `${item.quest}: ${item.response}`;
-        })
-        .join("\n")
-        .trim(),
+        .trim()
+    };
+
+    const formData = new FormData();
+
+    // envia um array de arquivos
+    data.file?.forEach((item) => {
+      formData.append("file", item);
     });
+
+    // valida se o faq tem um arquivo na resposta
+
+    const faq = data.faq.map((item) => {
+      if (item.response instanceof File) {
+        console.log("item.response", item.response);
+        formData.append("fileFaq", item.response);
+        return {
+          ...item,
+          response: item.response.name,
+        };
+      }
+      return item;
+    });
+
+    console.log("faq", faq);
+
+    formData.append("data", JSON.stringify({ ...objData, faq }));
+
+    const ret = await axios.post("/api/ai-config", formData);
     if (ret.status === 200) {
       router.back();
     }
@@ -175,13 +245,46 @@ export default function AiConfigEditView({ aiConfig }: { aiConfig: AIConfig }) {
           }}
         />
         <div style={{ display: advanced ? "grid" : "none" }}>
-          <FacDataTables setValue={setValue} watch={watch} />
+          <div className="pb-8">
+            <InputLabel
+              label="FAQ"
+              description="Adicione perguntas e respostas para sua AI."
+            >
+              <FaqDataTables setValue={setValue} watch={watch} />
+            </InputLabel>
+          </div>
           <div
             className="
         grid md:grid-cols-2 sm:grid-cols-1
         lg:gap-x-16 xl:gap-x-32 md:gap-x-8
         gap-y-8"
           >
+            {/* upload file */}
+            {/* <InputLabel label="Arquivo" description="Envie arquivo.">
+              <Input
+                type="file"
+                accept=".jpg, .jpeg, .png, .pdf, .xlsx, .csv"
+                onChange={(e) => {
+                  if (!e.target.files) return;
+                  const file = e.target.files[0];
+                  setValue("file", [...watch("file"), file]);
+                  console.log("watch", watch("file"));
+                }}
+              />
+              {errors.file && (
+                <span className="text-danger-500">{errors.file.message}</span>
+              )}
+              <Label className="text-sm text-gray-500 flex flex-col">
+                Arquivos:
+                {watch("file").map((item, index) => (
+                  <span key={index} className="text-primary-500 flex flex-row items-center gap-2" onClick={(e) => setValue("file", watch("file").filter((e) => e.name != item.name))}>
+                    <MdDeleteForever size={18} />
+                    {" "}
+                    {item?.name}
+                  </span>
+                ))}
+              </Label>
+            </InputLabel> */}
             <InputLabel
               label="Modelo"
               description="Escolha o modelo de AI que deseja usar, este parametro reflete no preço por tokens"

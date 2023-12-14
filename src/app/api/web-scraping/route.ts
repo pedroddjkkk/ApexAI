@@ -1,14 +1,52 @@
 import { NextRequest, NextResponse } from "next/server";
+
+import { getServerSideSession } from "@/lib/session";
+
+import { openai } from "@/lib/ai/config";
 import puppeteer from "puppeteer";
+import cheerio from "cheerio";
 
 export async function POST(req: NextRequest) {
+  const user = await getServerSideSession();
+
+  if (!user.user) return NextResponse.json({ ret: "not found" });
+
+  const body = await req.json();
+  const site = body.site;
+
+  if (!site) {
+    return NextResponse.json(
+      { message: "Campo vazio" },
+      {
+        status: 401,
+      }
+    );
+  }
+
   const browser = await puppeteer.launch({ headless: true });
   const page = await browser.newPage();
 
-  await page.goto("https://www.npmjs.com/package/puppeteer");
+  let response;
+
+  try {
+    response = await page.goto(site);
+  } catch (error) {
+    console.error("Erro ao acessar o site:", error);
+    return NextResponse.json(
+      { message: "Erro ao acessar o site" },
+      {
+        status: 500,
+      }
+    );
+  }
+
+  let pageContent = await page.content();
+  // console.log(pageContent)
+
+  // console.log(response);
   // await page.screenshot({ path: "example.png" });
 
-  // Use o método evaluate para obter o conteúdo da meta description
+  // Salva a descrição que vai estar na tag do <meta> com o parâmetro name="description"
   const descriptionContent = await page.evaluate(() => {
     const metaDescriptionTag = document.querySelector(
       'meta[name="description"]'
@@ -16,42 +54,38 @@ export async function POST(req: NextRequest) {
     return metaDescriptionTag ? metaDescriptionTag.getAttribute("content") : "";
   });
 
-  let pageContent = await page.content();
-
-  // Encontra índices das tags <head> e </head>
-  const startIndex = pageContent.indexOf("<!DOCTYPE html>");
-  const endIndex = pageContent.indexOf("</head>");
-
   // Salva o conteúdo da tag <title>
   const titleMatch = pageContent.match(/<title>(.*?)<\/title>/);
   const pageTitle = titleMatch ? titleMatch[1] : "";
 
-  // // Salva o conteúdo da tag <meta name="description">
-  // const descriptionMatch = pageContent.match(
-  //   /<meta\s+name="description"\s+content="(.*?)"\s*\/?>/
-  // );
-  // const descriptionContent = descriptionMatch ? descriptionMatch[1] : "";
+  const $ = cheerio.load(pageContent);
+  const textContent = $("body").text();
 
-  // Remove o conteúdo entre as tags <head> e </head>
-  if (startIndex !== -1 && endIndex !== -1) {
-    const headContent = pageContent.substring(
-      startIndex + "<!DOCTYPE html>".length,
-      endIndex
-    );
-    pageContent = pageContent.replace(
-      `<!DOCTYPE html>${headContent}</head>`,
-      `Nome:${pageTitle};DescricaoHead:${descriptionContent}${headContent}`
-    );
-  }
-
-  // console.log(pageContent);
+  console.log(textContent);
 
   await browser.close();
 
+  // Vai resumir o conteúdo do site
+  const resumo = await openai.chat.completions.create({
+    model: "gpt-3.5-turbo",
+    messages: [
+      {
+        role: "system",
+        content:
+          "Sabendo que o título do site é " +
+          pageTitle +
+          " e a descrição que está na tag do <meta> é " +
+          descriptionContent +
+          ", faça um resumo desse web scrap: " +
+          textContent,
+      },
+    ],
+    max_tokens: 2000,
+  });
+
   return NextResponse.json(
     {
-      nome: pageTitle,
-      descricaoHead: descriptionContent,
+      message: "Joinha",
     },
     { status: 200 }
   );

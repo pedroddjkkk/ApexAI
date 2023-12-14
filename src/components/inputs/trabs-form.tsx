@@ -4,7 +4,7 @@ import { Button } from "../ui/button";
 import { Title } from "@tremor/react";
 import { Textarea } from "../ui/textarea";
 
-const quests = [
+export const quests = [
   {
     id: "nome",
     quest: "Qual o nome da empresa?",
@@ -80,7 +80,7 @@ export default function TabsForm({ onChange, value }: Props) {
               />
               <div className="flex gap-2">
                 {index > 0 && (
-                  <Button
+                  <Button className="bg-primary-500 hover:bg-primary-500/75"
                     onClick={(e) => {
                       e.preventDefault();
                       setActiveTab(quests[index - 1].id);
@@ -90,7 +90,7 @@ export default function TabsForm({ onChange, value }: Props) {
                   </Button>
                 )}
                 {index < quests.length - 1 && (
-                  <Button
+                  <Button className="bg-primary-500 hover:bg-primary-500/75"
                     onClick={(e) => {
                       setActiveTab(quests[index + 1].id);
                     }}

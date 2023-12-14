@@ -5,11 +5,10 @@ import { BsCpu } from "react-icons/bs";
 import { TbPlus } from "react-icons/tb";
 import { FaChevronUp } from "react-icons/fa6";
 import { FaChevronDown } from "react-icons/fa6";
-import { RiRobot2Line } from "react-icons/ri";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 export const items = [
   {
@@ -17,7 +16,7 @@ export const items = [
     children: [
       {
         title: "Dashboard",
-        path: "/",
+        path: "/dashboard",
         icon: <AiOutlineDashboard />,
       },
     ],

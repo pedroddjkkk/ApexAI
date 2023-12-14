@@ -7,8 +7,9 @@ import type { NextRequest } from "next/server";
 import { loginSchema } from "@/lib/validations/user";
 import { redirect } from "next/navigation";
 import { isRedirectError } from "@/lib/utils";
+import prisma from "@/lib/db";
 
-export const POST = async (request: NextRequest) => {
+export async function POST(request: NextRequest) {
   const formData = await request.formData();
 
   const body = Object.fromEntries(formData.entries());
@@ -27,22 +28,22 @@ export const POST = async (request: NextRequest) => {
     );
   }
 
+  let key;
+  let session;
+
   try {
-    const key = await auth.useKey(
+    key = await auth.useKey(
       "username",
       validatedLoginInput.data.username.toLowerCase(),
       validatedLoginInput.data.password
     );
 
-    const session = await auth.createSession({
+    session = await auth.createSession({
       userId: key.userId,
-      attributes: {},
+      attributes: {
+      },
     });
 
-    const authRequest = auth.handleRequest(request.method, context);
-    authRequest.setSession(session);
-
-    redirect("/");
   } catch (e) {
     if (isRedirectError(e)) throw e;
     if (
@@ -69,4 +70,9 @@ export const POST = async (request: NextRequest) => {
       }
     );
   }
+
+  const authRequest = auth.handleRequest(request.method, context);
+  authRequest.setSession(session);
+
+  redirect("/");
 };
