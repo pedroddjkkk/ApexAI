@@ -8,6 +8,8 @@ import HomeSection3 from './home-section-3';
 import HomeSection4 from './home-section-4';
 import Link from 'next/link';
 import HomeSection5 from './home-section-5';
+import HomeSection6 from './home-section-6';
+import HomeFooter from './home-footer';
 
 type Props = {
 
@@ -41,9 +43,11 @@ export default function HomeView({ }: Props) {
           </div>
           {/* vantagem */}
           {/* section 6 */}
+          <HomeSection6 />
           <div>
           </div>
           {/* footer */}
+          <HomeFooter />
           <div>
           </div>
         </div>
