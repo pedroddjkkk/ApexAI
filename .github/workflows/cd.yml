@@ -24,7 +24,6 @@ jobs:
           git status
           npm install
           npx prisma migrate deploy
-          pm2 stop 1
           pm2 stop whatsapp
           npm run build
           pm2 start whatsapp
