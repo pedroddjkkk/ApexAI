@@ -67,7 +67,7 @@ export async function POST(req: NextRequest) {
   const $ = cheerio.load(pageContentWithoutScripts);
   const textContent = $("body").text();
 
-  console.log(textContent);
+  // console.log(textContent);
 
   await browser.close();
 
@@ -82,14 +82,14 @@ export async function POST(req: NextRequest) {
           pageTitle +
           " e a descrição que está na tag do <meta> é " +
           descriptionContent +
-          ", procure essas informações 'Qual o nome da empresa', 'Quais são os principais produtos ou serviços oferecidos pela empresa?', 'Horário de atendimento?', 'Como entrar em contato com a empresa?', 'Endereço da empresa?' e 'Funções especificas para a empresa?' com o web scrap que eu fiz. Darei um exemplo para que todas as respostas sigam esse formato (separa por virgula cada pergunta e não quebre a linha), Qual o nome da empresa: resposta, Quais são os principais produtos ou serviços oferecidos pela empresa: resposta. Caso não consiga achar a resposta para a pergunta, a resposta deve ser 'Não encontrado' " +
+          ", procure essas informações 'Qual o nome da empresa', 'Quais são os principais produtos ou serviços oferecidos pela empresa?', 'Horário de atendimento?', 'Como entrar em contato com a empresa?' e 'Endereço da empresa?' com o web scrap que eu fiz. Darei um exemplo para que todas as respostas sigam esse formato, Qual o nome da empresa: resposta Quais são os principais produtos ou serviços oferecidos pela empresa: resposta. Quebre a linha para separará-las. Caso não consiga achar a resposta para a pergunta, a resposta deve ser 'Não encontrado' " +
           textContent,
       },
     ],
     max_tokens: 2000,
   });
 
-  console.log(resumo.choices[0].message.content);
+  // console.log(resumo.choices[0].message.content);
 
   return NextResponse.json(
     {
