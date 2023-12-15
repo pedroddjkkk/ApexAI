@@ -88,9 +88,10 @@ export default function AiConfigRegisterView() {
       ...data,
       sistema: data.sistema
         .map((item) => {
-          return `${item.quest}: ${item.response}`;
+          if (!item.response) return;
+          return `${item.quest};:;${item.response}`;
         })
-        .join("\n")
+        .join(";;\n")
         .trim(),
     };
 

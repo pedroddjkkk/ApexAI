@@ -75,7 +75,7 @@ export default function TabsForm({ onChange, value }: Props) {
                   onChange(e.target.value, quest);
                 }}
                 value={
-                  value.find((item) => item.quest === quest.quest)?.response
+                  value.find((item) => item?.quest === quest.quest)?.response || ""
                 }
               />
               <div className="flex gap-2">

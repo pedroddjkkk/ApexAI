@@ -7,6 +7,24 @@ import { ChatCompletionMessageParam } from "openai/resources/index.mjs";
 import type { Message } from "whatsapp-web.js";
 
 export async function POST(req: NextRequest) {
+  function formatForWhatsApp(text: string | null) {
+    if (!text) return null;
+
+    // Negrito: **texto** para *texto*
+    text = text.replace(/\*\*(.*?)\*\*/g, "*$1*");
+
+    // Itálico: *texto* para _texto_
+    text = text.replace(/\*(.*?)\*/g, "_$1_");
+
+    // Tachado: ~texto~ para ~texto~
+    text = text.replace(/~(.*?)~/g, "~$1~");
+
+    // Links: [texto](link) para link
+    text = text.replace(/\[(.*?)\]\((.*?)\)/g, "$2");
+
+    return text;
+  }
+
   const { valid, body } = await verifyWebhook(req);
 
   if (!valid) {
@@ -23,7 +41,7 @@ export async function POST(req: NextRequest) {
         },
         include: {
           ai_config: true,
-        }
+        },
       });
 
       if (!whatsappConfig || !whatsappConfig.active) {
@@ -39,13 +57,18 @@ export async function POST(req: NextRequest) {
 
       chat.unshift({
         content:
-          "Você é um atendente virtual, aqui estão os dados da empresa que você vai atender os clientes " + whatsappConfig.ai_config.sistema + ".\n\n" +
+          "Você é um atendente virtual, aqui estão os dados da empresa que você vai atender os clientes " +
+          whatsappConfig.ai_config.sistema +
+          ".\n\n" +
           new Date().toLocaleTimeString() +
-          " . Não responda em Markdown, lembre-se que as respostas serão enviadas por whatsapp, então markdow não vai funcionar. Tente ser o mais breve possivel não escreva nada além no necessário, envie emojis. Não responda perguntas fora do escopo comercial da empresa",
+          " . organize melhor as respostas, não escreva nada além no necessário, envie emojis. Não responda perguntas fora do escopo comercial da empresa, crie listas com • se tiver uma lista interna use numeros.",
         role: "system",
       });
 
-      const generatedResponse = await generateAiResponse(chat);
+      const generatedResponse = await generateAiResponse(
+        chat,
+        whatsappConfig.ai_config
+      );
 
       if (generatedResponse.choices[0].finish_reason === "function_call") {
         if (
@@ -66,18 +89,23 @@ export async function POST(req: NextRequest) {
             name: "get_current_weather",
           });
 
-          const newResponse = await generateAiResponse(chat);
+          const newResponse = await generateAiResponse(
+            chat,
+            whatsappConfig.ai_config
+          );
 
           await axios.post("http://localhost:8000/whatsapp/message", {
             conversationId: messages[0].id.remote,
-            message: newResponse.choices[0].message.content,
+            message: formatForWhatsApp(newResponse.choices[0].message.content),
             clientId: body.clientId,
           });
         }
       } else {
         await axios.post("http://localhost:8000/whatsapp/message", {
           conversationId: messages[0].id.remote,
-          message: generatedResponse.choices[0].message.content,
+          message: formatForWhatsApp(
+            generatedResponse.choices[0].message.content
+          ),
           clientId: body.clientId,
         });
       }

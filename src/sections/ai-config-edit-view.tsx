@@ -69,6 +69,10 @@ export type Data = {
 export default function AiConfigEditView({ aiConfig }: { aiConfig: AIConfigInFiles }) {
   const router = useRouter();
 
+  useEffect(() => {
+    console.log("aiConfig", aiConfig);
+  }, []);
+
   const {
     register,
     handleSubmit,
@@ -81,10 +85,13 @@ export default function AiConfigEditView({ aiConfig }: { aiConfig: AIConfigInFil
     defaultValues: {
       id: aiConfig.id,
       name: aiConfig.name,
-      sistema: aiConfig.sistema ? aiConfig.sistema.split("\n").map((item, index) => {
-        const [quest, response] = item.split(":");
+      sistema: aiConfig.sistema ? aiConfig.sistema.split(";;\n").map((item, index) => {
+        const [quest, response] = item.split(";:;");
+        const questObj = quests.find((e) => e.quest === quest);
+        console.log("questObj", questObj);
+        if (!questObj) return;
         return {
-          id: quests.find((e) => e.quest === quest)?.id || index.toString(),
+          id: questObj.id,
           quest,
           response,
         };
@@ -123,9 +130,10 @@ export default function AiConfigEditView({ aiConfig }: { aiConfig: AIConfigInFil
       action: "update",
       sistema: data.sistema
         .map((item) => {
-          return `${item.quest}: ${item.response}`;
+          if (!item.response) return;
+          return `${item.quest};:;${item.response}`;
         })
-        .join("\n")
+        .join(";;\n")
         .trim()
     };
 
@@ -290,26 +298,19 @@ export default function AiConfigEditView({ aiConfig }: { aiConfig: AIConfigInFil
               description="Escolha o modelo de AI que deseja usar, este parametro reflete no preço por tokens"
             >
               <Combobox
+                value={watch("model")}
                 options={[
                   {
-                    value: "gpt-3",
-                    label: "GPT-3",
+                    value: "gpt-3.5-turbo-1106",
+                    label: "GPT-3 Turbo 1106",
                   },
                   {
-                    value: "davinci",
-                    label: "Davinci",
-                  },
-                  {
-                    value: "curie",
-                    label: "Curie",
-                  },
-                  {
-                    value: "babbage",
-                    label: "Babbage",
+                    value: "gpt-3.5-turbo",
+                    label: "GPT-3 Turbo",
                   },
                   {
                     value: "gpt-4-1106-preview",
-                    label: "GPT-4-1106-preview",
+                    label: "GPT-4 1106 preview",
                   },
                 ]}
                 onSelect={(value) => {

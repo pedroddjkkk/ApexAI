@@ -1,13 +1,17 @@
 import { ChatCompletionMessageParam } from "openai/resources/index.mjs";
 import { openai } from "./config";
+import { AIConfig } from "@prisma/client";
 
 export async function generateAiResponse(
-  messages: ChatCompletionMessageParam[]
+  messages: ChatCompletionMessageParam[],
+  AiConfig: AIConfig
 ) {
+  console.log("messages", messages);
+
   const completition = await openai.chat.completions.create({
     messages,
-    model: "gpt-4-1106-preview",
-    max_tokens: 150,
+    model: AiConfig.model,
+    max_tokens: AiConfig.max_tokens,
     functions: [
       {
         name: "get_current_weather",
