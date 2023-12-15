@@ -2,7 +2,7 @@ import { FaCheck } from "react-icons/fa6";
 
 export default function HomeSection2() {
   return (
-    <div className='bg-white p-16 rounded-xl flex gap-16 flex-col xl:flex-row justify-center xl:justify-between items-center'>
+    <div className='bg-white/60 p-16 rounded-xl flex gap-16 flex-col xl:flex-row justify-center xl:justify-between items-center'>
       <div className='flex flex-col gap-3  flex-1'>
         <div className='flex flex-col gap-3'>
           <span className='text-[42px] leading-[45px]'>Vantagens para os funcionários</span>
