@@ -61,7 +61,7 @@ export async function POST(req: NextRequest) {
           whatsappConfig.ai_config.sistema +
           ".\n\n" +
           new Date().toLocaleTimeString() +
-          " . organize melhor as respostas, não escreva nada além no necessário, envie emojis. Não responda perguntas fora do escopo comercial da empresa, crie listas com • se tiver uma lista interna use numeros.",
+          " . organize melhor as respostas coloque tipos diferentes de texto, priorize informações chave, economize tokens, envie emojis. Não responda perguntas fora do escopo comercial da empresa, crie listas com • se tiver uma lista interna use numeros.",
         role: "system",
       });
 

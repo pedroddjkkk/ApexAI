@@ -299,24 +299,16 @@ export default function AiConfigRegisterView() {
               <Combobox
                 options={[
                   {
-                    value: "gpt-3",
-                    label: "GPT-3",
+                    value: "gpt-3.5-turbo-1106",
+                    label: "GPT-3 Turbo 1106",
                   },
                   {
-                    value: "davinci",
-                    label: "Davinci",
-                  },
-                  {
-                    value: "curie",
-                    label: "Curie",
-                  },
-                  {
-                    value: "babbage",
-                    label: "Babbage",
+                    value: "gpt-3.5-turbo",
+                    label: "GPT-3 Turbo",
                   },
                   {
                     value: "gpt-4-1106-preview",
-                    label: "GPT-4-1106-preview",
+                    label: "GPT-4 1106 preview",
                   },
                 ]}
                 onSelect={(value) => {
