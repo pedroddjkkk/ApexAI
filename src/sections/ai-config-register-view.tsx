@@ -134,8 +134,37 @@ export default function AiConfigRegisterView() {
       });
 
       console.log(res.data);
+
+      res.data.message.split("\n").map((item: string) => {
+        const [pergunta, resposta] = item.split(":");
+
+        if (!pergunta || !resposta) return;
+
+        switch (pergunta) {
+          case "Qual o nome da empresa":
+            setValue("name", resposta);
+            break;
+          case "Quais são os principais produtos ou serviços oferecidos pela empresa":
+            // Não entendi como que seta essa porra então não dá pra mudar o setValue ;-;
+            break;
+          case "Horário de atendimento":
+            // Não entendi como que seta essa porra então não dá pra mudar o setValue ;-;
+            break;
+          case "Como entrar em contato com a empresa":
+            // Não entendi como que seta essa porra então não dá pra mudar o setValue ;-;
+            break;
+          case "Endereço da empresa":
+            // Não entendi como que seta essa porra então não dá pra mudar o setValue ;-;
+            break;
+          default:
+            break;
+        }
+
+        console.log("pergunta", pergunta);
+        console.log("resposta", resposta);
+      });
     } catch (error: any) {
-      console.error(error.response.data.message);
+      console.error(error.response);
     }
   };
 
