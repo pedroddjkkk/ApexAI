@@ -88,10 +88,8 @@ export default function AiConfigEditView({ aiConfig }: { aiConfig: AIConfigInFil
       sistema: aiConfig.sistema ? aiConfig.sistema.split(";;\n").map((item, index) => {
         const [quest, response] = item.split(";:;");
         const questObj = quests.find((e) => e.quest === quest);
-        console.log("questObj", questObj);
-        if (!questObj) return;
         return {
-          id: questObj.id,
+          id: questObj?.id || index.toString(),
           quest,
           response,
         };
@@ -130,7 +128,7 @@ export default function AiConfigEditView({ aiConfig }: { aiConfig: AIConfigInFil
       action: "update",
       sistema: data.sistema
         .map((item) => {
-          if (!item.response) return;
+          if (!item.response) return null;
           return `${item.quest};:;${item.response}`;
         })
         .join(";;\n")

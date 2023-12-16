@@ -1,6 +1,8 @@
 import { generateAiResponse } from "@/lib/ai/chat";
 import prisma from "@/lib/db";
 import { verifyWebhook } from "@/lib/webhook/verify";
+import { getProdutoByGrupOrName } from "@/model/produto";
+import { Produto } from "@prisma/client";
 import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
 import { ChatCompletionMessageParam } from "openai/resources/index.mjs";
@@ -93,6 +95,51 @@ export async function POST(req: NextRequest) {
             chat,
             whatsappConfig.ai_config
           );
+
+          await axios.post("http://localhost:8000/whatsapp/message", {
+            conversationId: messages[0].id.remote,
+            message: formatForWhatsApp(newResponse.choices[0].message.content),
+            clientId: body.clientId,
+          });
+        } else if (
+          // função para pegar os produtos
+          generatedResponse.choices[0].message.function_call?.name ===
+          "get_products"
+        ) {
+          // const body = JSON.parse(
+          //   generatedResponse.choices[0].message.function_call?.arguments
+          // );
+
+          console.log("body", body);
+
+          console.log(
+            "arguments",
+            generatedResponse.choices[0].message.function_call?.arguments
+          );
+
+          const { area, produto } = JSON.parse(
+            generatedResponse.choices[0].message.function_call?.arguments
+          );
+
+          const produtos = await getProdutoByGrupOrName(
+            area.split(" "),
+            produto.split(" ")
+          );
+
+          console.log("produtos", produtos);
+
+          chat.push({
+            content: JSON.stringify(produtos),
+            role: "function",
+            name: "get_products",
+          });
+
+          const newResponse = await generateAiResponse(
+            chat,
+            whatsappConfig.ai_config
+          );
+
+          console.log("newResponse", newResponse.choices[0].message.content);
 
           await axios.post("http://localhost:8000/whatsapp/message", {
             conversationId: messages[0].id.remote,

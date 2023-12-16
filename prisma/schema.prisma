@@ -16,6 +16,7 @@ model User {
   key            Key[]
   ai_config      AIConfig[]
   whatsappClient WhatsappClient?
+  Produto        Produto[]
 }
 
 model Session {
@@ -57,6 +58,7 @@ model AIConfig {
   presence_penalty  Float
   files             File[]
   WhatsappClient    WhatsappClient?
+  Produto           Produto[]
 }
 
 model File {
@@ -81,4 +83,25 @@ model WhatsappClient {
   user         User      @relation(references: [id], fields: [user_id])
   ai_config    AIConfig? @relation(fields: [ai_config_id], references: [id])
   ai_config_id String?   @unique
+}
+
+model Produto {
+  id           Int       @id @default(autoincrement())
+  name         String
+  price        Float
+  description  String
+  link         String
+  group        Group[]
+  created_at   DateTime  @default(now())
+  updated_at   DateTime  @updatedAt
+  user_id      String
+  user         User      @relation(references: [id], fields: [user_id])
+  ai_config    AIConfig? @relation(fields: [ai_config_id], references: [id])
+  ai_config_id String?
+}
+
+model Group {
+  id      Int       @id @default(autoincrement())
+  name    String    @unique
+  produto Produto[]
 }

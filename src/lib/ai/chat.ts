@@ -35,6 +35,26 @@ export async function generateAiResponse(
           required: ["state", "city"],
         },
       },
+      // funcão para pegar os produtos
+      {
+        name: "get_products",
+        description: "pega os produtos ou serviços",
+        parameters: {
+          type: "object",
+          properties: {
+            area: {
+              type: "string",
+              description:
+                "Area de atuação, e.g. Vendas, Suporte e Restaurantes",
+            },
+            produto: {
+              type: "string",
+              description:
+                "Produto ou serviço, e.g. Vendedor, Suporte Interno Suporte Externo",
+            },
+          },
+        },
+      },
     ],
     function_call: "auto",
   });
