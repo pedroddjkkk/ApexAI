@@ -35,7 +35,7 @@ export const GET = async (request: NextRequest) => {
 
   // if (!user.user) return NextResponse.json({ ret: "not found" });
 
-  const produtos = await getProdutoByGrupOrName("Vendas Suporte".split(" "));
+  const produtos = await getProdutoByGrupOrName("sup va", undefined);
 
   return NextResponse.json({ ret: produtos });
 };
