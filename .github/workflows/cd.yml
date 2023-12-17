@@ -21,10 +21,9 @@ jobs:
           git stash
           git pull origin main
           git stash pop
-          git status
           npm install
           npx prisma migrate deploy
-          pm2 stop whatsapp
+          npx prisma generate
+          pm2 stop all
           npm run build
-          pm2 start whatsapp
-          pm2 restart aipex
+          pm2 start all
