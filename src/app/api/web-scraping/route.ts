@@ -73,7 +73,7 @@ export async function POST(req: NextRequest) {
 
   // Vai resumir o conteúdo do site
   const resumo = await openai.chat.completions.create({
-    model: "gpt-3.5-turbo-1106",
+    model: "gpt-3.5-turbo",
     messages: [
       {
         role: "system",
