@@ -18,12 +18,12 @@ import { formatDate } from '@/lib/utils';
 import AccordionDataTable from '@/components/data-tables/acordion-data-table';
 
 type Props = {
-  AiConfigs: AIConfig[] | null;
+  AiConfigs: AIConfig[];
 };
 
-export default function AiConfigView({ AiConfigs }: Props) {
+export default function AiVendaView({ AiConfigs }: Props) {
 
-  const [aiConfigs, setAiConfigs] = React.useState<AIConfig[] | []>(AiConfigs || []);
+  const [aiConfigs, setAiConfigs] = React.useState<AIConfig[]>(AiConfigs);
 
   useEffect(() => {
     updateData();
@@ -31,7 +31,7 @@ export default function AiConfigView({ AiConfigs }: Props) {
 
   const updateData = async () => {
     // update list
-    const ret = await axios.get('/api/ai-config');
+    const ret = await axios.get('/api/ai-venda');
     setAiConfigs(ret.data);
   }
 
@@ -39,7 +39,7 @@ export default function AiConfigView({ AiConfigs }: Props) {
     // delete
     const form = new FormData();
     form.append('data', JSON.stringify({ id, action: 'delete' }));
-    const ret = await axios.post(`/api/ai-config`, form).then((e) => {
+    const ret = await axios.post(`/api/ai-venda`, form).then((e) => {
       if (e.status === 200) {
         // update list
         updateData();
@@ -53,8 +53,8 @@ export default function AiConfigView({ AiConfigs }: Props) {
       md:flex-row 
       flex-col 
       justify-between gap-4 text-center '>
-        <h1 className='lg:text-4xl md:text-4xl font-bold text-2xl'>IAs</h1>
-        <Link href='/ai-config/register'>
+        <h1 className='lg:text-4xl md:text-4xl font-bold text-2xl'>Vendedores</h1>
+        <Link href='/ai-venda/register'>
           <Button className='bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full items-center w-full'>
             <Plus size={24} />
             Criar
@@ -62,7 +62,7 @@ export default function AiConfigView({ AiConfigs }: Props) {
         </Link>
       </div>
       <div className='rounded-2xl mt-4 drop-shadow-lg'>
-        <AccordionDataTable route='/ai-config' data={aiConfigs.map((e) => {
+        <AccordionDataTable route='/ai-venda' data={aiConfigs.map((e) => {
           return {
             ...e,
             created_at: formatDate(e.created_at),

@@ -80,7 +80,7 @@ export default function FaqDataTables({
   return (
     <div className="gap-4 flex flex-col">
       <div className='flex justify-between lg:flex-row flex-col gap-4'>
-        <div className="gap-4 flex">
+        <div className="gap-4 flex flex-col md:flex-row lg:flex-row xl:flex-row">
           <PopoverFormFaq
             open={open}
             setOpen={setOpen}
@@ -192,9 +192,9 @@ export default function FaqDataTables({
             Importar FAQs
           </Button>
         </div>
-        <div className="flex">
+        <div className="flex flex-col md:flex-row lg:flex-row xl:flex-row">
           <Button
-            className="gap-2 font-bold bg-danger-500/90 hover:bg-danger-500 flex"
+            className="gap-2 font-bold bg-danger-500/90 hover:bg-danger-500"
             onClick={(e) => {
               e.preventDefault()
               setValue("faq", [])

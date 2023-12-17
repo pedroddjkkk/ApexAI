@@ -5,6 +5,7 @@ import { BsCpu } from "react-icons/bs";
 import { TbPlus } from "react-icons/tb";
 import { FaChevronUp } from "react-icons/fa6";
 import { FaChevronDown } from "react-icons/fa6";
+import { LiaCashRegisterSolid } from "react-icons/lia";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -34,6 +35,20 @@ export const items = [
           {
             title: "Cadastro",
             path: "/ai-config/register",
+            new: false,
+            icon: <TbPlus />,
+          },
+        ]
+      },
+      {
+        title: "Vendedores",
+        path: "/ai-venda",
+        new: false,
+        icon: <LiaCashRegisterSolid />,
+        children: [
+          {
+            title: "Cadastro",
+            path: "/ai-venda/register",
             new: false,
             icon: <TbPlus />,
           },
