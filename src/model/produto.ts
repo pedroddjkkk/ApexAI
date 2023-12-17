@@ -31,10 +31,40 @@ export function createManyProdutos(produtos: PropsCreateProduto[]) {
   return ret;
 }
 
-export async function getProdutoByGrupOrName(
-  group?: string[],
-  name?: string[]
-) {
+export async function getProdutoByGrupOrName(group?: string, name?: string) {
+  const editGroup = group?.split(" ");
+  const editName = name?.split(" ");
+  if (!group && !name) {
+    return await prisma.produto.findMany();
+  }
+  if (!group) {
+    console.log("name", name);
+    return await prisma.produto.findMany({
+      where: {
+        OR: editName?.map((item) => ({
+          name: {
+            contains: `${item}`,
+          },
+        })),
+      },
+    });
+  }
+  if (!name) {
+    console.log("editGroup", editGroup);
+    return await prisma.produto.findMany({
+      where: {
+        group: {
+          some: {
+            OR: editGroup?.map((item) => ({
+              name: {
+                contains: `${item}`,
+              },
+            })),
+          },
+        },
+      },
+    });
+  }
   const ret = await prisma.produto.findMany({
     where: {
       OR: [
@@ -42,14 +72,14 @@ export async function getProdutoByGrupOrName(
           group: {
             some: {
               name: {
-                in: group,
+                in: editGroup,
               },
             },
           },
         },
         {
           name: {
-            in: name,
+            contains: `_${name}_`,
           },
         },
       ],

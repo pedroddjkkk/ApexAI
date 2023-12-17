@@ -106,10 +106,6 @@ export async function POST(req: NextRequest) {
           generatedResponse.choices[0].message.function_call?.name ===
           "get_products"
         ) {
-          // const body = JSON.parse(
-          //   generatedResponse.choices[0].message.function_call?.arguments
-          // );
-
           console.log("body", body);
 
           console.log(
@@ -121,15 +117,17 @@ export async function POST(req: NextRequest) {
             generatedResponse.choices[0].message.function_call?.arguments
           );
 
-          const produtos = await getProdutoByGrupOrName(
-            area.split(" "),
-            produto.split(" ")
-          );
+          console.log("area", area);
+          console.log("produto", produto);
+
+          const produtos = await getProdutoByGrupOrName(area, produto);
 
           console.log("produtos", produtos);
 
           chat.push({
-            content: JSON.stringify(produtos),
+            content: JSON.stringify(
+              produtos || "Não encontramos nenhum produto"
+            ),
             role: "function",
             name: "get_products",
           });

@@ -5,7 +5,7 @@ import { existsSync } from "fs";
 import { mkdir, writeFile } from "fs/promises";
 import { v4 as uuidv4 } from "uuid";
 
-export type PropsCreateAiConfig = {
+export type PropsCreateAiVenda = {
   user_id: string;
   name: string;
   sistema: string;
@@ -21,42 +21,86 @@ export type PropsCreateAiConfig = {
     name: string;
     url: string;
   }[];
+  produto: {
+    name: string;
+    price: number;
+    description: string;
+    link: string;
+    group: string[];
+  }[];
+  type: string;
 };
 
-export function createAiConfig(data: PropsCreateAiConfig): Promise<AIConfig> {
-  return prisma.aIConfig.create({
+export async function createAiVenda(
+  data: PropsCreateAiVenda
+): Promise<AIConfig> {
+  const ret = await prisma.aIConfig.create({
     data: {
-      ...data,
+      user_id: data.user_id,
+      name: data.name,
+      sistema: data.sistema,
+      max_tokens: data.max_tokens,
+      model: data.model,
+      temperature: data.temperature,
+      stop: data.stop,
+      top_p: data.top_p,
+      frequency_penalty: data.frequency_penalty,
+      presence_penalty: data.presence_penalty,
+      faq: data.faq,
+      type: data.type,
       files: {
-        create: data.files,
+        create: data.files.map((file) => ({
+          name: file.name,
+          url: file.url,
+        })),
       },
     },
   });
-}
 
-export async function getAiConfigs(
-  id: string,
-  type: string
-): Promise<AIConfig[] | null> {
-  const ret = await prisma.aIConfig.findMany({
-    where: {
-      user_id: id,
-      type,
-    },
+  data.produto.map(async (item) => {
+    await prisma.produto.create({
+      data: {
+        name: item.name,
+        link: item.link,
+        price: item.price,
+        description: item.description,
+        user_id: data.user_id,
+        ai_config_id: ret.id,
+        group: {
+          connectOrCreate: item.group.map((item) => ({
+            where: { name: item },
+            create: { name: item },
+          })),
+        },
+      },
+    });
   });
-  console.log("ret", ret);
+
   return ret;
 }
 
-export function getAiConfig(id: string): Promise<AIConfig | null> {
-  return prisma.aIConfig.findUnique({
+export function getAiVendas(
+  id: string,
+  type: string
+): Promise<AIConfig[] | null> {
+  return prisma.aIConfig.findMany({
     where: {
-      id,
+      user_id: id,
+      sistema: type,
     },
   });
 }
 
-export function deleteAiConfig(id: string): Promise<AIConfig | null> {
+export function getAiVenda(id: string): Promise<AIConfig | null> {
+  return prisma.aIConfig.findUnique({
+    where: {
+      id,
+      type: "V",
+    },
+  });
+}
+
+export function deleteAiVenda(id: string): Promise<AIConfig | null> {
   return prisma.aIConfig.delete({
     where: {
       id,
@@ -64,9 +108,9 @@ export function deleteAiConfig(id: string): Promise<AIConfig | null> {
   });
 }
 
-export function updateAiConfig(
+export function updateAiVenda(
   id: string,
-  data: PropsCreateAiConfig
+  data: PropsCreateAiVenda
 ): Promise<AIConfig | null> {
   return prisma.aIConfig.update({
     where: {
@@ -81,14 +125,13 @@ export function updateAiConfig(
   });
 }
 
-export async function getAiConfigById(id: string): Promise<AIConfig | null> {
+export async function getAiVendaById(id: string): Promise<AIConfig | null> {
   const ret = await prisma.aIConfig.findUnique({
     where: {
       id,
     },
     include: {
       files: true,
-      produtos: true,
     },
   });
 

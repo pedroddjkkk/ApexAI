@@ -56,9 +56,10 @@ model AIConfig {
   top_p             Float
   frequency_penalty Float
   presence_penalty  Float
+  type              String          @default("G") // G = Geral | V = Vendas | S = Suporte | SI = Suorte Interno | SE = Suporte Externo | R = Restaurante
   files             File[]
   WhatsappClient    WhatsappClient?
-  Produto           Produto[]
+  produtos          Produto[]
 }
 
 model File {

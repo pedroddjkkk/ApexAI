@@ -1,5 +1,5 @@
 import { getAiConfigById } from "@/model/ai-config";
-import AiConfigEditView, { AIConfigInFiles } from "@/sections/ai-config-edit-view";
+import AiVendaEditView from "@/sections/ai-venda/edit/ai-venda-edit-view";
 
 export default async function page({ params: { id }, }: { params: { id: string; }; }) {
 
@@ -8,6 +8,6 @@ export default async function page({ params: { id }, }: { params: { id: string; 
   console.log("aiConfig", aiConfig);
 
   return (
-    <AiConfigEditView aiConfig={aiConfig} />
+    <AiVendaEditView aiConfig={aiConfig} />
   )
 }

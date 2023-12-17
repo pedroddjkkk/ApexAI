@@ -1,12 +1,12 @@
 import { getServerSideSession } from "@/lib/session";
+import { getAiConfigs } from "@/model/ai-config";
 import {
-  PropsCreateAiConfig,
-  createAiConfig,
-  deleteAiConfig,
-  getAiConfigs,
+  PropsCreateAiVenda,
+  createAiVenda,
+  deleteAiVenda,
   saveFiles,
-  updateAiConfig,
-} from "@/model/ai-config";
+  updateAiVenda,
+} from "@/model/ai-venda";
 import { NextRequest, NextResponse } from "next/server";
 
 type PropsForm = {
@@ -32,6 +32,13 @@ type PropsForm = {
     name: string;
     url: string;
   }[];
+  produto: {
+    name: string;
+    price: number;
+    description: string;
+    link: string;
+    group: string;
+  }[];
   action?: string;
 };
 
@@ -45,7 +52,7 @@ export const POST = async (request: NextRequest) => {
   if (!user.user) return NextResponse.json({ ret: "not found" });
 
   if (data?.action === "delete" && data.id) {
-    const ret = await deleteAiConfig(data.id.toString());
+    const ret = await deleteAiVenda(data.id.toString());
     return NextResponse.json({ ret });
   }
 
@@ -87,17 +94,26 @@ export const POST = async (request: NextRequest) => {
 
   if (data?.action === "update" && data?.id) {
     delete data?.action;
-    const ret = await updateAiConfig(data?.id, {
+    const ret = await updateAiVenda(data?.id, {
       ...data,
       faq: data?.faq,
-    } as PropsCreateAiConfig);
+      produto: data?.produto.map((item) => ({
+        ...item,
+        group: item.group.split(","),
+      })),
+    } as PropsCreateAiVenda);
     return NextResponse.json({ ret });
   }
 
-  const ret = await createAiConfig({
+  const ret = await createAiVenda({
     ...data,
     faq: data?.faq,
-  } as PropsCreateAiConfig);
+    produto: data?.produto.map((item) => ({
+      ...item,
+      group: item.group.split(","),
+    })),
+    type: "V",
+  } as PropsCreateAiVenda);
 
   return NextResponse.json({ ret });
 };
@@ -107,7 +123,7 @@ export const GET = async (request: NextRequest) => {
 
   if (!user.user) return NextResponse.json({ ret: "not found" });
 
-  const ret = await getAiConfigs(user.user.userId, "G");
+  const ret = await getAiConfigs(user.user.userId, "V");
 
   return NextResponse.json(ret);
 };
