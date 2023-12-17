@@ -1,5 +1,5 @@
 import { getServerSideSession } from "@/lib/session";
-import { createManyProdutos, getProdutoByGrup } from "@/model/produto";
+import { createManyProdutos, getProdutoByGrupOrName } from "@/model/produto";
 import { NextRequest, NextResponse } from "next/server";
 
 type RequestBody = {
@@ -35,7 +35,7 @@ export const GET = async (request: NextRequest) => {
 
   // if (!user.user) return NextResponse.json({ ret: "not found" });
 
-  const produtos = await getProdutoByGrup("Vendas Suporte".split(" "));
+  const produtos = await getProdutoByGrupOrName("Vendas Suporte".split(" "));
 
   return NextResponse.json({ ret: produtos });
 };
