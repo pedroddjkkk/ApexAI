@@ -5,7 +5,7 @@ import { FaCheck, FaFacebook, FaInstagram, FaLinkedin, FaWhatsapp } from "react-
 
 export default function HomeFooter() {
   return (
-    <div className='flex w-full py-4 justify-between items-center'>
+    <div className='flex w-full py-4 justify-between items-center md:flex-row flex-col gap-8'>
       <div className='flex flex-col justify-center items-start gap-4'>
         <div className='flex px-4 py-2 items-center gap-2'>
           <Image src='/logo_black.png' width={248} height={66} alt="logo" />

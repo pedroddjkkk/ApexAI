@@ -16,7 +16,7 @@ export default function HomeTopNav() {
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center",
         }} />
-        <div className='flex gap-8 font-semibold text-neutrals-500'>
+        <div className='md:flex gap-8 font-semibold text-neutrals-500 hidden'>
           <Link href="/">
             Preços
           </Link>

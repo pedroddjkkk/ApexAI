@@ -2,7 +2,7 @@ import { FaCheck } from "react-icons/fa6";
 
 export default function HomeSection4() {
   return (
-    <div className='bg-white/60 p-16 rounded-xl flex gap-16 flex-col xl:flex-row justify-center xl:justify-between items-center'>
+    <div className='bg-white/60 md:p-16 p-4 rounded-xl flex gap-16 flex-col xl:flex-row justify-center xl:justify-between items-center'>
       <div className='flex flex-col gap-3  flex-1'>
         <div className='flex flex-col gap-3'>
           <span className='text-[42px] leading-[45px]'>Melhoria contínua</span>
@@ -42,7 +42,7 @@ export default function HomeSection4() {
         </div>
       </div>
       <div className=' bg-neutral-500/10 rounded-tl-3xl rounded-br-3xl h-[300px] w-[300px]' style={{
-        backgroundImage: "url('https://s3-alpha-sig.figma.com/img/b89e/86de/f53057d9116696815bad80ae98eae58d?Expires=1702252800&Signature=Hp2qajRSuzDmgzHyrc8oq7SFagOdyv5pTsxwPV9zxPz4i90vR0j5-TIOXOAEc75KgpNhnc4X8NKryuxkmKmXb5ylX2xMRI-OSjnc-3f4ZEQ8i8EEJEvbPMr9farLtoBUg1qM1rdUbI47Sjwh-~de8LNAhj9pZeIiROgq3VBFrLYl~wMXG1U~PUYQq9sKYAUqbMb4jPmIEAjCZRwHGbn2L75WOl4UO7IbRF-koSbv948ywCJi3Ujnxw3TFZdFr4raWrSRNUWZ9OacS~jivJc2LlRSpceZJ~XC-COjASp982cTy1wo0L71vhPlxcUMvw1-FFTM8VyWK-DUC5AW1VPJcA__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4')",
+        backgroundImage: "url('https://media.discordapp.net/attachments/1083082099994673184/1186224350265880616/Frame_2608925_2.png?ex=65927884&is=65800384&hm=c87145a7eb7bb31428886e04423d0806e0d32c2975c55f49781cd4fcaa91b8e2&=&format=webp&quality=lossless')",
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",
         backgroundPosition: "center",

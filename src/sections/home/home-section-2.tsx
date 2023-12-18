@@ -2,7 +2,7 @@ import { FaCheck } from "react-icons/fa6";
 
 export default function HomeSection2() {
   return (
-    <div className='bg-white/60 p-16 rounded-xl flex gap-16 flex-col xl:flex-row justify-center xl:justify-between items-center'>
+    <div className='bg-white/60 md:p-16 p-4 rounded-xl flex gap-16 flex-col xl:flex-row justify-center xl:justify-between items-center'>
       <div className='flex flex-col gap-3  flex-1'>
         <div className='flex flex-col gap-3'>
           <span className='text-[42px] leading-[45px]'>Vantagens para os funcionários</span>
@@ -42,7 +42,7 @@ export default function HomeSection2() {
         </div>
       </div>
       <div className=' bg-neutral-500/10 rounded-tl-3xl rounded-br-3xl h-[300px] w-[300px]' style={{
-        backgroundImage: "url('https://s3-alpha-sig.figma.com/img/2b53/2ebc/7178b03e555aff7c597f3e0d8a9a015d?Expires=1702252800&Signature=dMEI~CWwDDuFMYiv6OaC5QZCk5S80wvRLgMCRcZ1nxU2JRlDnXTQVcNh4OOJ7ASh~dZv4DVrbZH4G46jSl6OjF1QqOe9rOC5yfjOBCmT5LZrWTzd-Kbgt3RxLdEyxUV5Njc6GGs6S5GvMFLvhKoVi3kyORvxaJ7UiuCUuWrZGThXTZYP-ATVzmOxra4x6bbtK~1za4gR~q0PoiLvR45~JUGuXYWRpcwZ0rR~HbUnaos-ECjFEvEMkk~EwvUFCWfpbfkUTZT1bhrdRrusd8BkFzkBp9fn6P8qoVDDhZeSkzQbW79KfMQJo7AI6wyfRzMuxzoyPPn7d0su0wxtYREvNQ__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4')",
+        backgroundImage: "url('https://cdn.discordapp.com/attachments/1083082099994673184/1186224350014230609/Frame_2608925.png?ex=65927884&is=65800384&hm=afc87ae0f9d3d60b0fc2d013848bfe01864ddfce31502d2d8484b88b69934b16&')",
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",
         backgroundPosition: "center",

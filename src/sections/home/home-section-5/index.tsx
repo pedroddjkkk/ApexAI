@@ -9,7 +9,7 @@ import Precos from "./preco-desconto";
 
 export default function HomeSection5() {
   return (
-    <div className="p-16 bg-white bg-opacity-50 rounded-2xl flex-col justify-center items-center gap-16 inline-flex">
+    <div className="md:p-16 p-4 bg-white bg-opacity-50 rounded-2xl flex-col justify-center items-center gap-16 inline-flex">
       <div className="grid grid-cols-1 xl:grid-cols-2
       2xl:grid-cols-3 gap-16 w-full">
         <Precos valor={0} name="Free" lista={[

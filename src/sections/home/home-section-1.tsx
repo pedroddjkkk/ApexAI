@@ -4,7 +4,7 @@ import { FaCheck } from "react-icons/fa6";
 
 export default function HomeSection1() {
   return (
-    <div className="bg-white/60 p-16 rounded-xl gap-32 flex flex-col">
+    <div className="bg-white/60 md:p-16 p-4 rounded-xl gap-32 flex flex-col">
       <div className="flex flex-col gap-8 xl:flex-row justify-between">
         <div className="gap-8 flex flex-col xl:w-1/2 w-full">
           <div className="flex flex-col gap-2 font-semibold">
