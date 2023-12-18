@@ -130,9 +130,7 @@ export async function POST(req: NextRequest) {
           console.log("produtos", produtos);
 
           chat.push({
-            content: JSON.stringify(
-              produtos || "Não encontramos nenhum produto"
-            ),
+            content: JSON.stringify(produtos),
             role: "function",
             name: "get_products",
           });

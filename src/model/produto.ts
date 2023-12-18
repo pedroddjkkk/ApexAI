@@ -36,18 +36,34 @@ export async function getProdutoByGrupOrName(
   group?: string,
   name?: string
 ) {
+  let ret = [];
   const editGroup = group?.split(" ");
   const editName = name?.split(" ");
   if (!group && !name) {
-    return await prisma.produto.findMany({
+    ret = await prisma.produto.findMany({
       where: {
         ai_config_id: aiConfig.id,
       },
     });
+    if (ret.length) return ret;
+
+    return `Não encontramos nenhum produto para vc estes são os nossos grupos de produtos: ${(
+      await prisma.group.findMany({
+        where: {
+          produto: {
+            some: {
+              ai_config_id: aiConfig.id,
+            },
+          },
+        },
+      })
+    )
+      .map((item) => item.name)
+      .join(", ")}`;
   }
   if (!group) {
     console.log("name", name);
-    return await prisma.produto.findMany({
+    ret = await prisma.produto.findMany({
       where: {
         OR: editName?.map((item) => ({
           name: {
@@ -57,10 +73,25 @@ export async function getProdutoByGrupOrName(
         ai_config_id: aiConfig.id,
       },
     });
+    if (ret.length) return ret;
+
+    return `Não encontramos nenhum produto para vc estes são os nossos grupos de produtos: ${(
+      await prisma.group.findMany({
+        where: {
+          produto: {
+            some: {
+              ai_config_id: aiConfig.id,
+            },
+          },
+        },
+      })
+    )
+      .map((item) => item.name)
+      .join(", ")}`;
   }
   if (!name) {
     console.log("editGroup", editGroup);
-    return await prisma.produto.findMany({
+    ret = await prisma.produto.findMany({
       where: {
         group: {
           some: {
@@ -74,8 +105,23 @@ export async function getProdutoByGrupOrName(
         ai_config_id: aiConfig.id,
       },
     });
+    if (ret.length) return ret;
+
+    return `Não encontramos nenhum produto para vc estes são os nossos grupos de produtos: ${(
+      await prisma.group.findMany({
+        where: {
+          produto: {
+            some: {
+              ai_config_id: aiConfig.id,
+            },
+          },
+        },
+      })
+    )
+      .map((item) => item.name)
+      .join(", ")}`;
   }
-  const ret = await prisma.produto.findMany({
+  ret = await prisma.produto.findMany({
     where: {
       OR: [
         {
@@ -97,10 +143,18 @@ export async function getProdutoByGrupOrName(
     },
   });
 
-  if (ret) return ret;
+  if (ret.length) return ret;
 
-  return `Não encontramos nenhum produto para vc estes são os nossos grupos de produtos ${(
-    await prisma.group.findMany()
+  return `Não encontramos nenhum produto para vc estes são os nossos grupos de produtos: ${(
+    await prisma.group.findMany({
+      where: {
+        produto: {
+          some: {
+            ai_config_id: aiConfig.id,
+          },
+        },
+      },
+    })
   )
     .map((item) => item.name)
     .join(", ")}`;
