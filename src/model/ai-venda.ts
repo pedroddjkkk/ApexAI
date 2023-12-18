@@ -108,21 +108,59 @@ export function deleteAiVenda(id: string): Promise<AIConfig | null> {
   });
 }
 
-export function updateAiVenda(
+export async function updateAiVenda(
   id: string,
   data: PropsCreateAiVenda
 ): Promise<AIConfig | null> {
-  return prisma.aIConfig.update({
+  const ret = await prisma.aIConfig.update({
     where: {
       id,
     },
     data: {
-      ...data,
+      user_id: data.user_id,
+      name: data.name,
+      sistema: data.sistema,
+      max_tokens: data.max_tokens,
+      model: data.model,
+      temperature: data.temperature,
+      stop: data.stop,
+      top_p: data.top_p,
+      frequency_penalty: data.frequency_penalty,
+      presence_penalty: data.presence_penalty,
+      faq: data.faq,
+      type: data.type,
       files: {
         create: data.files,
       },
     },
   });
+
+  await prisma.produto.deleteMany({
+    where: {
+      ai_config_id: ret.id,
+    },
+  });
+
+  data.produto.map(async (item) => {
+    await prisma.produto.create({
+      data: {
+        name: item.name,
+        link: item.link,
+        price: item.price,
+        description: item.description,
+        user_id: data.user_id,
+        ai_config_id: ret.id,
+        group: {
+          connectOrCreate: item.group.map((item) => ({
+            where: { name: item },
+            create: { name: item },
+          })),
+        },
+      },
+    });
+  });
+
+  return ret;
 }
 
 export async function getAiVendaById(id: string): Promise<AIConfig | null> {

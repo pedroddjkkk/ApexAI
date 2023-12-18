@@ -5,8 +5,6 @@ export default async function page({ params: { id }, }: { params: { id: string; 
 
   const aiConfig = await getAiConfigById(id) as any;
 
-  console.log("aiConfig", aiConfig);
-
   return (
     <AiVendaEditView aiConfig={aiConfig} />
   )

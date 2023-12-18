@@ -69,10 +69,6 @@ export type Data = {
 export default function AiConfigEditView({ aiConfig }: { aiConfig: AIConfigInFiles }) {
   const router = useRouter();
 
-  useEffect(() => {
-    console.log("aiConfig", aiConfig);
-  }, []);
-
   const {
     register,
     handleSubmit,
@@ -115,12 +111,6 @@ export default function AiConfigEditView({ aiConfig }: { aiConfig: AIConfigInFil
     },
   });
 
-  useEffect(() => {
-    console.log("errors", errors);
-    console.log("data", watch());
-    console.log("sistema", aiConfig);
-  }, [errors]);
-
   const onSubmit = async (data: InputsAionfig) => {
 
     const { file, ...objData } = {
@@ -146,7 +136,6 @@ export default function AiConfigEditView({ aiConfig }: { aiConfig: AIConfigInFil
 
     const faq = data.faq.map((item) => {
       if (item.response instanceof File) {
-        console.log("item.response", item.response);
         formData.append("fileFaq", item.response);
         return {
           ...item,
@@ -156,7 +145,6 @@ export default function AiConfigEditView({ aiConfig }: { aiConfig: AIConfigInFil
       return item;
     });
 
-    console.log("faq", faq);
 
     formData.append("data", JSON.stringify({ ...objData, faq }));
 

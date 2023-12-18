@@ -44,7 +44,6 @@ export async function getAiConfigs(
       type,
     },
   });
-  console.log("ret", ret);
   return ret;
 }
 
@@ -88,7 +87,11 @@ export async function getAiConfigById(id: string): Promise<AIConfig | null> {
     },
     include: {
       files: true,
-      produtos: true,
+      produtos: {
+        include: {
+          group: true,
+        },
+      },
     },
   });
 

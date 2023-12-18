@@ -27,6 +27,7 @@ import { File as Files, Group, Produto } from "@prisma/client";
 import { InputsAiVenda } from "./ai-venda-register-view";
 import Advanced from "./advanced";
 import Produtos from "./produtos";
+import { createAiVendaSchema } from "@/lib/schema/ai-venda";
 
 export type AIVendaInFiles = {
   id: string;
@@ -44,7 +45,7 @@ export type AIVendaInFiles = {
   frequency_penalty: number;
   presence_penalty: number;
   files: Files[];
-  produto?: {
+  produtos?: {
     id: number;
     name: string;
     price: number;
@@ -79,10 +80,6 @@ export type Data = {
 export default function AiVendaEditView({ aiConfig }: { aiConfig: AIVendaInFiles }) {
   const router = useRouter();
 
-  useEffect(() => {
-    console.log("aiConfig", aiConfig);
-  }, []);
-
   const {
     register,
     handleSubmit,
@@ -91,7 +88,7 @@ export default function AiVendaEditView({ aiConfig }: { aiConfig: AIVendaInFiles
     reset,
     formState: { errors },
   } = useForm<InputsAiVenda>({
-    resolver: zodResolver(createAiConfigSchema),
+    resolver: zodResolver(createAiVendaSchema),
     defaultValues: {
       id: aiConfig.id,
       name: aiConfig.name,
@@ -122,30 +119,19 @@ export default function AiVendaEditView({ aiConfig }: { aiConfig: AIVendaInFiles
       top_p: aiConfig.top_p,
       frequency_penalty: aiConfig.frequency_penalty,
       presence_penalty: aiConfig.presence_penalty,
-      produto: aiConfig.produto?.map((item) => {
+      produto: aiConfig.produtos?.map((item) => {
         return {
           name: item.name,
           price: item.price,
           description: item.description,
           link: item.link,
-          created_at: item.created_at,
-          updated_at: item.updated_at,
-          user_id: item.user_id,
-          // grupo deve ser uma string separada por virgula o nome dos grupos
           group: item.group?.map((e) => e.name).join(","),
-          ai_config_id: item.ai_config_id,
         };
       }) || [],
     },
   });
 
-  useEffect(() => {
-    console.log("errors", errors);
-    console.log("data", watch());
-    console.log("sistema", aiConfig);
-  }, [errors]);
-
-  const onSubmit = async (data: InputsAionfig) => {
+  const onSubmit = async (data: InputsAiVenda) => {
 
     const { file, ...objData } = {
       ...data,
@@ -170,7 +156,6 @@ export default function AiVendaEditView({ aiConfig }: { aiConfig: AIVendaInFiles
 
     const faq = data.faq.map((item) => {
       if (item.response instanceof File) {
-        console.log("item.response", item.response);
         formData.append("fileFaq", item.response);
         return {
           ...item,
@@ -180,11 +165,10 @@ export default function AiVendaEditView({ aiConfig }: { aiConfig: AIVendaInFiles
       return item;
     });
 
-    console.log("faq", faq);
-
     formData.append("data", JSON.stringify({ ...objData, faq }));
 
-    const ret = await axios.post("/api/ai-config", formData);
+
+    const ret = await axios.post("/api/ai-venda", formData);
     if (ret.status === 200) {
       router.back();
     }
@@ -206,7 +190,7 @@ export default function AiVendaEditView({ aiConfig }: { aiConfig: AIVendaInFiles
         <h1 className="lg:text-4xl md:text-4xl font-bold text-2xl">
           Cadastro de IA
         </h1>
-        <Link href="/ai-config">
+        <Link href="/ai-venda">
           <Button className="bg-primary-500 hover:bg-secondary-500 text-white font-bold py-2 px-4 rounded-full items-center w-full">
             <Undo2 size={24} />
             Voltar

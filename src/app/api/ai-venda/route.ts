@@ -58,14 +58,10 @@ export const POST = async (request: NextRequest) => {
 
   const filesFaq = form.getAll("fileFaq") as File[];
 
-  console.log("filesFaq", filesFaq);
-
   // recebe um array de files
   const files = form.getAll("file") as File[];
 
   const faqFiles = await saveFiles(filesFaq, "faq=");
-
-  console.log("faqFiles", faqFiles);
 
   if (!data) {
     return NextResponse.json({}, { status: 400 });
@@ -77,7 +73,6 @@ export const POST = async (request: NextRequest) => {
           .map((item) => {
             if (faqFiles.find((file) => file.name === item.response)) {
               const file = faqFiles.find((file) => file.name === item.response);
-              console.log("file", file);
               item.response = file?.url || "";
             }
             return `${item.quest}: ${item.response}`;
@@ -89,8 +84,6 @@ export const POST = async (request: NextRequest) => {
   data.files = await saveFiles(files);
   data.files = [...faqFiles, ...data.files];
   data.user_id = user.user.userId;
-
-  console.log("data", data);
 
   if (data?.action === "update" && data?.id) {
     delete data?.action;

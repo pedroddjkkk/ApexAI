@@ -66,7 +66,6 @@ export default function Produtos({
   });
 
   const onSubmit = async (data: InputsProdutos) => {
-    console.log(data);
     setVal("produto", [...wat("produto"), data]);
     reset();
   }
