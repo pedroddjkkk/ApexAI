@@ -30,12 +30,12 @@ export const POST = async (request: Request) => {
   return NextResponse.json(ret);
 };
 
-export const GET = async (request: NextRequest) => {
-  // const user = await getServerSideSession();
+// export const GET = async (request: NextRequest) => {
+//   // const user = await getServerSideSession();
 
-  // if (!user.user) return NextResponse.json({ ret: "not found" });
+//   // if (!user.user) return NextResponse.json({ ret: "not found" });
 
-  const produtos = await getProdutoByGrupOrName("sup va", undefined);
+//   // const produtos = await getProdutoByGrupOrName("sup va", undefined);
 
-  return NextResponse.json({ ret: produtos });
-};
+//   // return NextResponse.json({ ret: produtos });
+// };

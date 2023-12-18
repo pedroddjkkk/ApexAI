@@ -42,7 +42,7 @@ export default function HomeSection4() {
         </div>
       </div>
       <div className=' bg-neutral-500/10 rounded-tl-3xl rounded-br-3xl h-[300px] w-[300px]' style={{
-        backgroundImage: "url('https://media.discordapp.net/attachments/1083082099994673184/1186224350265880616/Frame_2608925_2.png?ex=65927884&is=65800384&hm=c87145a7eb7bb31428886e04423d0806e0d32c2975c55f49781cd4fcaa91b8e2&=&format=webp&quality=lossless')",
+        backgroundImage: "url('https://media.discordapp.net/attachments/1083082099994673184/1186224350265880616/Frame_2608925_2.png?ex=65927884&is=65800384&hm=c87145a7eb7bb31428886e04423d0806e0d32c2975c55f49781cd4fcaa91b8e2&=&format=webp&quality=losslessrun')",
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",
         backgroundPosition: "center",
