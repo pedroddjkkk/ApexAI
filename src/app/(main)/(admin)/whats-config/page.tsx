@@ -65,7 +65,7 @@ export default function AiConfig() {
     }, 5000);
 
     const fetchAiConfigs = async () => {
-      const res = await axios.get("/api/ai-config/all");
+      const res = await axios.get("/api/all-ai-config");
 
       setAiConfigs(res.data)
     }
