@@ -1,5 +1,5 @@
 import prisma from "@/lib/db";
-import { Produto } from "@prisma/client";
+import { AIConfig, Produto } from "@prisma/client";
 
 type PropsCreateProduto = {
   name: string;
@@ -31,11 +31,19 @@ export function createManyProdutos(produtos: PropsCreateProduto[]) {
   return ret;
 }
 
-export async function getProdutoByGrupOrName(group?: string, name?: string) {
+export async function getProdutoByGrupOrName(
+  aiConfig: AIConfig,
+  group?: string,
+  name?: string
+) {
   const editGroup = group?.split(" ");
   const editName = name?.split(" ");
   if (!group && !name) {
-    return await prisma.produto.findMany();
+    return await prisma.produto.findMany({
+      where: {
+        ai_config_id: aiConfig.id,
+      },
+    });
   }
   if (!group) {
     console.log("name", name);
@@ -46,6 +54,7 @@ export async function getProdutoByGrupOrName(group?: string, name?: string) {
             contains: `${item}`,
           },
         })),
+        ai_config_id: aiConfig.id,
       },
     });
   }
@@ -62,6 +71,7 @@ export async function getProdutoByGrupOrName(group?: string, name?: string) {
             })),
           },
         },
+        ai_config_id: aiConfig.id,
       },
     });
   }
@@ -83,6 +93,7 @@ export async function getProdutoByGrupOrName(group?: string, name?: string) {
           },
         },
       ],
+      ai_config_id: aiConfig.id,
     },
   });
 

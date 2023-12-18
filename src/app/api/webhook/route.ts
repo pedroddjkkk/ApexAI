@@ -1,3 +1,4 @@
+import AiConfig from "@/app/(main)/(admin)/whats-config/page";
 import { generateAiResponse } from "@/lib/ai/chat";
 import prisma from "@/lib/db";
 import { verifyWebhook } from "@/lib/webhook/verify";
@@ -120,7 +121,11 @@ export async function POST(req: NextRequest) {
           console.log("area", area);
           console.log("produto", produto);
 
-          const produtos = await getProdutoByGrupOrName(area, produto);
+          const produtos = await getProdutoByGrupOrName(
+            whatsappConfig.ai_config,
+            area,
+            produto
+          );
 
           console.log("produtos", produtos);
 

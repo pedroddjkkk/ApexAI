@@ -47,6 +47,15 @@ export async function getAiConfigs(
   return ret;
 }
 
+export async function getAllAiConfigs(id: string): Promise<AIConfig[] | null> {
+  const ret = await prisma.aIConfig.findMany({
+    where: {
+      user_id: id,
+    },
+  });
+  return ret;
+}
+
 export function getAiConfig(id: string): Promise<AIConfig | null> {
   return prisma.aIConfig.findUnique({
     where: {
