@@ -12,7 +12,11 @@ export default function HomeSection1() {
               Converta visitantes em clientes
             </span>
             <span className="text-[42px] leading-[45px] font-medium">
-              Pare de <span className="font-semibold text-danger-500">Perder Dinheiro</span> enquanto dorme, nos cuidamos do seu negócio
+              Pare de{" "}
+              <span className="font-semibold text-danger-500">
+                Perder Dinheiro
+              </span>{" "}
+              enquanto dorme, nos cuidamos do seu negócio
             </span>
             <div className="text-primary-500 gap-2 flex flex-col">
               <div className="flex items-center gap-2">
@@ -70,7 +74,11 @@ export default function HomeSection1() {
             Para criar a IA perfeita para o seu negócio
           </span>
         </div>
-        <div className="bg-neutral-500/10 rounded-xl w-full h-[500px]"></div>
+        <div className=" rounded-xl w-full overflow-hidden ">
+          <video className="w-full " autoPlay loop muted>
+            <source src="/video/denovosaporra.mp4" type="video/mp4" />
+          </video>
+        </div>
       </div>
     </div>
   );
