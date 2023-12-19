@@ -23,8 +23,7 @@ import { Undo2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import FaqDataTables from "@/components/data-tables/form-faq-table";
-import { Label } from "@/components/ui/label";
-import { MdDeleteForever } from "react-icons/md";
+import { quests } from "@/components/inputs/trabs-form";
 
 // types
 export type InputsAionfig = {
@@ -140,25 +139,64 @@ export default function AiConfigRegisterView() {
 
         if (!pergunta || !resposta) return;
 
-        switch (pergunta) {
-          case "Qual o nome da empresa":
-            setValue("name", resposta);
-            break;
-          case "Quais são os principais produtos ou serviços oferecidos pela empresa":
-            // Não entendi como que seta essa porra então não dá pra mudar o setValue ;-;
-            break;
-          case "Horário de atendimento":
-            // Não entendi como que seta essa porra então não dá pra mudar o setValue ;-;
-            break;
-          case "Como entrar em contato com a empresa":
-            // Não entendi como que seta essa porra então não dá pra mudar o setValue ;-;
-            break;
-          case "Endereço da empresa":
-            // Não entendi como que seta essa porra então não dá pra mudar o setValue ;-;
-            break;
-          default:
-            break;
-        }
+        // switch (pergunta) {
+        //   case "Qual o nome da empresa":
+        //     setValue("sistema", [
+        //       ...watch("sistema"),
+        //       {
+        //         id: "nome",
+        //         quest: pergunta,
+        //         response: resposta,
+        //       },
+        //     ]);
+        //     break;
+        //   case "Quais são os principais produtos ou serviços oferecidos pela empresa":
+        //     // Não entendi como que seta essa porra então não dá pra mudar o setValue ;-;
+        //     setValue("sistema", [
+        //       ...watch("sistema"),
+        //       {
+        //         id: "produtos",
+        //         quest: pergunta,
+        //         response: resposta,
+        //       },
+        //     ]);
+        //     break;
+        //   case "Horário de atendimento":
+        //     // Não entendi como que seta essa porra então não dá pra mudar o setValue ;-;
+        //     setValue("sistema", [
+        //       ...watch("sistema"),
+        //       {
+        //         id: "horario",
+        //         quest: pergunta,
+        //         response: resposta,
+        //       },
+        //     ]);
+        //     break;
+        //   case "Como entrar em contato com a empresa":
+        //     // Não entendi como que seta essa porra então não dá pra mudar o setValue ;-;
+        //     setValue("sistema", [
+        //       ...watch("sistema"),
+        //       {
+        //         id: "contato",
+        //         quest: pergunta,
+        //         response: resposta,
+        //       },
+        //     ]);
+        //     break;
+        //   case "Endereço da empresa":
+        //     // Não entendi como que seta essa porra então não dá pra mudar o setValue ;-;
+        //     setValue("sistema", [
+        //       ...watch("sistema"),
+        //       {
+        //         id: "localizacao",
+        //         quest: pergunta,
+        //         response: resposta,
+        //       },
+        //     ]);
+        //     break;
+        //   default:
+        //     break;
+        // }
 
         console.log("pergunta", pergunta);
         console.log("resposta", resposta);
@@ -210,12 +248,12 @@ export default function AiConfigRegisterView() {
           <div className="flex gap-2 ">
             <InputLabel
               label="Site"
-              description="Responda suas perguntas com seu web site"
+              description="Responda suas perguntas com sua página de apresentação da empresa."
             >
               <div className="flex gap-2">
                 <Input
                   {...register("site")}
-                  placeholder="Exemplo https://aipex.com.br/"
+                  placeholder="Exemplo https://aipex.com.br/sobre-nos/"
                 />
                 <div>
                   <Button
