@@ -134,72 +134,27 @@ export default function AiConfigRegisterView() {
 
       console.log(res.data);
 
-      res.data.message.split("\n").map((item: string) => {
+      res.data.message.split("\n").map((item: string, index: number) => {
         const [pergunta, resposta] = item.split(":");
 
         if (!pergunta || !resposta) return;
 
-        // switch (pergunta) {
-        //   case "Qual o nome da empresa":
-        //     setValue("sistema", [
-        //       ...watch("sistema"),
-        //       {
-        //         id: "nome",
-        //         quest: pergunta,
-        //         response: resposta,
-        //       },
-        //     ]);
-        //     break;
-        //   case "Quais são os principais produtos ou serviços oferecidos pela empresa":
-        //     // Não entendi como que seta essa porra então não dá pra mudar o setValue ;-;
-        //     setValue("sistema", [
-        //       ...watch("sistema"),
-        //       {
-        //         id: "produtos",
-        //         quest: pergunta,
-        //         response: resposta,
-        //       },
-        //     ]);
-        //     break;
-        //   case "Horário de atendimento":
-        //     // Não entendi como que seta essa porra então não dá pra mudar o setValue ;-;
-        //     setValue("sistema", [
-        //       ...watch("sistema"),
-        //       {
-        //         id: "horario",
-        //         quest: pergunta,
-        //         response: resposta,
-        //       },
-        //     ]);
-        //     break;
-        //   case "Como entrar em contato com a empresa":
-        //     // Não entendi como que seta essa porra então não dá pra mudar o setValue ;-;
-        //     setValue("sistema", [
-        //       ...watch("sistema"),
-        //       {
-        //         id: "contato",
-        //         quest: pergunta,
-        //         response: resposta,
-        //       },
-        //     ]);
-        //     break;
-        //   case "Endereço da empresa":
-        //     // Não entendi como que seta essa porra então não dá pra mudar o setValue ;-;
-        //     setValue("sistema", [
-        //       ...watch("sistema"),
-        //       {
-        //         id: "localizacao",
-        //         quest: pergunta,
-        //         response: resposta,
-        //       },
-        //     ]);
-        //     break;
-        //   default:
-        //     break;
-        // }
+        const questObj = quests.find((e) => e.quest === pergunta);
 
-        console.log("pergunta", pergunta);
-        console.log("resposta", resposta);
+        setValue("sistema", [
+          ...watch("sistema"),
+          {
+            id: questObj?.id || index.toString(),
+            quest: pergunta,
+            response: resposta.trim(),
+          },
+        ]);
+
+        // console.log("questObj", questObj);
+        // console.log("sistema", watch("sistema"));
+
+        // console.log("pergunta", pergunta);
+        // console.log("resposta", resposta);
       });
     } catch (error: any) {
       console.error(error.response);
