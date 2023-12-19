@@ -132,7 +132,7 @@ export default function AiConfigRegisterView() {
         site: watch("site"),
       });
 
-      console.log(res.data);
+      // console.log(res.data);
 
       res.data.message.split("\n").map((item: string, index: number) => {
         const [pergunta, resposta] = item.split(":");
