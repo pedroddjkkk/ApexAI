@@ -123,11 +123,12 @@ function TableProdutos({ data, handleDelete, wat }: PropsTable) {
         <TableBody>
           {data.map((e) => (
             <TableRow key={e.name}>
-              <TableCell>{e.name}</TableCell>
-              <TableCell>R${e.price}</TableCell>
-              <TableCell>{e.description}</TableCell>
-              <TableCell>{e.link}</TableCell>
-              <TableCell>{e.group}</TableCell>
+              <TableCell title={e.name}>{e.name}</TableCell>
+              <TableCell title={`R$${e.price}`}>R${e.price}</TableCell>
+              {/* quando passar por cima quero que apareça todo o texto */}
+              <TableCell title={e.description}>{e.description.length > 20 ? e.description.substring(0, 20) + "..." : e.description}</TableCell>
+              <TableCell title={e.link}>{e.link}</TableCell>
+              <TableCell title={e.group}>{e.group}</TableCell>
               <TableCell>
                 <Button
                   className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full items-center w-full"

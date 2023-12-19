@@ -7,6 +7,7 @@ export async function generateAiResponse(
   AiConfig: AIConfig
 ) {
   console.log("messages", messages);
+  console.log("AiConfig", AiConfig);
 
   // switch type of AiConfig to use the correct model
 

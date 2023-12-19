@@ -64,7 +64,7 @@ export async function POST(req: NextRequest) {
           whatsappConfig.ai_config.sistema +
           ".\n\n" +
           new Date().toLocaleTimeString() +
-          " . organize melhor as respostas coloque tipos diferentes de texto, priorize informações chave, economize tokens, envie emojis. Não responda perguntas fora do escopo comercial da empresa, crie listas com • se tiver uma lista interna use numeros.",
+          " este é o horaro atual. priorize informações chave, economize tokens, envie emojis. Não responda perguntas fora do escopo comercial da empresa",
         role: "system",
       });
 

@@ -41,14 +41,14 @@ model Key {
 // banco AI config 
 
 model AIConfig {
-  id                String          @id @default(uuid())
-  user              User            @relation(references: [id], fields: [user_id], onDelete: Cascade)
-  created_at        DateTime        @default(now())
-  updated_at        DateTime        @updatedAt
+  id                String             @id @default(uuid())
+  user              User               @relation(references: [id], fields: [user_id], onDelete: Cascade)
+  created_at        DateTime           @default(now())
+  updated_at        DateTime           @updatedAt
   user_id           String
   name              String
-  sistema           String          @db.VarChar(3000)
-  faq               String          @db.VarChar(3000)
+  sistema           String             @db.VarChar(3000)
+  faq               String             @db.VarChar(3000)
   max_tokens        Int
   model             String
   temperature       Float
@@ -56,10 +56,36 @@ model AIConfig {
   top_p             Float
   frequency_penalty Float
   presence_penalty  Float
-  type              String          @default("G") // G = Geral | V = Vendas | S = Suporte | SI = Suorte Interno | SE = Suporte Externo | R = Restaurante
+  type              String             @default("G") // G = Geral | V = Vendas | S = Suporte | SI = Suorte Interno | SE = Suporte Externo | R = Restaurante
   files             File[]
   WhatsappClient    WhatsappClient?
   produtos          Produto[]
+  session_whatsapp  Session_whatsapp[]
+}
+
+model Session_whatsapp {
+  id                 String          @id @unique
+  client_id          String?
+  whatsapp_client_id Int?
+  init               DateTime
+  end                DateTime?
+  ia_config_id       String
+  clien_id           String
+  ai_config          AIConfig        @relation(references: [id], fields: [ia_config_id], onDelete: Cascade)
+  client             Client?         @relation(fields: [client_id], references: [id])
+  whatsapp_client    WhatsappClient? @relation(fields: [whatsapp_client_id], references: [id])
+
+  @@index([client_id])
+}
+
+model Client {
+  id               String             @id @unique
+  name             String
+  email            String
+  phone            String
+  created_at       DateTime           @default(now())
+  updated_at       DateTime           @updatedAt
+  session_whatsapp Session_whatsapp[]
 }
 
 model File {
@@ -73,17 +99,18 @@ model File {
 }
 
 model WhatsappClient {
-  id           Int       @id @default(autoincrement())
-  name         String?
-  active       Boolean   @default(true)
-  qrCode       String?   @db.MediumText()
-  ready        Boolean   @default(false)
-  created_at   DateTime  @default(now())
-  updated_at   DateTime  @updatedAt
-  user_id      String    @unique
-  user         User      @relation(references: [id], fields: [user_id])
-  ai_config    AIConfig? @relation(fields: [ai_config_id], references: [id])
-  ai_config_id String?   @unique
+  id               Int                @id @default(autoincrement())
+  name             String?
+  active           Boolean            @default(true)
+  qrCode           String?            @db.MediumText()
+  ready            Boolean            @default(false)
+  created_at       DateTime           @default(now())
+  updated_at       DateTime           @updatedAt
+  user_id          String             @unique
+  user             User               @relation(references: [id], fields: [user_id])
+  ai_config        AIConfig?          @relation(fields: [ai_config_id], references: [id])
+  ai_config_id     String?            @unique
+  session_whatsapp Session_whatsapp[]
 }
 
 model Produto {

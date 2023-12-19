@@ -25,9 +25,9 @@ import FaqDataTables from "@/components/data-tables/form-faq-table";
 import { InputsAionfig } from "../../ai-config-register-view";
 import { File as Files, Group, Produto } from "@prisma/client";
 import { InputsAiVenda } from "./ai-venda-register-view";
-import Advanced from "./advanced";
-import Produtos from "./produtos";
 import { createAiVendaSchema } from "@/lib/schema/ai-venda";
+import Produtos from "../register/produtos";
+import Advanced from "../register/advanced";
 
 export type AIVendaInFiles = {
   id: string;

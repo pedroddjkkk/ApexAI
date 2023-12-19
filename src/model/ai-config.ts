@@ -43,6 +43,9 @@ export async function getAiConfigs(
       user_id: id,
       type,
     },
+    include: {
+      produtos: true,
+    },
   });
   return ret;
 }
