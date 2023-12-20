@@ -148,7 +148,7 @@ export async function POST(req: NextRequest) {
             clientId: body.clientId,
           });
         } else if (
-          // função para pegar os produtos
+          // função encerra o chat
           generatedResponse.choices[0].message.function_call?.name ===
           "end_chat"
         ) {
@@ -162,7 +162,7 @@ export async function POST(req: NextRequest) {
             chat.push({
               content: "Nota não informada? qual nota vc daria?",
               role: "function",
-              name: "get_products",
+              name: "end_chat",
             });
           }
 
@@ -170,7 +170,7 @@ export async function POST(req: NextRequest) {
             chat.push({
               content: "Nota não informada",
               role: "function",
-              name: "get_products",
+              name: "end_chat",
             });
           }
 
@@ -178,16 +178,17 @@ export async function POST(req: NextRequest) {
             chat.push({
               content: "Deseja finalizar o chat?",
               role: "function",
-              name: "get_products",
+              name: "end_chat",
             });
           }
 
           endSession(messages, nota);
 
           chat.push({
-            content: JSON.stringify("Chat finalizado"),
+            content:
+              "Chat finalizado com sucesso, responda: obrigado pela preferência",
             role: "function",
-            name: "get_products",
+            name: "end_chat",
           });
 
           const newResponse = await generateAiResponse(

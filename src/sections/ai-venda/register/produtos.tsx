@@ -17,12 +17,12 @@ import {
 } from "@/components/ui/table";
 import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FieldErrors, UseFormHandleSubmit, UseFormRegister, UseFormWatch, useForm } from "react-hook-form";
+import { FieldErrors, UseFormHandleSubmit, UseFormRegister, UseFormSetValue, UseFormWatch, useForm } from "react-hook-form";
 import { z } from "zod";
 import { InputsAionfig } from "./ai-venda-register-view";
 
 type Props = {
-  setVal: any;
+  setVal: UseFormSetValue<InputsAionfig>;
   wat: UseFormWatch<InputsAionfig>;
   produto: boolean;
   setProduto: any;

@@ -39,19 +39,20 @@ export async function generateAiResponse(
           },
           {
             name: "end_chat",
-            description: "Despedida e Nota da conversa",
+            description: "Despedida do chat",
             parameters: {
               type: "object",
               properties: {
                 end_chat: {
                   type: "string",
-                  description: "Deseja finalizar o chat e.g. Sim",
+                  description: "end chat e.g. Sim",
                 },
                 nota: {
                   type: "string",
-                  description: "Deseja dar uma nota de 0 a 10? e.g. 10",
+                  description: "nota de 0 a 10 e.g. 10",
                 },
               },
+              required: ["end_chat", "nota"],
             },
           },
         ],
