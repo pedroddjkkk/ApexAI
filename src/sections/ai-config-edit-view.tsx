@@ -19,13 +19,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 // axios
 import axios from "axios";
 import TabsForm, { quests } from "@/components/inputs/trabs-form";
-import {
-  Undo2
-} from "lucide-react";
+import { Undo2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import FaqDataTables from "@/components/data-tables/form-faq-table";
-import { InputsAionfig } from "./ai-config-register-view";
+import { InputsAiConfig } from "./ai-config-register-view";
 import { Label } from "@/components/ui/label";
 import { MdDeleteForever } from "react-icons/md";
 import { File as Files } from "@prisma/client";
@@ -46,7 +44,7 @@ export type AIConfigInFiles = {
   frequency_penalty: number;
   presence_penalty: number;
   files: Files[];
-}
+};
 
 export type Data = {
   id: string;
@@ -66,7 +64,11 @@ export type Data = {
   files: File[];
 };
 
-export default function AiConfigEditView({ aiConfig }: { aiConfig: AIConfigInFiles }) {
+export default function AiConfigEditView({
+  aiConfig,
+}: {
+  aiConfig: AIConfigInFiles;
+}) {
   const router = useRouter();
 
   const {
@@ -76,31 +78,37 @@ export default function AiConfigEditView({ aiConfig }: { aiConfig: AIConfigInFil
     setValue,
     reset,
     formState: { errors },
-  } = useForm<InputsAionfig>({
+  } = useForm<InputsAiConfig>({
     resolver: zodResolver(createAiConfigSchema),
     defaultValues: {
       id: aiConfig.id,
       name: aiConfig.name,
-      sistema: aiConfig.sistema ? aiConfig.sistema.split(";;\n").map((item, index) => {
-        const [quest, response] = item.split(";:;");
-        const questObj = quests.find((e) => e.quest === quest);
-        return {
-          id: questObj?.id || index.toString(),
-          quest,
-          response,
-        };
-      }) : [],
-      faq: aiConfig.faq ? aiConfig.faq.split("\n").map((item, index) => {
-        const [quest, response] = item.split(":");
-        return {
-          id: index.toString(),
-          quest,
-          response,
-        };
-      }) : [],
-      file: aiConfig.files.filter((item) => !item.name.includes("faq=")).map((item) => {
-        return new File([], item.name, { type: item.url });
-      }),
+      sistema: aiConfig.sistema
+        ? aiConfig.sistema.split(";;\n").map((item, index) => {
+            const [quest, response] = item.split(";:;");
+            const questObj = quests.find((e) => e.quest === quest);
+            return {
+              id: questObj?.id || index.toString(),
+              quest,
+              response,
+            };
+          })
+        : [],
+      faq: aiConfig.faq
+        ? aiConfig.faq.split("\n").map((item, index) => {
+            const [quest, response] = item.split(":");
+            return {
+              id: index.toString(),
+              quest,
+              response,
+            };
+          })
+        : [],
+      file: aiConfig.files
+        .filter((item) => !item.name.includes("faq="))
+        .map((item) => {
+          return new File([], item.name, { type: item.url });
+        }),
       max_tokens: aiConfig.max_tokens,
       model: aiConfig.model,
       temperature: aiConfig.temperature,
@@ -111,8 +119,7 @@ export default function AiConfigEditView({ aiConfig }: { aiConfig: AIConfigInFil
     },
   });
 
-  const onSubmit = async (data: InputsAionfig) => {
-
+  const onSubmit = async (data: InputsAiConfig) => {
     const { file, ...objData } = {
       ...data,
       action: "update",
@@ -122,7 +129,7 @@ export default function AiConfigEditView({ aiConfig }: { aiConfig: AIConfigInFil
           return `${item.quest};:;${item.response}`;
         })
         .join(";;\n")
-        .trim()
+        .trim(),
     };
 
     const formData = new FormData();
@@ -144,7 +151,6 @@ export default function AiConfigEditView({ aiConfig }: { aiConfig: AIConfigInFil
       }
       return item;
     });
-
 
     formData.append("data", JSON.stringify({ ...objData, faq }));
 

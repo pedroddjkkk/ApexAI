@@ -82,7 +82,7 @@ export async function POST(req: NextRequest) {
           pageTitle +
           " e a descrição que está na tag do <meta> é " +
           descriptionContent +
-          ", procure essas informações 'Qual o nome da empresa', 'Quais são os principais produtos ou serviços oferecidos pela empresa?', 'Horário de atendimento?', 'Como entrar em contato com a empresa?' e 'Endereço da empresa?' com o web scrap que eu fiz. Darei um exemplo para que todas as respostas sigam esse formato, Qual o nome da empresa: resposta Quais são os principais produtos ou serviços oferecidos pela empresa: resposta. Quebre a linha para separará-las. Caso não consiga achar a resposta para a pergunta, a resposta deve ser 'Não encontrado' " +
+          ", procure essas informações 'Qual o nome da empresa', 'Quais são os principais produtos ou serviços oferecidos pela empresa?', 'Horário de atendimento?', 'Como entrar em contato com a empresa?' e 'Endereço da empresa?' com o web scrap que eu fiz. Darei um exemplo para que todas as respostas sigam esse formato, Qual o nome da empresa?: resposta Quais são os principais produtos ou serviços oferecidos pela empresa?: resposta. Quebre a linha para separará-las. Caso não consiga achar a resposta para a pergunta, a resposta deve ser 'Não encontrado' " +
           textContent,
       },
     ],

@@ -23,7 +23,7 @@ import Produtos from "./produtos";
 import { createAiVendaSchema } from "@/lib/schema/ai-venda";
 
 // types
-export type InputsAionfig = {
+export type InputsAiConfig = {
   id?: string;
   name: string;
   site: string;
@@ -64,7 +64,7 @@ export default function AiVendaRegisterView() {
     setValue,
     reset,
     formState: { errors },
-  } = useForm<InputsAionfig>({
+  } = useForm<InputsAiConfig>({
     resolver: zodResolver(createAiVendaSchema),
     defaultValues: {
       name: "",
@@ -87,7 +87,7 @@ export default function AiVendaRegisterView() {
     console.log(errors);
   }, [errors]);
 
-  const onSubmit = async (data: InputsAionfig) => {
+  const onSubmit = async (data: InputsAiConfig) => {
     const { file, ...objData } = {
       ...data,
       sistema: data.sistema

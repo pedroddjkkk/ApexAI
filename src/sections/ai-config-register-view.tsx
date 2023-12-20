@@ -8,6 +8,7 @@ import SwitchLabel from "@/components/inputs/switch-label";
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
 import { Combobox } from "@/components/ui/combobox";
+import { InputWebScrap } from "@/components/inputs/input-web-scrap";
 
 // hook form
 import { useForm } from "react-hook-form";
@@ -26,7 +27,7 @@ import FaqDataTables from "@/components/data-tables/form-faq-table";
 import { quests } from "@/components/inputs/trabs-form";
 
 // types
-export type InputsAionfig = {
+export type InputsAiConfig = {
   id?: string;
   name: string;
   site: string;
@@ -60,7 +61,7 @@ export default function AiConfigRegisterView() {
     setValue,
     reset,
     formState: { errors },
-  } = useForm<InputsAionfig>({
+  } = useForm<InputsAiConfig>({
     resolver: zodResolver(createAiConfigSchema),
     defaultValues: {
       name: "",
@@ -82,7 +83,7 @@ export default function AiConfigRegisterView() {
     console.log(errors);
   }, [errors]);
 
-  const onSubmit = async (data: InputsAionfig) => {
+  const onSubmit = async (data: InputsAiConfig) => {
     const { file, ...objData } = {
       ...data,
       sistema: data.sistema
@@ -121,88 +122,6 @@ export default function AiConfigRegisterView() {
     const ret = await axios.post("/api/ai-config", formData);
     if (ret.status === 200) {
       router.back();
-    }
-  };
-
-  const onSearch = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    try {
-      const res = await axios.post("/api/web-scraping", {
-        site: watch("site"),
-      });
-
-      console.log(res.data);
-
-      res.data.message.split("\n").map((item: string) => {
-        const [pergunta, resposta] = item.split(":");
-
-        if (!pergunta || !resposta) return;
-
-        // switch (pergunta) {
-        //   case "Qual o nome da empresa":
-        //     setValue("sistema", [
-        //       ...watch("sistema"),
-        //       {
-        //         id: "nome",
-        //         quest: pergunta,
-        //         response: resposta,
-        //       },
-        //     ]);
-        //     break;
-        //   case "Quais são os principais produtos ou serviços oferecidos pela empresa":
-        //     // Não entendi como que seta essa porra então não dá pra mudar o setValue ;-;
-        //     setValue("sistema", [
-        //       ...watch("sistema"),
-        //       {
-        //         id: "produtos",
-        //         quest: pergunta,
-        //         response: resposta,
-        //       },
-        //     ]);
-        //     break;
-        //   case "Horário de atendimento":
-        //     // Não entendi como que seta essa porra então não dá pra mudar o setValue ;-;
-        //     setValue("sistema", [
-        //       ...watch("sistema"),
-        //       {
-        //         id: "horario",
-        //         quest: pergunta,
-        //         response: resposta,
-        //       },
-        //     ]);
-        //     break;
-        //   case "Como entrar em contato com a empresa":
-        //     // Não entendi como que seta essa porra então não dá pra mudar o setValue ;-;
-        //     setValue("sistema", [
-        //       ...watch("sistema"),
-        //       {
-        //         id: "contato",
-        //         quest: pergunta,
-        //         response: resposta,
-        //       },
-        //     ]);
-        //     break;
-        //   case "Endereço da empresa":
-        //     // Não entendi como que seta essa porra então não dá pra mudar o setValue ;-;
-        //     setValue("sistema", [
-        //       ...watch("sistema"),
-        //       {
-        //         id: "localizacao",
-        //         quest: pergunta,
-        //         response: resposta,
-        //       },
-        //     ]);
-        //     break;
-        //   default:
-        //     break;
-        // }
-
-        console.log("pergunta", pergunta);
-        console.log("resposta", resposta);
-      });
-    } catch (error: any) {
-      console.error(error.response);
     }
   };
 
@@ -246,25 +165,7 @@ export default function AiConfigRegisterView() {
             </InputLabel>
           </div>
           <div className="flex gap-2 ">
-            <InputLabel
-              label="Site"
-              description="Responda suas perguntas com sua página de apresentação da empresa."
-            >
-              <div className="flex gap-2">
-                <Input
-                  {...register("site")}
-                  placeholder="Exemplo https://aipex.com.br/sobre-nos/"
-                />
-                <div>
-                  <Button
-                    className="bg-primary-500 hover:bg-primary-500/75 font-bold"
-                    onClick={onSearch}
-                  >
-                    Procurar
-                  </Button>
-                </div>
-              </div>
-            </InputLabel>
+            <InputWebScrap setVal={setValue} wat={watch} />
           </div>
         </div>
         <div className="flex justify-center">
