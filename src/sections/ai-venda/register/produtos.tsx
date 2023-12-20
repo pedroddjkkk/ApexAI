@@ -22,8 +22,8 @@ import { z } from "zod";
 import { InputsAiConfig } from "./ai-venda-register-view";
 
 type Props = {
-  setVal: UseFormSetValue<InputsAionfig>;
-  wat: UseFormWatch<InputsAionfig>;
+  setVal: UseFormSetValue<InputsAiConfig>;
+  wat: UseFormWatch<InputsAiConfig>;
   produto: boolean;
   setProduto: any;
 };
