@@ -1,7 +1,7 @@
 "use client"
 
 import React from 'react';
-import HomeTopNav from './home-top-nav';
+import HomeTopNav from '../home-top-nav';
 import HomeSection1 from './home-section-1';
 import HomeSection2 from './home-section-2';
 import HomeSection3 from './home-section-3';
@@ -9,8 +9,8 @@ import HomeSection4 from './home-section-4';
 import Link from 'next/link';
 import HomeSection5 from './home-section-5';
 import HomeSection6 from './home-section-6';
-import HomeFooter from './home-footer';
-import FloatingButton from './floating-button';
+import HomeFooter from '../home-footer';
+import FloatingButton from '../floating-button';
 
 type Props = {
 
@@ -43,9 +43,9 @@ export default function HomeView({ }: Props) {
           {/* vantagem */}
           {/* section 6 */}
           <HomeSection6 />
-          {/* footer */}
-          <HomeFooter />
         </div>
+        {/* footer */}
+        <HomeFooter />
       </div>
       <FloatingButton />
     </main>

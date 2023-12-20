@@ -12,30 +12,37 @@ export default function HomeSection5() {
     <div className="md:p-16 p-4 bg-white bg-opacity-50 rounded-2xl flex-col justify-center items-center gap-16 inline-flex">
       <div className="grid grid-cols-1 xl:grid-cols-2
       2xl:grid-cols-3 gap-16 w-full">
-        <Precos valor={0} name="Free" lista={[
-          "20 mensagens incluídas por mês",
-          "1000 palavras de treinamento",
-          "Modelo básico (GPT-3)"
+        <Precos valor={0} name="Suporte" lista={[
+          "Até 15.000 mensagens incluídas por mês",
+          "Até 3000 palavras de treinamento",
+          "Treinamento personalisado por",
+          "perguntas e respostas",
+          "Até 3 WhatsApp bot",
+          "Treinamento por WebSite",
+          "Até 5 Configurações",
+          "Modelo avançado (GPT4 Turbo)"
         ]} />
-        <Precos valor={700} desconto={16.858} name="Pro-Plus" destaque="Mais Popular" lista={[
-          "15.000 mensagens incluídas por mês",
-          "3000 palavras de treinamento",
+        <Precos valor={700} desconto={16.858} name="Vendas" destaque="Mais Popular" lista={[
+          "Até 15.000 mensagens incluídas por mês",
+          "Até 3000 palavras de treinamento",
           "Treinamento modular por",
           "perguntas e respostas",
-          "3 WhatsApp bot",
+          "Até 3 WhatsApp bot",
           "Treinamento por WebSite",
           "5 Configurações",
           "Modelo avançado (GPT-4 Turbo)",
-          "Treinamento por documentos",
-          "Respostas com documentos",
-        ]} adicional="R$ 0,30 por mensagem adicional" />
+          "Catalogo até 2000 produtos"
+        ]} />
         <Precos valor={289} name="Pro" lista={[
-          "8.000 mensagens incluídas por mês",
-          "2000 palavras de treinamento",
-          "1 WhatsApp bot",
-          "3 Configurações",
-          "Modelo Avançado (GPT-4 Turbo)"
-        ]} adicional="R$ 0,20 por mensagem adicional" className="xl:col-span-2 2xl:col-span-1" />
+          "Até 15.000 mensagens incluídas por mês",
+          "Até 3000 palavras de treinamento",
+          "Treinamento personalisado por",
+          "perguntas e respostas",
+          "Até 3 WhatsApp bot",
+          "Treinamento por WebSite",
+          "Até 5 Configurações",
+          "Modelo avançado (GPT4 Turbo)"
+        ]} className="xl:col-span-2 2xl:col-span-1" />
       </div>
       <div className="mt-5 p-8 bg-neutral-50 rounded-[32px] shadow-md flex-col  flex gap-4 w-full h-full">
         <div className="w-full lg:w-1/3">
