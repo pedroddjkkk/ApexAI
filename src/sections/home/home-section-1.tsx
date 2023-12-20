@@ -74,7 +74,7 @@ export default function HomeSection1() {
             Para criar a IA perfeita para o seu negócio
           </span>
         </div>
-        <div className=" rounded-xl w-full overflow-hidden ">
+        <div className=" rounded-xl w-full overflow-hidden">
           <video className="w-full " autoPlay loop muted>
             <source src="/video/denovosaporra.mp4" type="video/mp4" />
           </video>
