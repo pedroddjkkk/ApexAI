@@ -7,7 +7,7 @@ export async function generateAiResponse(
   AiConfig: AIConfig
 ) {
   console.log("messages", messages);
-  console.log("AiConfig", AiConfig);
+  // console.log("AiConfig", AiConfig);
 
   // switch type of AiConfig to use the correct model
 
@@ -33,6 +33,23 @@ export async function generateAiResponse(
                   type: "string",
                   description:
                     "Produto ou serviço, e.g. Vendedor, Suporte Interno Suporte Externo",
+                },
+              },
+            },
+          },
+          {
+            name: "end_chat",
+            description: "Despedida e Nota da conversa",
+            parameters: {
+              type: "object",
+              properties: {
+                end_chat: {
+                  type: "string",
+                  description: "Deseja finalizar o chat e.g. Sim",
+                },
+                nota: {
+                  type: "string",
+                  description: "Deseja dar uma nota de 0 a 10? e.g. 10",
                 },
               },
             },

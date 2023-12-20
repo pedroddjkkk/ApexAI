@@ -64,13 +64,13 @@ model AIConfig {
 }
 
 model Session_whatsapp {
-  id                 String          @id @unique
-  client_id          String?
-  whatsapp_client_id Int?
-  init               DateTime
-  end                DateTime?
+  id                 String          @id @default(uuid())
+  client_id          String
   ia_config_id       String
-  clien_id           String
+  init               DateTime        @default(now())
+  end                DateTime?
+  whatsapp_client_id Int?
+  messages           Message[]
   ai_config          AIConfig        @relation(references: [id], fields: [ia_config_id], onDelete: Cascade)
   client             Client?         @relation(fields: [client_id], references: [id])
   whatsapp_client    WhatsappClient? @relation(fields: [whatsapp_client_id], references: [id])
@@ -78,14 +78,27 @@ model Session_whatsapp {
   @@index([client_id])
 }
 
+model Message {
+  id                  String           @id @default(uuid())
+  session_whatsapp_id String
+  message             String
+  created_at          DateTime         @default(now())
+  updated_at          DateTime         @updatedAt
+  session_whatsapp    Session_whatsapp @relation(references: [id], fields: [session_whatsapp_id], onDelete: Cascade)
+
+  @@index([session_whatsapp_id])
+}
+
 model Client {
-  id               String             @id @unique
-  name             String
-  email            String
-  phone            String
+  id               String             @id @default(uuid())
+  name             String?
+  email            String?            @unique
+  phone            String             @unique
   created_at       DateTime           @default(now())
   updated_at       DateTime           @updatedAt
   session_whatsapp Session_whatsapp[]
+
+  @@index([phone])
 }
 
 model File {

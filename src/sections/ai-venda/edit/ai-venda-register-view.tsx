@@ -18,9 +18,9 @@ import TabsForm from "@/components/inputs/trabs-form";
 import { Undo2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import Advanced from "./advanced";
-import Produtos from "./produtos";
 import { createAiVendaSchema } from "@/lib/schema/ai-venda";
+import Produtos from "../register/produtos";
+import Advanced from "../register/advanced";
 
 // types
 export type InputsAiVenda = {

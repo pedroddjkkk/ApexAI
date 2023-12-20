@@ -47,7 +47,7 @@ export async function getProdutoByGrupOrName(
     });
     if (ret.length) return ret;
 
-    return `Não encontramos nenhum produto para vc estes são os nossos grupos de produtos: ${(
+    return `Pergunte ao cliente qual o grupo ou nome do produto que ele deseja, estes são os nossos grupos de produtos: ${(
       await prisma.group.findMany({
         where: {
           produto: {

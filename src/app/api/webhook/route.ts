@@ -3,6 +3,7 @@ import { generateAiResponse } from "@/lib/ai/chat";
 import prisma from "@/lib/db";
 import { verifyWebhook } from "@/lib/webhook/verify";
 import { getProdutoByGrupOrName } from "@/model/produto";
+import { endSession, initClient } from "@/model/session";
 import { Produto } from "@prisma/client";
 import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
@@ -38,6 +39,8 @@ export async function POST(req: NextRequest) {
     case "message":
       const messages = body.messages as Message[];
 
+      console.log("messages", messages);
+
       const whatsappConfig = await prisma.whatsappClient.findUnique({
         where: {
           id: body.clientId,
@@ -67,6 +70,8 @@ export async function POST(req: NextRequest) {
           " este é o horaro atual. priorize informações chave, economize tokens, envie emojis. Não responda perguntas fora do escopo comercial da empresa",
         role: "system",
       });
+
+      initClient(messages, whatsappConfig.ai_config);
 
       const generatedResponse = await generateAiResponse(
         chat,
@@ -107,19 +112,16 @@ export async function POST(req: NextRequest) {
           generatedResponse.choices[0].message.function_call?.name ===
           "get_products"
         ) {
-          console.log("body", body);
+          // console.log("body", body);
 
-          console.log(
-            "arguments",
-            generatedResponse.choices[0].message.function_call?.arguments
-          );
+          // console.log(
+          //   "arguments",
+          //   generatedResponse.choices[0].message.function_call?.arguments
+          // );
 
           const { area, produto } = JSON.parse(
             generatedResponse.choices[0].message.function_call?.arguments
           );
-
-          console.log("area", area);
-          console.log("produto", produto);
 
           const produtos = await getProdutoByGrupOrName(
             whatsappConfig.ai_config,
@@ -127,10 +129,63 @@ export async function POST(req: NextRequest) {
             produto
           );
 
-          console.log("produtos", produtos);
-
           chat.push({
             content: JSON.stringify(produtos),
+            role: "function",
+            name: "get_products",
+          });
+
+          const newResponse = await generateAiResponse(
+            chat,
+            whatsappConfig.ai_config
+          );
+
+          // console.log("newResponse", newResponse.choices[0].message.content);
+
+          await axios.post("http://localhost:8000/whatsapp/message", {
+            conversationId: messages[0].id.remote,
+            message: formatForWhatsApp(newResponse.choices[0].message.content),
+            clientId: body.clientId,
+          });
+        } else if (
+          // função para pegar os produtos
+          generatedResponse.choices[0].message.function_call?.name ===
+          "end_chat"
+        ) {
+          const { nota, end_chat } = JSON.parse(
+            generatedResponse.choices[0].message.function_call?.arguments
+          );
+
+          console.log("Finaliza chat", nota, end_chat);
+
+          if (!nota && !end_chat) {
+            chat.push({
+              content: "Nota não informada? qual nota vc daria?",
+              role: "function",
+              name: "get_products",
+            });
+          }
+
+          if (!nota) {
+            chat.push({
+              content: "Nota não informada",
+              role: "function",
+              name: "get_products",
+            });
+          }
+
+          if (!end_chat) {
+            chat.push({
+              content: "Deseja finalizar o chat?",
+              role: "function",
+              name: "get_products",
+            });
+          }
+
+          endSession(messages, nota);
+
+          chat.push({
+            content: JSON.stringify("Chat finalizado"),
             role: "function",
             name: "get_products",
           });
