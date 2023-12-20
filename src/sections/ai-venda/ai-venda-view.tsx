@@ -8,7 +8,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
-import { AIConfig } from '@prisma/client';
 import { Button } from '@/components/ui/button';
 import { Delete, Edit, Plus } from 'lucide-react';
 import Link from 'next/link';
@@ -16,14 +15,15 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from '
 import axios from 'axios';
 import { formatDate } from '@/lib/utils';
 import AccordionDataTable from '@/components/data-tables/acordion-data-table';
+import { AiVendas } from '@/app/(main)/(admin)/ai-venda/page';
 
 type Props = {
-  AiConfigs: AIConfig[];
+  AiConfigs: AiVendas[];
 };
 
 export default function AiVendaView({ AiConfigs }: Props) {
 
-  const [aiConfigs, setAiConfigs] = React.useState<AIConfig[]>(AiConfigs);
+  const [aiConfigs, setAiConfigs] = React.useState<AiVendas[]>(AiConfigs);
 
   useEffect(() => {
     updateData();
@@ -67,6 +67,7 @@ export default function AiVendaView({ AiConfigs }: Props) {
             ...e,
             created_at: formatDate(e.created_at),
             updated_at: formatDate(e.updated_at),
+            qtd_produtos: e.produtos.length
           }
         })} handleDelete={handleDelete}
           viewValue={[
@@ -79,6 +80,7 @@ export default function AiVendaView({ AiConfigs }: Props) {
             { id: 'temperature', label: 'Temperatura: ' },
             { id: 'top_p', label: 'Qualidade: ' },
             { id: 'stop', label: 'Black List: ' },
+            { id: 'qtd_produtos', label: 'Qtd Produtos: ' },
           ]}
         />
       </div>
