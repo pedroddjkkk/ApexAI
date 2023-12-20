@@ -17,13 +17,19 @@ import {
 } from "@/components/ui/table";
 import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FieldErrors, UseFormHandleSubmit, UseFormRegister, UseFormWatch, useForm } from "react-hook-form";
+import {
+  FieldErrors,
+  UseFormHandleSubmit,
+  UseFormRegister,
+  UseFormWatch,
+  useForm,
+} from "react-hook-form";
 import { z } from "zod";
-import { InputsAionfig } from "./ai-venda-register-view";
+import { InputsAiConfig } from "./ai-venda-register-view";
 
 type Props = {
   setVal: any;
-  wat: UseFormWatch<InputsAionfig>;
+  wat: UseFormWatch<InputsAiConfig>;
   produto: boolean;
   setProduto: any;
 };
@@ -36,26 +42,30 @@ type InputsProdutos = {
   group: string;
 };
 
-export default function Produtos({
-  setVal,
-  wat,
-  produto,
-  setProduto,
-}: Props) {
-
+export default function Produtos({ setVal, wat, produto, setProduto }: Props) {
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
   } = useForm<InputsProdutos>({
-    resolver: zodResolver(z.object({
-      name: z.string().min(3, { message: "Nome deve ter no mínimo 3 caracteres." }),
-      price: z.number().min(0, { message: "Preço deve ser maior que 0." }),
-      description: z.string().min(3, { message: "Nome deve ter no mínimo 3 caracteres." }),
-      link: z.string().min(3, { message: "Nome deve ter no mínimo 3 caracteres." }),
-      group: z.string().min(3, { message: "Nome deve ter no mínimo 3 caracteres." }),
-    })),
+    resolver: zodResolver(
+      z.object({
+        name: z
+          .string()
+          .min(3, { message: "Nome deve ter no mínimo 3 caracteres." }),
+        price: z.number().min(0, { message: "Preço deve ser maior que 0." }),
+        description: z
+          .string()
+          .min(3, { message: "Nome deve ter no mínimo 3 caracteres." }),
+        link: z
+          .string()
+          .min(3, { message: "Nome deve ter no mínimo 3 caracteres." }),
+        group: z
+          .string()
+          .min(3, { message: "Nome deve ter no mínimo 3 caracteres." }),
+      })
+    ),
     defaultValues: {
       name: "",
       price: 0,
@@ -69,7 +79,7 @@ export default function Produtos({
     console.log(data);
     setVal("produto", [...wat("produto"), data]);
     reset();
-  }
+  };
 
   return (
     <div className="flex flex-col gap-4">
@@ -92,18 +102,21 @@ export default function Produtos({
           wat={wat}
           data={wat("produto")}
           handleDelete={(id) => {
-            setVal("produto", wat("produto").filter((e: any) => e.name !== id));
+            setVal(
+              "produto",
+              wat("produto").filter((e: any) => e.name !== id)
+            );
           }}
         />
       </div>
     </div>
-  )
+  );
 }
 
 type PropsTable = {
   data: InputsProdutos[];
   handleDelete: (id: string) => void;
-  wat: UseFormWatch<InputsAionfig>
+  wat: UseFormWatch<InputsAiConfig>;
 };
 
 function TableProdutos({ data, handleDelete, wat }: PropsTable) {
@@ -142,16 +155,15 @@ function TableProdutos({ data, handleDelete, wat }: PropsTable) {
         <TableFooter className="bg-primary-700">
           <TableRow>
             <TableCell colSpan={5}>Total</TableCell>
-            <TableCell className="text-right">{
-              wat("produto").length
-            } Produtos</TableCell>
+            <TableCell className="text-right">
+              {wat("produto").length} Produtos
+            </TableCell>
           </TableRow>
         </TableFooter>
       </Table>
     </div>
   );
 }
-
 
 type FormProps = {
   register: UseFormRegister<InputsProdutos>;
@@ -160,55 +172,43 @@ type FormProps = {
   onSubmit: (data: InputsProdutos) => Promise<void>;
 };
 
-function FormProduto({
-  register,
-  handleSubmit,
-  errors,
-  onSubmit,
-}: FormProps) {
+function FormProduto({ register, handleSubmit, errors, onSubmit }: FormProps) {
   return (
-    <div className="flex flex-col lg:gap-x-16 xl:gap-x-32 md:gap-x-8
-  gap-y-2">
+    <div
+      className="flex flex-col lg:gap-x-16 xl:gap-x-32 md:gap-x-8
+  gap-y-2"
+    >
       <div
         className="
   grid md:grid-cols-2 sm:grid-cols-1
   lg:gap-x-16 xl:gap-x-32 md:gap-x-8
   gap-y-2"
       >
-        <InputLabel
-          label="Nome Produto"
-          description="Nome do produto."
-        >
+        <InputLabel label="Nome Produto" description="Nome do produto.">
           <Input {...register("name")} />
           {/* errors will return when field validation fails  */}
           {errors.name && (
             <span className="text-danger-500">{errors.name.message}</span>
           )}
         </InputLabel>
-        <InputLabel
-          label="Preço"
-          description="Preço do produto."
-        >
-          <Input type="number" {...register("price", { valueAsNumber: true })} />
+        <InputLabel label="Preço" description="Preço do produto.">
+          <Input
+            type="number"
+            {...register("price", { valueAsNumber: true })}
+          />
           {/* errors will return when field validation fails  */}
           {errors.price && (
             <span className="text-danger-500">{errors.price.message}</span>
           )}
         </InputLabel>
-        <InputLabel
-          label="Link"
-          description="Link do produto."
-        >
+        <InputLabel label="Link" description="Link do produto.">
           <Input {...register("link")} />
           {/* errors will return when field validation fails  */}
           {errors.link && (
             <span className="text-danger-500">{errors.link.message}</span>
           )}
         </InputLabel>
-        <InputLabel
-          label="Grupo"
-          description="Grupo do produto."
-        >
+        <InputLabel label="Grupo" description="Grupo do produto.">
           <Input {...register("group")} />
           {/* errors will return when field validation fails  */}
           {errors.group && (
@@ -217,14 +217,13 @@ function FormProduto({
         </InputLabel>
       </div>
       <div>
-        <InputLabel
-          label="Descrição"
-          description="Descrição do produto."
-        >
+        <InputLabel label="Descrição" description="Descrição do produto.">
           <Textarea {...register("description")} />
           {/* errors will return when field validation fails  */}
           {errors.description && (
-            <span className="text-danger-500">{errors.description.message}</span>
+            <span className="text-danger-500">
+              {errors.description.message}
+            </span>
           )}
         </InputLabel>
       </div>
@@ -235,7 +234,8 @@ function FormProduto({
   gap-y-8"
       >
         <div />
-        <Button className="bg-green-500 hover:bg-green-700 text-white font-bold w-full"
+        <Button
+          className="bg-green-500 hover:bg-green-700 text-white font-bold w-full"
           onClick={handleSubmit(onSubmit)}
         >
           Adicionar Produto

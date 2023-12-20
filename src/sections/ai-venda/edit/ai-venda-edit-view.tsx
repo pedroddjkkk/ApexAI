@@ -16,13 +16,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 // axios
 import axios from "axios";
 import TabsForm, { quests } from "@/components/inputs/trabs-form";
-import {
-  Undo2
-} from "lucide-react";
+import { Undo2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import FaqDataTables from "@/components/data-tables/form-faq-table";
-import { InputsAionfig } from "../../ai-config-register-view";
+import { InputsAiConfig } from "../../ai-config-register-view";
 import { File as Files, Group, Produto } from "@prisma/client";
 import { InputsAiVenda } from "./ai-venda-register-view";
 import Advanced from "./advanced";
@@ -56,8 +54,8 @@ export type AIVendaInFiles = {
     user_id: string;
     group?: Group[];
     ai_config_id: string | null;
-  }[]
-}
+  }[];
+};
 
 export type Data = {
   id: string;
@@ -77,7 +75,11 @@ export type Data = {
   files: File[];
 };
 
-export default function AiVendaEditView({ aiConfig }: { aiConfig: AIVendaInFiles }) {
+export default function AiVendaEditView({
+  aiConfig,
+}: {
+  aiConfig: AIVendaInFiles;
+}) {
   const router = useRouter();
 
   const {
@@ -92,26 +94,32 @@ export default function AiVendaEditView({ aiConfig }: { aiConfig: AIVendaInFiles
     defaultValues: {
       id: aiConfig.id,
       name: aiConfig.name,
-      sistema: aiConfig.sistema ? aiConfig.sistema.split(";;\n").map((item, index) => {
-        const [quest, response] = item.split(";:;");
-        const questObj = quests.find((e) => e.quest === quest);
-        return {
-          id: questObj?.id || index.toString(),
-          quest,
-          response,
-        };
-      }) : [],
-      faq: aiConfig.faq ? aiConfig.faq.split("\n").map((item, index) => {
-        const [quest, response] = item.split(":");
-        return {
-          id: index.toString(),
-          quest,
-          response,
-        };
-      }) : [],
-      file: aiConfig.files.filter((item) => !item.name.includes("faq=")).map((item) => {
-        return new File([], item.name, { type: item.url });
-      }),
+      sistema: aiConfig.sistema
+        ? aiConfig.sistema.split(";;\n").map((item, index) => {
+            const [quest, response] = item.split(";:;");
+            const questObj = quests.find((e) => e.quest === quest);
+            return {
+              id: questObj?.id || index.toString(),
+              quest,
+              response,
+            };
+          })
+        : [],
+      faq: aiConfig.faq
+        ? aiConfig.faq.split("\n").map((item, index) => {
+            const [quest, response] = item.split(":");
+            return {
+              id: index.toString(),
+              quest,
+              response,
+            };
+          })
+        : [],
+      file: aiConfig.files
+        .filter((item) => !item.name.includes("faq="))
+        .map((item) => {
+          return new File([], item.name, { type: item.url });
+        }),
       max_tokens: aiConfig.max_tokens,
       model: aiConfig.model,
       temperature: aiConfig.temperature,
@@ -119,20 +127,20 @@ export default function AiVendaEditView({ aiConfig }: { aiConfig: AIVendaInFiles
       top_p: aiConfig.top_p,
       frequency_penalty: aiConfig.frequency_penalty,
       presence_penalty: aiConfig.presence_penalty,
-      produto: aiConfig.produtos?.map((item) => {
-        return {
-          name: item.name,
-          price: item.price,
-          description: item.description,
-          link: item.link,
-          group: item.group?.map((e) => e.name).join(","),
-        };
-      }) || [],
+      produto:
+        aiConfig.produtos?.map((item) => {
+          return {
+            name: item.name,
+            price: item.price,
+            description: item.description,
+            link: item.link,
+            group: item.group?.map((e) => e.name).join(","),
+          };
+        }) || [],
     },
   });
 
   const onSubmit = async (data: InputsAiVenda) => {
-
     const { file, ...objData } = {
       ...data,
       action: "update",
@@ -142,7 +150,7 @@ export default function AiVendaEditView({ aiConfig }: { aiConfig: AIVendaInFiles
           return `${item.quest};:;${item.response}`;
         })
         .join(";;\n")
-        .trim()
+        .trim(),
     };
 
     const formData = new FormData();
@@ -166,7 +174,6 @@ export default function AiVendaEditView({ aiConfig }: { aiConfig: AIVendaInFiles
     });
 
     formData.append("data", JSON.stringify({ ...objData, faq }));
-
 
     const ret = await axios.post("/api/ai-venda", formData);
     if (ret.status === 200) {
