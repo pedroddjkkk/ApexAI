@@ -7,8 +7,8 @@ export default function VendasSection1() {
     <div className="bg-white/60 md:p-16 p-4 rounded-xl gap-32 flex flex-col">
       <div className="flex flex-col gap-8 xl:flex-row justify-between">
         <div className="gap-8 flex flex-col xl:w-1/2 w-full">
-          <div className="flex flex-col gap-2 font-semibold items-center">
-            <span className="text-[42px] leading-[45px] font-medium text-primary-500 text-center max-w-[500px]">
+          <div className="flex flex-col gap-4 font-semibold items-center">
+            <span className="text-[42px] leading-[45px] text-primary-500 text-center max-w-[500px] font-bold">
               Vendedor com Inteligência Artificial
             </span>
             <span className="text-sm font-medium text-neutrals-500 max-w-[500px]">
