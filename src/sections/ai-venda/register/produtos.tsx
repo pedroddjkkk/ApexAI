@@ -1,10 +1,7 @@
-import FaqDataTables from "@/components/data-tables/form-faq-table";
 import { InputLabel } from "@/components/inputs/imput-label";
 import SwitchLabel from "@/components/inputs/switch-label";
 import { Button } from "@/components/ui/button";
-import { Combobox } from "@/components/ui/combobox";
 import { Input } from "@/components/ui/input";
-import { Slider } from "@/components/ui/slider";
 import {
   Table,
   TableBody,

@@ -4,7 +4,6 @@ import { cn } from "@/lib/utils";
 import { FaArrowRight, FaCheck } from "react-icons/fa6";
 import { PiSealWarningBold } from "react-icons/pi";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
 
 type Props = {
   valor: number;
@@ -14,10 +13,9 @@ type Props = {
   lista: string[];
   adicional?: string;
   className?: string;
-  link: string;
 };
 
-export default function Precos({ valor, desconto, name, destaque, lista, adicional, className, link }: Props) {
+export default function Precos({ valor, desconto, name, destaque, lista, adicional, className }: Props) {
 
   const card = cva(
     "mt-5 p-8 bg-neutral-50 rounded-[32px] shadow-md flex-col justify-between items-center flex gap-16 w-full h-full",
@@ -82,12 +80,10 @@ export default function Precos({ valor, desconto, name, destaque, lista, adicion
             <PiSealWarningBold className="text-primary-500" size={20} />
             <span className="text-sm">{adicional}</span>
           </div>}
-          <Link href={link}>
-            <Button className="bg-primary-500 rounded-full hover:bg-primary-600 text-white font-bold gap-2">
-              <span>Contratar</span>
-              <FaArrowRight size={16} />
-            </Button>
-          </Link>
+          <Button className="bg-primary-500 rounded-full hover:bg-primary-600 text-white font-bold gap-2">
+            <span>Contratar</span>
+            <FaArrowRight size={16} />
+          </Button>
         </div>
       </div>
     </div>
