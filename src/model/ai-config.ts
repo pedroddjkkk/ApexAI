@@ -41,7 +41,7 @@ export async function getAiConfigs(
   const ret = await prisma.aIConfig.findMany({
     where: {
       user_id: id,
-      type,
+      // type,
     },
     include: {
       produtos: true,
@@ -54,6 +54,9 @@ export async function getAllAiConfigs(id: string): Promise<AIConfig[] | null> {
   const ret = await prisma.aIConfig.findMany({
     where: {
       user_id: id,
+    },
+    include: {
+      produtos: true,
     },
   });
   return ret;

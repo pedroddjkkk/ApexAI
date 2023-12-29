@@ -9,6 +9,9 @@ interface PropTypes {
 }
 
 export default function TopNav({ onMenu, menu }: PropTypes) {
+
+  const [open, setOpen] = React.useState(false);
+
   return (
     <>
       <div className='h-[100px] t-0 flex flex-row right-0 items-center justify-between px-8 fixed w-full lg:w-[calc(100vw-290px)] backdrop-blur-sm'></div>
@@ -17,11 +20,8 @@ export default function TopNav({ onMenu, menu }: PropTypes) {
           <div className='lg:hidden drop-shadow-lg rounded-full w-[50px] h-[50px] bg-white flex items-center justify-center cursor-pointer'>
             <Menu size={28} onClick={() => onMenu()} />
           </div>
-          <div className='drop-shadow-lg rounded-full w-[50px] h-[50px] bg-white flex items-center justify-center cursor-pointer'>
-            <Search size={25} />
-          </div>
         </div>
-        <Popover defaultOpen>
+        <Popover defaultOpen open={open} onOpenChange={(open) => setOpen(open)}>
           <PopoverTrigger>
             <div className='rounded-full w-[50px] h-[50px] bg-white border-primary-500 border-2 drop-shadow-lg cursor-pointer'>
             </div>
