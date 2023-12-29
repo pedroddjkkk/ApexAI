@@ -22,12 +22,18 @@ import { useState } from "react";
 export default function Login() {
   const [error, setError] = useState<{ field: string; message: string }>();
 
+  const router = useRouter();
+
   return (
     <main>
       <div className="flex justify-center items-center h-screen bg-blue-400">
         <Form
           action="/api/auth/login"
           onError={(error) => setError(error)}
+          onSucces={() => {
+            console.log("sucesso");
+            router.push("/dashboard")
+          }}
         >
           <Card className="w-96">
             <CardHeader>

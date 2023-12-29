@@ -40,10 +40,8 @@ export async function POST(request: NextRequest) {
 
     session = await auth.createSession({
       userId: key.userId,
-      attributes: {
-      },
+      attributes: {},
     });
-
   } catch (e) {
     if (isRedirectError(e)) throw e;
     if (
@@ -74,5 +72,9 @@ export async function POST(request: NextRequest) {
   const authRequest = auth.handleRequest(request.method, context);
   authRequest.setSession(session);
 
-  redirect("/");
-};
+  return NextResponse.json({
+    status: 200,
+  });
+
+  // redirect("/");
+}
