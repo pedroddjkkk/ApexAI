@@ -1,16 +1,35 @@
 import { Menu, Search } from 'lucide-react';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { Button } from '../ui/button';
+import { cookies } from 'next/headers';
+import axios from 'axios';
+import { User } from '@prisma/client';
 
 interface PropTypes {
   onMenu: () => void;
   menu: string | null | undefined;
 }
 
+async function getUserData(setUser: React.Dispatch<React.SetStateAction<User | null>>) {
+  // busca os dados do usuario
+  const user = await axios.get('/api/user').then((response) => {
+    setUser(response.data);
+  }).catch((error) => {
+    console.log(error);
+  });
+  // retorna os dados do usuario
+}
+
 export default function TopNav({ onMenu, menu }: PropTypes) {
 
   const [open, setOpen] = React.useState(false);
+
+  const [user, setUser] = React.useState<User | null>(null);
+
+  useEffect(() => {
+    getUserData(setUser);
+  }, []);
 
   return (
     <>
@@ -23,16 +42,18 @@ export default function TopNav({ onMenu, menu }: PropTypes) {
         </div>
         <Popover defaultOpen open={open} onOpenChange={(open) => setOpen(open)}>
           <PopoverTrigger>
-            <div className='rounded-full w-[50px] h-[50px] bg-white border-primary-500 border-2 drop-shadow-lg cursor-pointer'>
+            <div
+              style={{ backgroundImage: `url(/avatar.svg)`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+              className='rounded-full w-[50px] h-[50px] bg-white border-primary-500 border-2 drop-shadow-lg cursor-pointer'>
             </div>
           </PopoverTrigger>
           <PopoverContent className='w-auto'>
             <div className='flex flex-col gap-4'>
               <div className='flex flex-row items-center gap-x-4'>
                 <div className='flex flex-col'>
-                  <p className='text-sm font-bold'>Nome do usuário</p>
+                  <p className='text-md font-bold text-primary-500 text-center'>{user?.username}</p>
                   <p className='text-xs'>
-                    <span className='text-primary-500'>#</span>1234
+                    <span className='text-neutral-300 font-semibold'>{user?.email}</span>
                   </p>
                 </div>
               </div>
