@@ -66,8 +66,8 @@ export default function TopNav({ onMenu, menu }: PropTypes) {
                     // remove o cookie auth_session
                     document.cookie = "auth_session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 
-                    // redireciona para a página de login
-                    window.location.href = '/login'
+                    // redireciona para a página de /
+                    window.location.href = '/'
                   }}
                 >Sair</Button>
               </div>

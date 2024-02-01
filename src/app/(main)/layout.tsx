@@ -13,10 +13,10 @@ export default async function UserRootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const cookieStore = cookies();  
-  
+  const cookieStore = cookies();
+
   const sessionCookie = cookieStore.get("auth_session");
-  if (!sessionCookie) redirect("/login");
+  if (!sessionCookie) redirect("/");
 
   let session;
 
@@ -25,7 +25,7 @@ export default async function UserRootLayout({
   } catch (e) {
     if (isRedirectError(e)) throw e;
     if (e instanceof LuciaError && e.message === `AUTH_INVALID_SESSION_ID`) {
-      redirect("/login");
+      redirect("/");
     }
   }
 

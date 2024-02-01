@@ -10,7 +10,6 @@ import Link from 'next/link';
 import HomeSection5 from './home-section-5';
 import HomeSection6 from './home-section-6';
 import HomeFooter from '../home-footer';
-import FloatingButton from '../floating-button';
 
 type Props = {
 
@@ -47,7 +46,6 @@ export default function HomeView({ }: Props) {
         {/* footer */}
         <HomeFooter />
       </div>
-      <FloatingButton />
     </main>
   )
 

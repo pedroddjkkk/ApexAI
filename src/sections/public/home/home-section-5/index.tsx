@@ -1,9 +1,4 @@
-import { FaCheck } from "react-icons/fa";
-import { PiBirdBold } from "react-icons/pi";
-import { PiSealWarning } from "react-icons/pi";
-import { LuBuilding2, LuRocket } from "react-icons/lu";
-import { AiOutlineThunderbolt } from "react-icons/ai";
-import { LuBird } from "react-icons/lu";
+import { LuBuilding2 } from "react-icons/lu";
 import { Button } from "@/components/ui/button";
 import Precos from "./preco-desconto";
 
@@ -21,7 +16,7 @@ export default function HomeSection5() {
           "Treinamento por WebSite",
           "Até 5 Configurações",
           "Modelo avançado (GPT4 Turbo)"
-        ]} link="/" />
+        ]} link="/ai-suporte" />
         <Precos valor={700} desconto={16.858} name="Vendas" destaque="Mais Popular" lista={[
           "Até 15.000 mensagens incluídas por mês",
           "Até 3000 palavras de treinamento",
@@ -33,7 +28,7 @@ export default function HomeSection5() {
           "Modelo avançado (GPT-4 Turbo)",
           "Catalogo até 2000 produtos"
         ]} link="/ia-vendas" />
-        <Precos valor={289} name="Pro" lista={[
+        <Precos valor={289} name="Restaurante" lista={[
           "Até 15.000 mensagens incluídas por mês",
           "Até 3000 palavras de treinamento",
           "Treinamento personalisado por",
@@ -42,7 +37,7 @@ export default function HomeSection5() {
           "Treinamento por WebSite",
           "Até 5 Configurações",
           "Modelo avançado (GPT4 Turbo)"
-        ]} className="xl:col-span-2 2xl:col-span-1" link="/" />
+        ]} className="xl:col-span-2 2xl:col-span-1" link="/ia-restaurante" />
       </div>
       <div className="mt-5 p-8 bg-neutral-50 rounded-[32px] shadow-md flex-col  flex gap-4 w-full h-full">
         <div className="w-full lg:w-1/3">

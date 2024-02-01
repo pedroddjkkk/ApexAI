@@ -18,6 +18,7 @@ import { useSession } from "@/lib/hooks/session";
 import Link from "next/link";
 import { redirect, useRouter } from "next/navigation";
 import { useState } from "react";
+import { RiArrowGoBackLine } from "react-icons/ri";
 
 export default function Login() {
   const [error, setError] = useState<{ field: string; message: string }>();
@@ -77,9 +78,19 @@ export default function Login() {
                   Registre-se!
                 </Link>
               </Text>
-              <Button variant="outline" className="self-end" type="submit">
-                Entrar
-              </Button>
+              <div className="flex justify-between flex-row-reverse w-full">
+                <Button variant="outline" className="self-end" type="submit">
+                  Entrar
+                </Button>
+                <Button variant="outline" className="self-end"
+                  onClick={() => {
+                    router.back();
+                  }}
+                >
+                  <RiArrowGoBackLine className="mr-2" />
+                  Voltar
+                </Button>
+              </div>
             </CardFooter>
           </Card>
         </Form>
