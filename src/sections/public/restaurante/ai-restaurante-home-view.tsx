@@ -4,7 +4,6 @@ import React from 'react';
 import HomeTopNav from '../home-top-nav';
 import Link from 'next/link';
 import HomeFooter from '../home-footer';
-import FloatingButton from '../floating-button';
 import RestauranteSection1 from './ai-restaurante-home-section-1';
 import RestauranteSection2 from './ai-restaurante-home-section-2';
 import RestauranteHomeSection5 from './ai-restaurante-home-section-5';
@@ -28,7 +27,6 @@ export default function AiRestauranteHomeView({ }: Props) {
         </div>
         <HomeFooter />
       </div>
-      <FloatingButton />
     </main>
   )
 

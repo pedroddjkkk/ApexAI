@@ -4,7 +4,6 @@ import React from 'react';
 import HomeTopNav from '../home-top-nav';
 import Link from 'next/link';
 import HomeFooter from '../home-footer';
-import FloatingButton from '../floating-button';
 import VendasSection1 from './ai-vendas-home-section-1';
 import VendasSection2 from './ai-vendas-home-section-2';
 import VendasHomeSection5 from './ai-vendas-home-section-5';
@@ -28,7 +27,6 @@ export default function AiVedasHomeView({ }: Props) {
         </div>
         <HomeFooter />
       </div>
-      <FloatingButton />
     </main>
   )
 

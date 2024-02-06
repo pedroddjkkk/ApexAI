@@ -49,6 +49,7 @@ export type InputsAiConfig = {
     response: string | File;
   }[];
   file: File[];
+  type: string;
 };
 
 export default function AiConfigRegisterView() {
@@ -76,6 +77,7 @@ export default function AiConfigRegisterView() {
       presence_penalty: 1,
       faq: [],
       file: [],
+      type: 'G'
     },
   });
 
@@ -391,6 +393,28 @@ export default function AiConfigRegisterView() {
                   {errors.frequency_penalty.message}
                 </span>
               )}
+            </InputLabel>
+            <InputLabel
+              label="Tipo"
+              description="Tenho que deixar apenas para o usuario ADM."
+            >
+              <Combobox
+                options={[
+                  {
+                    value: "help",
+                    label: "Chat Help",
+                  },
+                  {
+                    value: "G",
+                    label: "Defalt",
+                  },
+                ]}
+                onSelect={(value) => {
+                  setValue("type", value);
+                }}
+                value={watch("type")}
+                placeholder="Modelo"
+              />
             </InputLabel>
           </div>
         </div>

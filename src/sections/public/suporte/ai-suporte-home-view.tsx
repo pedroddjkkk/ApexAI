@@ -4,7 +4,6 @@ import React from 'react';
 import HomeTopNav from '../home-top-nav';
 import Link from 'next/link';
 import HomeFooter from '../home-footer';
-import FloatingButton from '../floating-button';
 import SuporteSection1 from './ai-suporte-home-section-1';
 import SuporteSection2 from './ai-suporte-home-section-2';
 import SuporteHomeSection5 from './ai-suporte-home-section-5';
@@ -28,7 +27,6 @@ export default function AiSuporteHomeView({ }: Props) {
         </div>
         <HomeFooter />
       </div>
-      <FloatingButton />
     </main>
   )
 

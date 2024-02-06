@@ -61,6 +61,8 @@ model AIConfig {
   WhatsappClient    WhatsappClient?
   produtos          Produto[]
   session_whatsapp  Session_whatsapp[]
+
+  @@index([type])
 }
 
 model Session_whatsapp {

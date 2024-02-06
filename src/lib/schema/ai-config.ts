@@ -51,4 +51,5 @@ export const createAiConfigSchema = z.object({
           .optional()
       )
   ),
+  type: z.string().optional(),
 });

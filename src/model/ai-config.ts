@@ -142,3 +142,18 @@ export async function saveFiles(files: File[], id?: string) {
 
   return ret;
 }
+
+export async function getAiConfigByType(
+  type: string
+): Promise<AIConfig | null> {
+  const aiConfg = await prisma.aIConfig.findMany({
+    // busca o typo help
+    where: {
+      type: {
+        equals: "help",
+      },
+    },
+  });
+
+  return aiConfg[aiConfg.length - 1];
+}
