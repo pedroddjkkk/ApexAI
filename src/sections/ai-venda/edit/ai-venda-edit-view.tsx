@@ -96,24 +96,25 @@ export default function AiVendaEditView({
       name: aiConfig.name,
       sistema: aiConfig.sistema
         ? aiConfig.sistema.split(";;\n").map((item, index) => {
-            const [quest, response] = item.split(";:;");
-            const questObj = quests.find((e) => e.quest === quest);
-            return {
-              id: questObj?.id || index.toString(),
-              quest,
-              response,
-            };
-          })
+          const [quest, response] = item.split(";:;");
+          const questObj = quests.find((e) => e.quest === quest && response !== undefined);
+
+          return {
+            id: questObj?.id || index.toString(),
+            quest,
+            response,
+          };
+        })
         : [],
       faq: aiConfig.faq
         ? aiConfig.faq.split("\n").map((item, index) => {
-            const [quest, response] = item.split(":");
-            return {
-              id: index.toString(),
-              quest,
-              response,
-            };
-          })
+          const [quest, response] = item.split(":");
+          return {
+            id: index.toString(),
+            quest,
+            response,
+          };
+        })
         : [],
       file: aiConfig.files
         .filter((item) => !item.name.includes("faq="))
@@ -139,6 +140,11 @@ export default function AiVendaEditView({
         }) || [],
     },
   });
+  useEffect(() => {
+    console.log("errors", errors);
+    console.log("watch", watch());
+  }, [errors]);
+
 
   const onSubmit = async (data: InputsAiVenda) => {
     const { file, ...objData } = {
@@ -146,7 +152,7 @@ export default function AiVendaEditView({
       action: "update",
       sistema: data.sistema
         .map((item) => {
-          if (!item.response) return null;
+          if (!item.response || !item.quest) return null;
           return `${item.quest};:;${item.response}`;
         })
         .join(";;\n")

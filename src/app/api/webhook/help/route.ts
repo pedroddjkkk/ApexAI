@@ -33,7 +33,7 @@ const sendMessage = async (
       ai_config.sistema +
       ".\n\n" +
       new Date().toLocaleTimeString() +
-      " este é o horaro atual. priorize informações chave, economize tokens, envie emojis. Não responda perguntas fora do escopo comercial da empresa",
+      " este é o horaro atual. priorize informações chave, economize tokens, envie emojis. Não responda perguntas fora do escopo comercial da empresa.",
     role: "system",
   });
 

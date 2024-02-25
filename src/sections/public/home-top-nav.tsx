@@ -1,3 +1,4 @@
+'use client'
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { useState } from "react"
@@ -11,7 +12,7 @@ export default function HomeTopNav() {
     <div className="py-4 bg-[#f0f0f321] backdrop-blur-sm fixed  w-full px-4 z-20 flex items-center justify-center">
       <div className='flex flex-row justify-between items-center w-11/12 lg:w-2/3'>
         <Link href="/">
-          <div className="h-[66px] w-[250px]" style={{
+          <div className="h-[66px] md:w-[250px] w-[100px]" style={{
             backgroundImage: "url('https://cdn.discordapp.com/attachments/1048010244795678771/1169737777072590969/AIPEX_LOGO_light.png?ex=65567e32&is=65440932&hm=c5661bf76a5eefe78815e6821382ada234a600cf63469015c12599c68a586890&')",
             backgroundSize: "contain",
             backgroundRepeat: "no-repeat",

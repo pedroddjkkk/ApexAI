@@ -38,6 +38,7 @@ export default function Produtos({ setVal, wat, produto, setProduto }: Props) {
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm<InputsProdutos>({
     resolver: zodResolver(
@@ -92,6 +93,17 @@ export default function Produtos({ setVal, wat, produto, setProduto }: Props) {
         <TableProdutos
           wat={wat}
           data={wat("produto")}
+          handleEditar={(e) => {
+            setValue("name", e.name);
+            setValue("price", e.price);
+            setValue("description", e.description);
+            setValue("link", e.link);
+            setValue("group", e.group);
+            setVal(
+              "produto",
+              wat("produto").filter((a: any) => a.name !== e.name)
+            );
+          }}
           handleDelete={(id) => {
             setVal(
               "produto",
@@ -107,10 +119,23 @@ export default function Produtos({ setVal, wat, produto, setProduto }: Props) {
 type PropsTable = {
   data: InputsProdutos[];
   handleDelete: (id: string) => void;
+  handleEditar: ({
+    name,
+    price,
+    description,
+    link,
+    group,
+  }: {
+    name: string;
+    price: number;
+    description: string;
+    link: string;
+    group: string;
+  }) => void;
   wat: UseFormWatch<InputsAiConfig>;
 };
 
-function TableProdutos({ data, handleDelete, wat }: PropsTable) {
+function TableProdutos({ data, handleDelete, wat, handleEditar }: PropsTable) {
   return (
     <div className="rounded-lg overflow-hidden border-input border-2">
       <Table>
@@ -131,14 +156,20 @@ function TableProdutos({ data, handleDelete, wat }: PropsTable) {
               <TableCell title={`R$${e.price}`}>R${e.price}</TableCell>
               {/* quando passar por cima quero que apareça todo o texto */}
               <TableCell title={e.description}>{e.description.length > 20 ? e.description.substring(0, 20) + "..." : e.description}</TableCell>
-              <TableCell title={e.link}>{e.link}</TableCell>
+              <TableCell title={e.link}>{e.link.length > 20 ? e.link.substring(0, 20) + "..." : e.link}</TableCell>
               <TableCell title={e.group}>{e.group}</TableCell>
-              <TableCell>
+              <TableCell className="flex flow-row gap-2">
                 <Button
                   className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full items-center w-full"
                   onClick={() => handleDelete(e.name)}
                 >
                   Deletar
+                </Button>
+                <Button
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full items-center w-full"
+                  onClick={() => handleEditar(e)}
+                >
+                  Editar
                 </Button>
               </TableCell>
             </TableRow>

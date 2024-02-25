@@ -19,7 +19,7 @@ import { AIConfig } from "@prisma/client";
 import axios from "axios";
 
 const FloatDiv = cva(
-  "bg-[#f4f4f4] rounded-[32px] fixed md:bottom-16 bottom-10 md:right-16 right-10 shadow  max-w-[calc(100vw-80px)] max-h-[calc(100vh-40px)] transition-all duration-300 ease-in-out ",
+  "bg-[#f4f4f4] rounded-[32px] fixed md:bottom-16 bottom-4 md:right-16 right-4 shadow  max-w-[calc(100vw-32px)] max-h-[calc(100vh-16px)] transition-all duration-300 ease-in-out z-50 ",
   {
     variants: {
       open: {
@@ -121,6 +121,8 @@ export default function FloatingButton({ iaConfig }: Props) {
 
   const input = useRef<HTMLTextAreaElement>(null)
 
+  const messagens = useRef<HTMLDivElement>(null)
+
   const [error, setError] = useState<string | null>(null)
 
   const [messages, setMessages] = useState<Messages>([])
@@ -137,7 +139,18 @@ export default function FloatingButton({ iaConfig }: Props) {
     }
   }, [open])
 
+  useEffect(() => {
+    if (messagens.current) {
+      messagens.current.scrollTop = messagens.current.scrollHeight
+    }
+  }, [messages])
+
   const sendMessage = async (messages: Messages, ai_config: AIConfig | null) => {
+
+    if (!ai_config) {
+      return
+    }
+
     setLoading(true)
     axios.post('/api/webhook/help', {
       messages,
@@ -154,6 +167,7 @@ export default function FloatingButton({ iaConfig }: Props) {
         date: new Date().toLocaleTimeString().slice(0, -3),
         type: "assistant"
       }])
+      setLoading(false)
     }).catch((error) => {
       console.error(error)
     })
@@ -178,7 +192,7 @@ export default function FloatingButton({ iaConfig }: Props) {
             backgroundSize: 'cover',
             backgroundPosition: 'center'
           }}
-          className="flex items-center justify-between w-full px-5 py-4 gap-2 rounded-t-[32px]">
+          className="flex justify-between w-full px-5 py-4 gap-2 rounded-t-[32px] absolute z-20">
           <div>
             <div className="flex flex-row gap-3">
               {/* image public/iconMiniGradient.pmg */}
@@ -186,18 +200,13 @@ export default function FloatingButton({ iaConfig }: Props) {
               {/* decription */}
               <div className="flex-col justify-between hidden min-[320px]:flex">
                 <div className="text-white text-xl font-bold ">{iaConfig?.name}</div>
-                <div className="text-primary-100 hidden min-[432px]:flex">Atendente com inteligencia artificial</div>
+                <div className="text-primary-100 text-xs min-[43
+                  2px]:text-base">Atendente com inteligencia artificial</div>
               </div>
-            </div>
-            <div>
-              {/* title */}
-              <span></span>
-              {/* subtitle */}
-              <span></span>
             </div>
           </div>
           {/* menu */}
-          <div className="flex flex-row">
+          <div className="flex flex-row ">
             {/* opitions */}
             <Button variant="ghost" size="icon" className=" text-white rounded-full hover:text-primary-500">
               <HiDotsVertical size={25} />
@@ -211,17 +220,17 @@ export default function FloatingButton({ iaConfig }: Props) {
           </div>
         </div>
         {/* message  */}
-        <div className="w-full h-full pt-8 gap-4 px-4 flex flex-col overflow-y-scroll no-scrollbar pb-6">
+        <div ref={messagens} className="w-full h-full pt-8 gap-4 px-4 flex flex-col overflow-y-scroll no-scrollbar pb-6 rounded-[32px] z-10 mt-20">
           {/* messagem ia */}
           {messages.map((msg, index) => (
             <div key={index} className={cn(MessageMain({ type: msg.type as "assistant" | "user" }))}>
               <div className={cn(MessageBg({ type: msg.type as "assistant" | "user" }))}>
                 <div
                   dangerouslySetInnerHTML={{ __html: formatMessage(msg.body) }}
-                  className="text-neutral-900 break-words max-w-full text-sm"
+                  className="text-neutral-900 break-words max-w-[90%] text-sm"
                 />
                 {/* data */}
-                <div className="h-full flex items-end">
+                <div className="flex items-end">
                   <p className="text-[11px] text-neutral-700">{msg.date}</p>
                 </div>
               </div>
@@ -248,11 +257,23 @@ export default function FloatingButton({ iaConfig }: Props) {
                 <Textarea placeholder="Digite sua mensagem" className="w-full h-20 border-none resize-none focus-visible:ring-0 focus-visible:ring-offset-0 no-scrollbar bg-transparent"
                   ref={input}
                   value={message}
-                  onChange={(e) => setMessage(e.target.value)}
+                  onChange={(e) => {
+                    // remove a quebra de linha na primeira posição
+                    if (e.target.value[0] === "\n") {
+                      e.target.value = e.target.value.slice(1)
+                    }
+                    setMessage(e.target.value)
+                  }}
                   onKeyDown={(e) => {
                     // quando apertar ctrl + enter
+                    if (e.key === "Enter" && e.ctrlKey && message !== "") {
+                      setMessage(message + "\n")
+                    }
                     if (e.key === "Enter") {
                       console.log("message: ", message);
+                      if (message === "") {
+                        return
+                      }
                       setMessages([...messages, {
                         body: message,
                         date: new Date().toLocaleTimeString().slice(0, -3),
@@ -264,9 +285,6 @@ export default function FloatingButton({ iaConfig }: Props) {
                         type: "user"
                       }], iaConfig)
                       setMessage('')
-                    }
-                    if (e.key === "Enter" && e.ctrlKey) {
-                      setMessage(message + "\n")
                     }
                   }}
                 />
@@ -289,6 +307,9 @@ export default function FloatingButton({ iaConfig }: Props) {
                 onClick={(e) => {
                   e.preventDefault()
                   e.stopPropagation()
+                  if (message === "") {
+                    return
+                  }
                   setMessages([...messages, {
                     body: message,
                     date: new Date().toLocaleTimeString().slice(0, -3),
