@@ -142,9 +142,11 @@ export async function POST(req: NextRequest) {
 
           // console.log("newResponse", newResponse.choices[0].message.content);
 
+
+
           await axios.post("http://localhost:8000/whatsapp/message", {
             conversationId: messages[0].id.remote,
-            message: formatForWhatsApp(newResponse.choices[0].message.content),
+            message: formatForWhatsApp(newResponse.choices[0].message.content) + `Tokens: ${newResponse.usage?.total_tokens}`,
             clientId: body.clientId,
           });
         } else if (
