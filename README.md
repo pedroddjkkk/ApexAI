@@ -1,34 +1,55 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# ApexAI 
 
-## Getting Started
+A ApexAI é um software de inteligência artificial com integração com o Whatsapp. Nosso principal objetivo é automatizar o atendimento ao cliente para empresas.
 
-First, run the development server:
+## Tecnologias Utilizadas
+
+- **Next.js**: Framework de React para produção.
+- **Prisma**: ORM para consultas de banco de dados.
+- **Express**: Biblioteca para API backend em javascript.
+- **WhatsappJS**: Cliente para interação com o Whatsapp.
+- **TailwindCSS**: Framework de CSS para design rápido e responsivo.
+- **PostgreSQL**: Sistema de gerenciamento de banco de dados relacional.
+
+## Funcionalidades
+
+As principais funcionalidades do sistema são:
+
+- Treinamento de inteligência artificial baseado na empresa cadastrada.
+- Integração com o Whatsapp.
+- Sistema para cadastro de empresas.
+- Chatbot de testes.
+
+## Instalação e Execução
+
+Instruções passo a passo sobre como configurar o ambiente de desenvolvimento e executar o projeto localmente.
+
+### Pré-requisitos
+
+- Node.js (20 ou maior)
+- PostgreSQL
+- npm
+
+### Configuração
 
 ```bash
+# Clone o repositório
+git clone https://github.com/pedroddjkkk/ApexAI
+
+# Instale as dependências
+cd ApexAI
+npm install
+
+# Configure o banco de dados e o JWT no .env
+# Instruções para configurar o PostgreSQL e o Prisma
+npx prisma migrate dev
+
+# Execute o projeto
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Imagens do Projeto
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+![](/public/video/denovosaporra.mp4)
+![Tela Inicial](/public/image.png)
