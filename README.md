@@ -51,5 +51,5 @@ npm run dev
 
 ## Imagens do Projeto
 
-![](/public/video/denovosaporra.mp4)
+![](/public/video/denovosaporra.gif)
 ![Tela Inicial](/public/image.png)
