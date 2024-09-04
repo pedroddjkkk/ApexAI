@@ -1,4 +1,5 @@
 import prisma from "@/lib/db";
+import { WhatsappClient } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
@@ -8,5 +9,7 @@ export async function GET(req: NextRequest) {
     },
   });
 
-  return NextResponse.json(activeClients.map((client) => client.id));
+  return NextResponse.json(
+    activeClients.map((client: WhatsappClient) => client.id)
+  );
 }
